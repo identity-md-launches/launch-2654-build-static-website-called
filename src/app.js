@@ -1,4 +1,6 @@
 import rawCatalog from './data/playbooks.json';
+import rawGuides from './data/guides.json';
+import { createGuidePrompt, guideDate } from './guide-model.js';
 import { agentFor, answerHash, createOutputs, defaultsFor, escapeHTML as esc, fillTemplate, matchPlaybooks, parseRoute, readAnswers, validateAnswers } from './model.js';
 
 /** @typedef {import('./types').Playbook} Playbook */
@@ -6,8 +8,11 @@ import { agentFor, answerHash, createOutputs, defaultsFor, escapeHTML as esc, fi
 /** @typedef {import('./types').Choice} Choice */
 /** @type {import('./types').Catalog} */
 const catalog = rawCatalog;
+/** @type {import('./types').GuideCatalog} */
+const guideCatalog = rawGuides;
 const root = document.body.dataset.root || './';
 const pageId = document.body.dataset.playbook || '';
+const guideId = document.body.dataset.guide || '';
 const app = /** @type {HTMLElement} */ (document.querySelector('#app'));
 const status = /** @type {HTMLElement} */ (document.querySelector('#status'));
 const defaultAgent = catalog.agents.find(({ id }) => id === catalog.defaultAgentId) || catalog.agents[0];
@@ -46,19 +51,73 @@ function announce(text) {
 }
 
 /** @param {string} path */
-function homeHref(path = '/') { return pageId ? `${root}index.html#${path}` : `#${path}`; }
+function homeHref(path = '/') { return pageId || guideId ? `${root}index.html#${path}` : `#${path}`; }
 
 /** @param {Playbook} playbook */
 function playbookHref(playbook) { return `${root}playbooks/${playbook.id}/index.html#/configure`; }
+
+/** @param {import('./types').SetupGuide} guide */
+function guideHref(guide) { return `${root}guides/${guide.id}/index.html`; }
 
 function shell() {
   const header = /** @type {HTMLElement} */ (document.querySelector('#site-header'));
   header.innerHTML = `<div class="header-inner wrap">
     <a class="brand" href="${homeHref()}" aria-label="Nuntio home"><svg width="31" height="31" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 26V6h4l14 20h4V6h-5v13L13 6H5" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg><span>Nuntio<span class="brand-dot">.</span></span></a>
     <nav aria-label="Main navigation"><a class="nav-link" href="${homeHref('/guide')}">How it works</a><a class="nav-link docs-link" href="${esc(defaultAgent.docsUrl)}" target="_blank" rel="noopener noreferrer">${esc(defaultAgent.name)} docs ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></nav>
-  </div>`;
+  </div><nav class="site-tabs wrap" aria-label="Nuntio sections"><a href="${homeHref()}" data-section="playbooks">Playbooks</a><a href="${homeHref('/guides')}" data-section="guides">Setup guides</a><a href="${homeHref('/roadmap')}" data-section="roadmap">Roadmap</a></nav>`;
   const footer = /** @type {HTMLElement} */ (document.querySelector('#site-footer'));
   footer.innerHTML = `<div class="footer-inner wrap"><p>Made for a clear first instruction.</p><div><span>Independent of xAI</span><a href="${homeHref('/guide')}">About & privacy</a></div></div>`;
+}
+
+function safetyBanner() {
+  return `<aside class="safety-banner" aria-label="Setup safety">${icon('shield')}<p>${esc(guideCatalog.banner)}</p></aside>`;
+}
+
+/** @param {import('./types').SetupGuide} guide */
+function sourceLinks(guide) {
+  return `<div class="guide-source-links"><a href="${esc(guide.sourceUrl)}" target="_blank" rel="noopener noreferrer">Official source ${icon('external')}<span class="sr-only"> for ${esc(guide.title)} (opens in new tab)</span></a><a href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step<span class="sr-only"> for ${esc(guide.title)} (opens in new tab)</span></a></div>`;
+}
+
+function renderGuides() {
+  document.title = 'Wallet setup guides | Nuntio';
+  app.innerHTML = `<div class="wrap setup-library"><div class="setup-library-heading"><h1 id="page-title" tabindex="-1">Connect your agent.</h1><p>Wallet setup guides to follow with your agent, one approved step at a time.</p></div>
+    ${safetyBanner()}
+    <div class="setup-grid">${guideCatalog.guides.map((guide) => `<article class="setup-card"><a class="guide-card-link" href="${guideHref(guide)}" aria-labelledby="setup-title-${esc(guide.id)}"><div class="setup-card-top">${icon('shield')}${guide.risk ? `<span class="risk-label">Risk: ${esc(guide.risk)}</span>` : '<span>App approval</span>'}</div><h2 id="setup-title-${esc(guide.id)}">${esc(guide.title)}</h2><p>${esc(guide.description)}</p><p class="guide-card-note">${esc(guide.note)}</p><span class="card-cta">Open guide ${icon('arrow')}</span></a><div class="guide-card-meta"><p>Last verified <time datetime="${esc(guide.verifiedAt)}">${esc(guideDate(guide.verifiedAt))}</time></p>${sourceLinks(guide)}</div></article>`).join('')}</div>
+    <p class="setup-footnote">Nuntio provides instructions only. Setup happens with your own agent and the provider. No wallet connects to this site.</p></div>`;
+}
+
+/** @param {import('./types').SetupGuide} guide */
+function renderSetupGuide(guide) {
+  document.title = `${guide.title} setup | Nuntio`;
+  const prompt = createGuidePrompt(guideCatalog.promptTemplate, guide.prompt);
+  app.innerHTML = `<div class="wrap setup-detail"><a class="back-link" href="${homeHref('/guides')}">${icon('back')} All setup guides</a>
+    <div class="setup-page-heading"><h1 id="page-title" tabindex="-1">${esc(guide.title)}</h1><div class="guide-meta"><span>Last verified <time datetime="${esc(guide.verifiedAt)}">${esc(guideDate(guide.verifiedAt))}</time></span>${guide.risk ? `<span class="risk-label">Risk: ${esc(guide.risk)}</span>` : ''}</div><p class="setup-note">${esc(guide.note)}</p></div>
+    ${safetyBanner()}
+    <fieldset class="mode-control"><legend class="sr-only">Choose how to follow this guide</legend><div class="segmented guide-mode"><label><input type="radio" name="guide-mode" value="agent" checked aria-controls="agent-panel"><span>Let your agent do it</span></label><label><input type="radio" name="guide-mode" value="self" aria-controls="self-panel"><span>Do it yourself</span></label></div></fieldset>
+    <div class="setup-layout"><div class="setup-main"><section class="before-start" aria-labelledby="before-heading"><h2 id="before-heading">Before you start</h2><ul>${guide.beforeYouStart.map((item) => `<li>${esc(item)}</li>`).join('')}</ul></section>
+    <section id="agent-panel" aria-labelledby="agent-heading"><div class="block-heading"><h2 id="agent-heading">One prompt. Every setup step.</h2><button class="button primary" type="button" id="copy-agent-prompt">${icon('copy')} Copy agent prompt</button></div><p class="block-instruction">Copy this into your own agent session. Read its replies and approve each action.</p><div class="agent-prompt prompt-text" id="agent-prompt">${esc(prompt)}</div></section>
+    <section id="self-panel" aria-labelledby="self-heading" hidden><div class="checklist-heading"><h2 id="self-heading">Follow the steps</h2><p class="small muted" id="setup-progress" role="status">0 of ${guide.steps.length} steps checked</p></div><p class="block-instruction">Check each step after you review it. Checks stay on this page until you leave.</p><ol class="setup-steps">${guide.steps.map((step, index) => `<li><label for="setup-step-${index}"><input type="checkbox" id="setup-step-${index}" data-setup-step><span class="setup-step-content"><strong class="step-actor">${step.actor === 'you' ? 'You do this' : 'Your agent does this'}</strong><span>${esc(step.text)}</span>${step.commands.map((command) => `<code>${esc(command)}</code>`).join('')}</span></label></li>`).join('')}</ol></section>
+    <div class="manual-copy" id="copy-fallback" hidden><p>Automatic copying is unavailable. Select the text below and copy it manually.</p><label for="manual-copy">Text to copy</label><textarea id="manual-copy" rows="10" readonly></textarea></div></div>
+    <aside class="setup-safety" aria-labelledby="safe-heading"><h2 id="safe-heading">Stay safe</h2><ul>${[...guide.staySafe, ...guideCatalog.safetyRules].map((rule) => `<li>${esc(rule)}</li>`).join('')}</ul>${sourceLinks(guide)}<p class="small muted">This site never runs a command, signs you in, holds funds or executes trades. Not financial advice.</p></aside></div></div>`;
+  document.querySelector('#copy-agent-prompt')?.addEventListener('click', (event) => {
+    void copy(prompt, /** @type {HTMLButtonElement} */ (event.currentTarget), `${guide.title} agent prompt copied.`);
+  });
+  document.querySelectorAll('input[name="guide-mode"]').forEach((radio) => radio.addEventListener('change', (event) => {
+    const agentMode = /** @type {HTMLInputElement} */ (event.currentTarget).value === 'agent';
+    /** @type {HTMLElement} */ (document.querySelector('#agent-panel')).hidden = !agentMode;
+    /** @type {HTMLElement} */ (document.querySelector('#self-panel')).hidden = agentMode;
+    /** @type {HTMLElement} */ (document.querySelector('#copy-fallback')).hidden = true;
+    announce(agentMode ? 'Agent prompt shown.' : 'Numbered setup checklist shown.');
+  }));
+  document.querySelectorAll('[data-setup-step]').forEach((checkbox) => checkbox.addEventListener('change', () => {
+    const count = document.querySelectorAll('[data-setup-step]:checked').length;
+    /** @type {HTMLElement} */ (document.querySelector('#setup-progress')).textContent = `${count} of ${guide.steps.length} steps checked`;
+  }));
+}
+
+function renderRoadmap() {
+  document.title = 'Roadmap | Nuntio';
+  app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What you can use in Nuntio today.</p><section aria-labelledby="available-heading"><h2 id="available-heading">Available now</h2><ul class="roadmap-list"><li>${icon('check')}<div><h3>Playbooks for your goals</h3><p>Research, content drafts and job hunting. Answer a few questions and copy your instructions.</p><a href="${homeHref()}">Choose a playbook ${icon('arrow')}</a></div></li><li>${icon('check')}<div><h3>Wallet setup with your agent</h3><p>Binance, Coinbase and OKX guides. Use one prompt or follow the numbered checklist.</p><a href="${homeHref('/guides')}">Browse setup guides ${icon('arrow')}</a></div></li></ul></section><section aria-labelledby="next-heading"><h2 id="next-heading">What comes next</h2><p class="muted">No further guides or release dates are announced here.</p><a class="back-link" href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></section></div>`;
 }
 
 /** @param {Playbook} playbook @param {number} index @param {boolean} matched */
@@ -258,7 +317,16 @@ function renderNotFound() {
 function render() {
   const route = parseRoute(location.hash);
   const playbook = catalog.playbooks.find(({ id }) => id === pageId);
-  if (playbook) {
+  const setupGuide = guideCatalog.guides.find(({ id }) => id === (guideId || route.view.replace(/^\/guides\//, '')));
+  const section = guideId || route.view === '/guides' || route.view.startsWith('/guides/') ? 'guides' : route.view === '/roadmap' ? 'roadmap' : 'playbooks';
+  document.querySelectorAll('[data-section]').forEach((link) => {
+    if (/** @type {HTMLElement} */ (link).dataset.section === section) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+  if (guideId) {
+    if (setupGuide && route.view === '/') renderSetupGuide(setupGuide);
+    else renderNotFound();
+  } else if (playbook) {
     const { answers, repaired } = readAnswers(playbook, catalog, route.params);
     if (route.view === '/output' && !route.malformed && !repaired && Object.keys(validateAnswers(playbook, answers)).length === 0) renderOutput(playbook, answers);
     else if (['/', '/configure', '/output'].includes(route.view)) renderConfigure(playbook, answers, repaired || route.malformed || route.view === '/output');
@@ -266,6 +334,9 @@ function render() {
   } else if (pageId) renderNotFound();
   else if (route.view === '/') renderHome();
   else if (route.view === '/guide') renderGuide();
+  else if (route.view === '/guides') renderGuides();
+  else if (route.view === '/roadmap') renderRoadmap();
+  else if (route.view.startsWith('/guides/') && setupGuide) renderSetupGuide(setupGuide);
   else renderNotFound();
   if (!firstRender) {
     window.scrollTo({ top: 0, behavior: 'instant' });

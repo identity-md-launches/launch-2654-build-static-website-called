@@ -39,3 +39,24 @@ export interface Catalog {
 }
 export type Answers = Record<string, string>;
 export interface Route { view: string; params: URLSearchParams; malformed: boolean }
+export interface SetupGuide {
+  id: string;
+  title: string;
+  description: string;
+  risk: string | null;
+  note: string;
+  verifiedAt: string;
+  sourceUrl: string;
+  beforeYouStart: string[];
+  steps: { actor: string; text: string; commands: string[] }[];
+  staySafe: string[];
+  prompt: { provider: string; install: string; node: string; human_steps: string; signin: string; verify: string };
+}
+export interface GuideCatalog {
+  version: number;
+  reportUrl: string;
+  banner: string;
+  safetyRules: string[];
+  promptTemplate: string;
+  guides: SetupGuide[];
+}

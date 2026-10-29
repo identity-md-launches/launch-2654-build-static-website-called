@@ -1,5 +1,4 @@
 {
-  "checkedOn": "2026-10-29",
   "passed": [
     "chromium: product and primary action visible on first screen at 390",
     "chromium: primary search-to-output flow completed with only the keyboard",
@@ -7,6 +6,11 @@
     "chromium: meme-coin-research-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
     "chromium: content-and-reply-drafts validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
     "chromium: job-hunt-radar validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+    "chromium: setup cards, dates, official sources, reports, and subpath navigation",
+    "chromium: Binance Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+    "chromium: Coinbase Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+    "chromium: OKX Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+    "chromium: guide hash routes, missing guide recovery, roadmap and section tabs",
     "chromium: invalid links recover and untrusted answers remain literal text",
     "chromium: clipboard denial reveals focused, selectable manual copy",
     "chromium: form and output work offline after page load",
@@ -14,7 +18,7 @@
     "chromium: static per-playbook social metadata and 1200×630 PNG at an IPFS-like subpath"
   ],
   "limitations": [
-    "WebKit could not start: host libraries required by the browser are missing (including GTK and GStreamer). No WebKit interaction checks ran.",
+    "WebKit could not start: browserType.launch reported “Host system is missing dependencies to run browsers.” Its flow was not performed.",
     "No physical iOS device, screen reader session, native browser zoom, live Grok Bot execution, or live X card crawler was tested. Chromium used the native clipboard. Text resizing is separate from native zoom."
   ],
   "browsers": [
@@ -201,6 +205,181 @@
       "scroll": 1440
     },
     {
+      "label": "chromium setup library 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium setup library 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium setup library 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium setup library 1024",
+      "width": 1024,
+      "scroll": 1024
+    },
+    {
+      "label": "chromium setup library 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium binance-agentic-wallet agent 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium binance-agentic-wallet agent 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium binance-agentic-wallet agent 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium binance-agentic-wallet agent 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium binance-agentic-wallet checklist 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium binance-agentic-wallet checklist 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium binance-agentic-wallet checklist 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium binance-agentic-wallet checklist 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium binance-agentic-wallet checklist 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium binance-agentic-wallet agent 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet agent 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet agent 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet agent 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet agent 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet checklist 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet checklist 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet checklist 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet checklist 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet checklist 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium coinbase-agentic-wallet agent 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium okx-agentic-wallet agent 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium okx-agentic-wallet agent 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium okx-agentic-wallet agent 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium okx-agentic-wallet agent 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium okx-agentic-wallet checklist 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium okx-agentic-wallet checklist 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium okx-agentic-wallet checklist 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium okx-agentic-wallet checklist 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium okx-agentic-wallet checklist 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium okx-agentic-wallet agent 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
       "label": "chromium home 200% text size",
       "width": 390,
       "scroll": 390
@@ -244,6 +423,41 @@
     },
     {
       "label": "job-hunt-radar output",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "setup library",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "binance-agentic-wallet agent",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "binance-agentic-wallet checklist",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "coinbase-agentic-wallet agent",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "coinbase-agentic-wallet checklist",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "okx-agentic-wallet agent",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "okx-agentic-wallet checklist",
       "violations": [],
       "incomplete": []
     },

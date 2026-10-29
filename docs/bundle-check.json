@@ -1,0 +1,53 @@
+{
+  "files": 57,
+  "totalBytes": 2055473,
+  "budgetBytes": 8388608,
+  "exportFiles": 11,
+  "exportBytes": 137188,
+  "exported": [
+    {
+      "path": "dist/assets/app.js",
+      "bytes": 45417
+    },
+    {
+      "path": "dist/assets/favicon.svg",
+      "bytes": 239
+    },
+    {
+      "path": "dist/assets/social.png",
+      "bytes": 39660
+    },
+    {
+      "path": "dist/assets/styles.css",
+      "bytes": 21780
+    },
+    {
+      "path": "dist/guides/binance-agentic-wallet/index.html",
+      "bytes": 5405
+    },
+    {
+      "path": "dist/guides/coinbase-agentic-wallet/index.html",
+      "bytes": 5436
+    },
+    {
+      "path": "dist/guides/okx-agentic-wallet/index.html",
+      "bytes": 5250
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 3127
+    },
+    {
+      "path": "dist/playbooks/content-and-reply-drafts/index.html",
+      "bytes": 3426
+    },
+    {
+      "path": "dist/playbooks/job-hunt-radar/index.html",
+      "bytes": 3508
+    },
+    {
+      "path": "dist/playbooks/meme-coin-research-digest/index.html",
+      "bytes": 3940
+    }
+  ]
+}

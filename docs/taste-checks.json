@@ -1,12 +1,10 @@
 {
-  "checkedOn": "2026-10-29",
-  "target": "dist/",
   "checks": [
     {
       "name": "render",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 9798,
+      "durationMs": 9571,
       "output": "renders, no script errors or missing local files"
     },
     {
@@ -21,7 +19,7 @@
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "all 12 controls at least 24px or spaced at 390\n0 under the 44px comfortable size"
+      "output": "all 15 controls at least 24px or spaced at 390\n0 under the 44px comfortable size"
     },
     {
       "name": "contrast",
@@ -34,7 +32,7 @@
       "name": "casing",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 1,
+      "durationMs": 0,
       "output": "no all-caps text in content"
     },
     {
@@ -55,15 +53,15 @@
       "name": "type-sizes",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 1,
-      "output": "390: 4 sizes in use, 5 with one-offs (14px×26, 16px×2, 20px×4, 24px×1, 36px×2)\n1440: 4 sizes in use, 5 with one-offs (14px×33, 16px×5, 20px×4, 24px×1, 64px×2)\nbar: 6 sizes used more than once, 8 counting one-offs, per width"
+      "durationMs": 0,
+      "output": "390: 4 sizes in use, 5 with one-offs (14px×29, 16px×2, 20px×4, 24px×1, 36px×2)\n1440: 4 sizes in use, 5 with one-offs (14px×36, 16px×5, 20px×4, 24px×1, 64px×2)\nbar: 6 sizes used more than once, 8 counting one-offs, per width"
     },
     {
       "name": "type-faces",
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "families (1): -apple-system\nweights (3): 400, 500, 600\nweight 500 outside mono (noted, not counted): 8, e.g. #goal-form > label \"What do you want Grok Bot to d\""
+      "output": "families (1): -apple-system\nweights (3): 400, 500, 600\nweight 500 outside mono (noted, not counted): 11, e.g. #site-header > nav.site-tabs.wrap > a:nth-of-type(1) \"Playbooks\""
     },
     {
       "name": "glyphs",
@@ -83,15 +81,15 @@
       "name": "repetition",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 2,
+      "durationMs": 3,
       "output": "no repeated lines"
     },
     {
       "name": "copy-budget",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 0,
-      "output": "prose on the first screen: 30 words at 390 (bar 60), 45 at 1440 (bar 90)\nall words on the first screen: 69 at 390, 135 at 1440\nwhole page: 175 words, 72 of them prose"
+      "durationMs": 1,
+      "output": "prose on the first screen: 30 words at 390 (bar 60), 45 at 1440 (bar 90)\nall words on the first screen: 73 at 390, 127 at 1440\nwhole page: 179 words, 72 of them prose"
     },
     {
       "name": "chrome",
@@ -111,7 +109,7 @@
       "name": "share",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 1,
+      "durationMs": 0,
       "output": "title \"Nuntio — Tell your bot what to do.\", favicon, og:title, og:image, description"
     }
   ]
