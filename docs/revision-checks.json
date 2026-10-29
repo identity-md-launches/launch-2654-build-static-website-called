@@ -1,0 +1,84 @@
+{
+  "passed": [
+    "chromium: Scan input, chain and submit fit first screen at 390",
+    "chromium: 7 malformed field cases each retry the entire scan; two bad endpoints expose no facts or prompts",
+    "chromium: valid empty fields and genuine reverts still complete without a fallback",
+    "chromium: Robinhood uses one distinct fallback permitted by generated CSP; both-down state is incomplete",
+    "chromium: address/chain edits invalidate pending success/failure and completed profiles, restore submit, and allow a new scan",
+    "chromium: Solana Program balance, keyboard profile action, exact analyst prompt, URL save, reload and reflow",
+    "chromium: privacy explains address disclosure to primary and fallback RPC providers",
+    "chromium: lowercase brand across routes, metadata, descriptive perps card, retained library and responsive home"
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "141.0.7390.37"
+    }
+  ],
+  "accessibility": [
+    {
+      "label": "scan form 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "malformed RPC error 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "Solana program with balance and profile action",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "reflow": [
+    {
+      "browser": "chromium",
+      "label": "saved program prompt 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "browser": "chromium",
+      "label": "saved program prompt 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "browser": "chromium",
+      "label": "saved program prompt 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "browser": "chromium",
+      "label": "saved program prompt 200% text",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "browser": "chromium",
+      "label": "home 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "browser": "chromium",
+      "label": "home 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "browser": "chromium",
+      "label": "home 1440",
+      "width": 1440,
+      "scroll": 1440
+    }
+  ],
+  "limitations": [
+    "WebKit could not launch: required host libraries are unavailable.",
+    "All RPC scenarios were intercepted fixtures. This checks browser behavior, not live provider availability or CORS. No physical device, screen-reader session or native browser zoom was tested."
+  ],
+  "errors": []
+}

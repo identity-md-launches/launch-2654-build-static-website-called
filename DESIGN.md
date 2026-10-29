@@ -1,12 +1,12 @@
-# Nuntio design system
+# nuntio design system
 
 ## Overview
 
-Nuntio helps beginners give Grok Bot a clear first job and follow wallet setup with their own agent. The implemented visual idea is a quiet, dark workspace with one lime action and readable instructions. The requested tagline, **“Tell your bot what to do.”**, is kept verbatim. Its seven words intentionally take precedence over the guide’s six-word marketing-headline preference.
+nuntio helps beginners give Grok Bot a clear first job, scan public addresses for research, and follow wallet setup with their own agent. The implemented visual idea is a quiet, dark workspace with one lime action and readable instructions. The visible wordmark is exactly `nuntio`, with the existing lime symbol and no trailing dot. The requested tagline, **“Tell your bot what to do.”**, is kept verbatim. Its seven words intentionally take precedence over the guide’s six-word marketing-headline preference.
 
 The home page presents the goal control and playbook library; detail pages prioritize the form or generated text. Setup guides prioritize the shared safety banner, mode choice, prerequisites and copy action. Native controls, normal sentence casing, generous targets, and flat surfaces keep the task approachable. No wallet connector, marketing illustration, animation sequence, or external font is used.
 
-Source of truth: [`src/styles.css`](src/styles.css), rendering patterns in [`src/app.js`](src/app.js), content in [`src/data/playbooks.json`](src/data/playbooks.json) and [`src/data/guides.json`](src/data/guides.json), and static metadata in [`scripts/build.mjs`](scripts/build.mjs). This update reuses the existing palette, scale, brand mark and playbook layouts.
+Source of truth: [`src/styles.css`](src/styles.css), rendering patterns in [`src/app.js`](src/app.js) and [`src/scan-view.js`](src/scan-view.js), content in [`src/data/playbooks.json`](src/data/playbooks.json), [`src/data/guides.json`](src/data/guides.json), [`src/data/chains.json`](src/data/chains.json) and [`src/data/scan.json`](src/data/scan.json), and static metadata in [`scripts/build.mjs`](scripts/build.mjs). This revision reuses the existing palette, scale, brand mark and layouts.
 
 ## Colors
 
@@ -30,11 +30,11 @@ Hex primitives and semantic aliases are declared in `:root` in `src/styles.css`.
 
 The accent is also a deliberate brand detail in the logo and tagline, not an indication that those words are interactive. A warning includes an icon and text; field errors include a repair instruction; copy success includes a checkmark and label. There is no separate success color ramp.
 
-Computed text/background pairs were measured on the final setup guide: title and prompt on page **16.69:1**, muted note on page **8.26:1**, amber banner text on its surface **10.44:1**, primary copy button **15.47:1**, selected mode text **14.11:1**, and risk text on page **11.32:1**. These are measurements of those solid pairs, not a claim of complete accessibility conformance. Exact computed colors are in [`docs/design-metrics.json`](docs/design-metrics.json). The pinned probe and 16 axe scans also passed their measured checks.
+Computed text/background pairs were measured on the final setup guide: title and prompt on page **16.69:1**, muted note on page **8.26:1**, amber banner text on its surface **10.44:1**, primary copy button **15.47:1**, selected mode text **14.11:1**, and risk text on page **11.32:1**. These are measurements of those solid pairs, not a claim of complete accessibility conformance. Exact computed colors are in [`docs/design-metrics.json`](docs/design-metrics.json). The pinned probe and automated accessibility checks also passed their measured checks; counts and coverage are in the validation record.
 
 ## Typography
 
-The prose system stack is `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`. Checklist commands alone use `ui-monospace, SFMono-Regular, Consolas, monospace` at the existing small size. No font files or remote requests are required. Font substitution is expected across operating systems; the physical font used on every platform has not been certified.
+The prose system stack is `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`. Checklist commands use `ui-monospace, SFMono-Regular, Consolas, monospace` at the existing small size; the scan address input uses that stack at 16px. No font files or remote font requests are required. Font substitution is expected across operating systems; the physical font used on every platform has not been certified.
 
 | Token | Default size | Role |
 | --- | --- | --- |
@@ -57,9 +57,12 @@ Headings balance their wrapping, descriptions use `text-wrap: pretty`, and criti
 | --- | --- |
 | Below `36rem` (576px) | Single-column cards and form fields; goal button below its input; stacked footer; compact title; docs link and desktop step summary hidden |
 | At `36rem` | 32px side margins; two-column setup guide grid; goal field and action share a row; frequency/channel fields share a row; footer becomes a row; header docs link appears |
-| At `55rem` (880px) | Three-column playbook and setup guide grids; home title grows to 64px; explanatory steps appear beside the title; builder/output and setup guides gain a secondary side column |
+| At `55rem` (880px) | Two-column playbook grid and three-column setup guide grid; home title grows to 64px; explanatory steps appear beside the title; builder/output and setup guides gain a secondary side column |
+| At `70rem` (1120px) | Four-column playbook grid |
 
 Builder and setup-guide columns use a 2.2:1 ratio with 64px gap; output uses 2.35:1 with 40px gap. On narrower screens, the summary, handoff and Stay safe section follow the main content in DOM order. The setup mode group stays above the panels, caps at 600px, and uses a 1.25:1 column ratio with a 12px gap to fit its longer first label. Setup cards use a 20px grid gap and 24px content inset. Cards have separate source/report links outside their main navigation link. There is no sticky or fixed action obscuring text. Header, section headings, actions, and page toplines can wrap. Grid children can shrink; long output, commands and labels wrap without loss.
+
+Scan caps its workspace at 860px with 28px top and 64px bottom padding. Its form uses a 16px gap and stacks on phones; at `36rem`, the 12rem chain field sits beside the address and the action remains on its own row. Results follow after 28px. Facts have a 38% label column and wrapping values, 12px row padding, and tabular numbers. The five check buttons have a 52px minimum height and 8px gaps. A selected check gains an accent border and a rotated arrow; its prompt panel follows the menu. Error and safety notices use text and icons as well as color.
 
 The production home and guide library were checked at 320, 390, 768, 1024, and 1440px. Forms, outputs and both guide modes were checked at 320, 390, 768, and 1440px, and at 200% root text size at 390px. Roadmap reflow was measured at 320, 390, 768 and 1440px. The opening 390 × 844 home screen includes the product, goal box, main action, and first playbook card. All three setup copy buttons also fit on the first 390 × 844 screen (bottom edges approximately 830, 833 and 788px). Text resizing was tested separately from native browser zoom, which was not performed.
 
@@ -78,7 +81,7 @@ These are application rendering patterns, not an exported component library:
 | Pattern | Source | Behavior and states |
 | --- | --- | --- |
 | Header/footer | `shell()` in `src/app.js` | Real links, left brand, right utilities, useful footer links; route-safe paths |
-| Section tabs | `shell()`, `.site-tabs` | Native navigation links to Playbooks, Setup guides and Roadmap; `aria-current="page"`, 2px active underline, 48px minimum height, wrapping at enlarged text sizes |
+| Section tabs | `shell()`, `.site-tabs` | Native navigation links to Playbooks, Scan, Setup guides and Roadmap; `aria-current="page"`, 2px active underline, 48px minimum height, wrapping at enlarged text sizes |
 | Goal search | `renderHome()` | Labeled native search field, keyword suggestions, live result count, submit-to-results focus, resettable empty state |
 | Playbook card | `card()` | One full-surface native link, title-derived accessible name, hover border/surface, keyboard outline |
 | Buttons | `.button` in CSS | Lime `.primary`, outlined `.secondary`, neutral `.text-button`, outlined `.copy-button`; minimum 48px, or 44px for copy |
@@ -92,12 +95,16 @@ These are application rendering patterns, not an exported component library:
 | Guide modes | `renderSetupGuide()`, `.guide-mode` | Native radio group, 52px minimum labels, arrow-key switching; agent prompt is the default, inactive panel is `hidden` |
 | Setup checklist | `.setup-steps` | Numbered items, full checkbox labels, explicit human/agent actor, selectable wrapping commands, checked cue and live count; temporary state survives mode switches |
 | Guide prompt | `createGuidePrompt()`, `#agent-panel` | One literal prompt using all six data fields; one primary copy action and the existing manual fallback; no command execution or account entry |
-| Roadmap | `renderRoadmap()`, `.roadmap-list` | Flat list of available functions and working section links; no invented future dates |
+| Roadmap | `renderRoadmap()`, `.roadmap-list` | Flat Live, Next and Exploring lists with working section links and no future dates |
+| Scan form | `renderScan()` in `src/scan-view.js` | Labeled native chain picker/address input; submit validation; disabled action while reading; editing either field clears the result and invalidates pending responses |
+| Token facts and checks | `tokenResult()`, `.facts-table`, `.check-menu` | Plain-text values, caption and row headers, set-authority labels; five buttons with expanded state, tool link when available, selectable prompt and copy action |
+| Wallet and program results | `walletResult()`, `walletProfile()` | Native balance, truthful Wallet/Program heading, analyst prompt with focus handoff, save and share via the URL hash; reload labels the captured balance as saved |
+| Scan failure | `resultView()` / scan error handler | No completed facts or research controls if both reads fail; persistent error and retry action. Empty return/revert fields remain explicitly unavailable rather than fabricated |
 | Guide/empty/not-found | `renderGuide()`, `renderNotFound()` | Plain explanation, official links, and a direct recovery action |
 
 Focus uses a 2px outline offset 4px. Native radios show the ring on their visible label. Forced-colors mode retains system `Highlight` focus and explicit button boundaries. A skip link reaches the main landmark. Hash transitions move focus to the page title; search submission focuses its result heading. Error text is connected with `aria-describedby`. Non-urgent updates use the permanent polite live region.
 
-Only background, border, and text colors transition, over 130ms, and only when `prefers-reduced-motion: no-preference` applies. Hover styles are gated by hover capability. Pressed buttons darken slightly. There are no indefinite animations, network loading spinners, or invented pending states because generation is synchronous and local.
+Only background, border, and text colors transition, over 130ms, and only when `prefers-reduced-motion: no-preference` applies. Hover styles are gated by hover capability. Pressed buttons darken slightly. There are no indefinite animations. Playbook generation is synchronous and local; Scan has a real pending state with a static clock icon and “Reading the chain” label, a whole-read fallback, and an error/retry state.
 
 ## Do’s and don’ts
 

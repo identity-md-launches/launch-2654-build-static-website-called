@@ -1,0 +1,80 @@
+{
+  "browsers": {
+    "chromium": {
+      "version": "141.0.7390.37",
+      "malformedOwner": {
+        "primary": 6,
+        "fallback": 0,
+        "facts": "Token facts for 0x1111111111111111111111111111111111111111 on Ethereum\nName\tRepro Token\nSymbol\tRPR\nDecimals\t18\nSupply\t1,000,000\nOwner\tNo owner() answer from the contract",
+        "checks": 5
+      },
+      "malformedName": {
+        "calls": 6,
+        "facts": "Token facts for 0x1111111111111111111111111111111111111111 on Ethereum\nName\tNot provided by the contract\nSymbol\tRPR\nDecimals\t18\nSupply\t1,000,000\nOwner\tRenounced (zero address)"
+      },
+      "robinhood": [
+        {
+          "url": "https://rpc.mainnet.chain.robinhood.com/",
+          "method": "eth_getCode"
+        },
+        {
+          "url": "https://rpc.mainnet.chain.robinhood.com/",
+          "method": "eth_getCode"
+        },
+        {
+          "url": "https://ethereum-rpc.publicnode.com/",
+          "method": "eth_getCode"
+        },
+        {
+          "url": "https://ethereum-rpc.publicnode.com/",
+          "method": "eth_getBalance"
+        },
+        {
+          "url": "https://api.mainnet-beta.solana.com/",
+          "method": "getAccountInfo"
+        }
+      ],
+      "stalePending": {
+        "input": "0x2222222222222222222222222222222222222222",
+        "output": "A clean result does not mean safe.\n\nRead from ethereum-rpc.publicnode.com on Ethereum. View on Etherscan\n(opens in new tab)\n\nWallet\nBalance\n1.234567 ETH\nBuild a trader profile",
+        "href": "https://etherscan.io/address/0x1111111111111111111111111111111111111111"
+      },
+      "staleCompleted": true,
+      "privacy": "Your answers, in your link\n\nAnswers are stored in the part of the URL after the #. Nuntio uses no account, cookies, analytics, database, or API. It does not send your answers anywhere.\n\nAnyone with a configured link can read the answers. The link may also remain in your browser history. Keep private details out. A social preview shows the playbook title, not your answers.",
+      "program": {
+        "text": "A clean result does not mean safe.\n\nRead from api.mainnet-beta.solana.com on Solana. View on Solana Explorer\n(opens in new tab)\n\nProgram\n\nThis is a Solana program, not a wallet or a token mint.",
+        "profileButtons": 0,
+        "balances": 0
+      },
+      "brand": {
+        "header": "Nuntio.",
+        "title": "Nuntio — Tell your bot what to do.",
+        "site": "Nuntio"
+      },
+      "slogans": [
+        "Find your next post. Keep your own voice.",
+        "Spot the opening. Start a better conversation.",
+        "Read the funding. Spot crowded leverage.",
+        "You set the goal. You stay in control."
+      ]
+    },
+    "webkit": {
+      "limitation": "Could not launch: required host libraries are unavailable."
+    }
+  },
+  "documentation": {
+    "chainSection": false,
+    "catalogMention": false,
+    "scanRoute": false,
+    "noApiClaim": true
+  },
+  "tasteBefore": [
+    {
+      "name": "slogans",
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 0,
+      "output": "4 two-beat lines; a stack is four or more, so keep the best and cut the rest:\n\"Find your next post. Keep your own voice.\" (#playbook-grid > a.playbook-card:nth-of-type(2) > p)\n\"Spot the opening. Start a better conversation.\" (#playbook-grid > a.playbook-card:nth-of-type(3) > p)\n\"Read the funding. Spot crowded leverage.\" (#playbook-grid > a.playbook-card:nth-of-type(4) > p)\n\"You set the goal. You stay in control.\" (#app > div.wrap.home > section.library:nth-of-type(3) > p.library-note)"
+    }
+  ]
+}

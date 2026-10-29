@@ -1,10 +1,10 @@
-# Nuntio
+# nuntio
 
 **Tell your bot what to do.**
 
-A small, static playbook generator for beginners using Grok Bot, with setup guides for Binance, Coinbase and OKX Agentic Wallets. Choose a goal and customize a playbook, or copy one guide prompt to work through setup with your own agent. Each wallet guide also has a numbered checklist. Nothing runs or connects to an assistant or wallet from this site.
+A small, static playbook generator for beginners using Grok Bot, with a read-only address scanner and setup guides for Binance, Coinbase and OKX Agentic Wallets. Choose a goal and customize a playbook, scan an address to build a research prompt, or copy a guide prompt to work through setup with your own agent. Each wallet guide also has a numbered checklist. Nothing runs or connects to an assistant or wallet from this site.
 
-The complete production site is in [`dist/`](dist/). Source is in [`src/`](src/); playbooks and assistant configuration live in [`src/data/playbooks.json`](src/data/playbooks.json), and setup guides live in [`src/data/guides.json`](src/data/guides.json). There are no external runtime dependencies, API calls, keys, cookies, analytics, wallet connectors, or database. The export is prepared for the existing Nuntio project with the requested publication label **nuntio**; publication is handled after submission.
+The complete production site is in [`dist/`](dist/). Source is in [`src/`](src/); playbooks and assistant configuration live in [`src/data/playbooks.json`](src/data/playbooks.json), setup guides in [`src/data/guides.json`](src/data/guides.json), chains in [`src/data/chains.json`](src/data/chains.json), and scan prompts in [`src/data/scan.json`](src/data/scan.json). Playbook generation stays in the browser. Scan makes read-only JSON-RPC API calls directly to the selected chain's public provider and, on failure, one distinct fallback. Those providers receive the address being scanned. There are no external runtime dependencies, keys, cookies, analytics, wallet connectors, database or backend. Publication is handled after submission under the name **nuntio**.
 
 ## Install, build, and preview
 
@@ -27,13 +27,15 @@ Preview opens a local static server at `http://localhost:4173`; visit that addre
 
 For ordinary local development outside the submission environment, `npm ci` in the repository also works; never include the resulting `node_modules/` or caches in a commit or upload.
 
-`npm run build` validates both JSON catalogs, bundles the vanilla JavaScript and CSS with esbuild, copies the favicon and social PNG, and generates the home page, three playbook pages and three setup guide pages. The build does not fetch data or require a browser. It replaces `dist/`; rebuild after source or JSON edits. Keep the complete `dist/` directory in the submitted repository alongside the source, manifest, and lockfile. The existing package manifest, lockfile and dependencies are unchanged by this update.
+`npm run build` validates the playbook, guide, chain and scan catalogs, bundles the vanilla JavaScript and CSS with esbuild, copies the favicon and social PNG, and generates the home page, four playbook pages and three setup guide pages. It also regenerates each page's Content Security Policy (CSP) from the chain catalog's RPC origins. The build does not fetch data or require a browser. It replaces `dist/`; rebuild after source or JSON edits. Keep the complete `dist/` directory in the submitted repository alongside the source, manifest, and lockfile. The existing package manifest, lockfile and dependencies are unchanged by this update.
 
 ## Static routes and sharing
 
 | Page | Exported path | Hash route |
 | --- | --- | --- |
 | Home | `dist/index.html` | `#/` |
+| Scan | `dist/index.html` | `#/scan` |
+| Saved trader profile playbook | `dist/index.html` | `#/scan/output?chain=…&address=…&balance=…` |
 | How it works and privacy | `dist/index.html` | `#/guide` |
 | Setup guide library | `dist/index.html` | `#/guides` |
 | Roadmap | `dist/index.html` | `#/roadmap` |
@@ -43,12 +45,23 @@ For ordinary local development outside the submission environment, `npm ci` in t
 | Meme coin research digest | `dist/playbooks/meme-coin-research-digest/index.html` | `#/configure` or `#/output` |
 | Content and reply drafts | `dist/playbooks/content-and-reply-drafts/index.html` | `#/configure` or `#/output` |
 | Job hunt radar | `dist/playbooks/job-hunt-radar/index.html` | `#/configure` or `#/output` |
+| Perps funding digest | `dist/playbooks/perps-funding-digest/index.html` | `#/configure` or `#/output` |
 
 Forms serialize their answers after the hash, for example `#/configure?experience=beginner&frequency=weekday&channel=Grok+Bot+chat&role=Designer&location=Remote`. Generation changes the hash to `/output`; edit, reload, and browser back retain the answers. **Copy share link** includes the actual gateway prefix, the playbook’s static filename, and the configured hash. It never invents a hostname or content ID.
 
-The fragment is not sent in an HTTP request, but it is readable by anyone with the link and can remain in browser history. Avoid private information. Nuntio stores nothing in local storage or cookies. Review checkboxes are intentionally temporary and are not included in shared links.
+The fragment is not sent in an HTTP request, but it is readable by anyone with the link and can remain in browser history. Avoid private information. nuntio stores nothing in local storage or cookies. Review checkboxes are intentionally temporary and are not included in shared links.
+
+Scan validates an address before reading it. A complete result comes from one endpoint; a failed read restarts the whole scan on the fallback. Malformed replies and invalid ABI payloads are failures, while a genuine contract revert or valid empty return marks a field unavailable. If both reads fail, the page says “Could not read the chain right now” and shows no completed facts. Changing the address or chain clears the result and invalidates any pending response. Public RPC availability, CORS access and token metadata can vary. Scan needs network access; generating or reloading a saved prompt does not perform a scan. A saved trader profile contains the analyst prompt and the balance captured when saved; it does not contain completed agent research.
 
 All asset paths are relative (`./assets/` or `../../assets/`). There are no route rewrites, root-relative assets, CDNs, or external fonts. Every static playbook and setup guide page contains its own title, description, Open Graph and X/Twitter tags, and a no-JavaScript text fallback. The locally bundled 1200 × 630 social image works without JavaScript. Preview tags describe the page; crawlers cannot see hash answers. An unknown hash shows a recovery link; an incomplete or malformed playbook output link returns to the form with a notice. Setup guides also support `#/guides/<id>` from the home document.
+
+## Add a chain
+
+1. Add an entry to `chains` in [`src/data/chains.json`](src/data/chains.json), retaining catalog `version: 1`. Give it a unique lowercase, hyphenated `id`, a display `label`, and `kind: "evm"` or `"solana"`. Set the documented numeric `chainId` for EVM, or `null` for Solana; set `nativeSymbol` and integer `nativeDecimals` for balance display.
+2. Set `rpc` to exactly two distinct public HTTPS URLs in primary, fallback order. Find each URL in the chain's official documentation or the provider's own documentation; do not infer hostnames. Record those official source pages in `rpcSources` and update `verifiedAt` when checked. The validator rejects duplicate URLs, including equivalent spellings with a trailing slash. The Robinhood fallback is `https://robinhood-rpc.publicnode.com`, published on [PublicNode's Robinhood page](https://robinhood.publicnode.com/); its primary is documented in [Robinhood's connection guide](https://docs.robinhood.com/chain/connecting).
+3. Fill `explorer` with `name`, `address` and `token` HTTPS URL templates, each containing `{address}`. Verify the URL format on the explorer's own site. Tool homepages are in `tools`; do not guess deep links. Token check titles, methods and prompt templates are separate data in [`src/data/scan.json`](src/data/scan.json).
+4. Existing EVM and Solana families use [`src/scan-rpc.js`](src/scan-rpc.js) and [`src/scan-model.js`](src/scan-model.js). A different address/account family also needs explicit validation, reading and result types; changing JSON alone cannot implement a new protocol. Keep provider values as plain text and preserve the complete-read/fallback behavior.
+5. Run `npm run typecheck`, `npm test`, `npm run build`, `npm run validate`, and `node scripts/validate-revision.mjs` with the tooling below. **Rebuild after editing RPC URLs**: the build derives `connect-src` from this catalog, so editing source JSON without regenerating `dist/` leaves the new origin blocked by the exported CSP. Review the static export at mobile and desktop widths and keep all of `dist/`.
 
 ## Add a setup guide
 
@@ -82,7 +95,7 @@ Provider text and commands follow the assignment. The current OKX page recommend
 8. Set `riskWarning` to `null` for unrelated topics, or to an appropriate plain warning ending in `Not financial advice.` for financial research. Warnings are displayed and appended, after a blank line, to **each** copied research block. The supplied template and guardrails bodies remain unchanged.
 9. Run the typecheck, build, tests, and interaction validation. The new card, form, output, and static metadata page are generated automatically.
 
-The original three prompt texts, schedules, and guardrails are preserved verbatim. Unit fixtures lock their content. When deliberately adding a fourth playbook, update the test’s catalog count and add appropriate tests without changing the original three content fixtures. UI descriptions and help text are separate from those fixed templates.
+The original three prompt texts, schedules, and guardrails are preserved verbatim, alongside the requested perps funding digest. Unit fixtures lock their content. When adding another playbook, update the test’s catalog count and add appropriate tests without changing existing content fixtures. UI descriptions and help text are separate from those fixed templates.
 
 The chosen frequency fills `{frequency}`. The supplied recommended schedule stays verbatim. If they differ, the output explicitly asks the user to reconcile the cadence in Grok Bot; the recommendation is not silently rewritten.
 
@@ -98,17 +111,17 @@ Official xAI documentation was checked on **2026-10-29**. The UI links to those 
 - Scheduled routines, testing, and time-zone confirmation: [Skills and routines](https://docs.x.ai/grok-bot/skills-routines-and-automations).
 - Public X research, connected apps, Slack permissions, and email limits: [Use the computer and apps](https://docs.x.ai/grok-bot/computer-and-apps).
 
-Grok Bot chat is the default delivery choice. Email and Slack are requests to configure inside Grok Bot, not connections made by Nuntio. In particular, emails from the Bot’s own address during a routine wait as drafts for a person to send. Availability, account access, app permissions, and usage limits can change. The generated instructions are not a technical enforcement boundary.
+Grok Bot chat is the default delivery choice. Email and Slack are requests to configure inside Grok Bot, not connections made by nuntio. In particular, emails from the Bot’s own address during a routine wait as drafts for a person to send. Availability, account access, app permissions, and usage limits can change. The generated instructions are not a technical enforcement boundary.
 
 ## Deliberately left out
 
-Static hosting provides no assistant execution, live X or web search, email/Slack delivery, schedule creation, background jobs, account authentication, shared database, cloud saves, private links, URL shortening, or dynamic social cards containing answers. Nuntio can generate a prompt after its page has loaded offline, but it does not install an offline cache or service worker for uncached page loads.
+Static hosting provides no assistant execution, live X or web search, email/Slack delivery, schedule creation, background jobs, account authentication, shared database, cloud saves, private links, URL shortening, or dynamic social cards containing answers. nuntio can generate a prompt after its page has loaded offline, but it does not install an offline cache or service worker for uncached page loads.
 
 Wallet connections, signing, trade execution, custody, automated posts/replies, job applications, and unsolicited outreach are excluded by product scope, independently of hosting. Nothing in the site suggests those actions have been performed. Copying works through the Clipboard API, then a native selection fallback; if both are denied, a focused textarea allows manual copying.
 
 Publication is handled by the contributor platform after submission, under the requested **nuntio** label. No publishing command was run and no new hostname is invented. Social unfurling on the eventual gateway was not tested; some crawlers may require an absolute image URL after a stable address is known.
 
-No requested guide feature was left out. The provided checkout contained the three playbooks and How it works, but no Binance guide, section tabs, roadmap or guides catalog. This update adds those surfaces while keeping all existing playbook data, forms, outputs and links. No earlier roadmap text was supplied, so the roadmap lists available functionality without inventing future providers or release dates.
+No requested revision feature was left out. The existing playbooks, all three setup guides with both modes, Scan and roadmap are retained. Roadmap groups list the requested live, next and exploring items without release dates or promises about a token launch.
 
 ## Validation
 
@@ -118,6 +131,7 @@ To run the browser checks with the external tooling above:
 export PLAYWRIGHT_BROWSERS_PATH=/tmp/nuntio-browsers
 playwright install chromium webkit
 npm run validate
+node scripts/validate-revision.mjs
 node scripts/review.mjs
 ```
 
@@ -127,11 +141,12 @@ Actual results from this run:
 
 | Check | Result |
 | --- | --- |
-| `npm run build` | Passed; home + 3 static playbook pages + 3 static setup guides and 4 local assets |
+| `npm run build` | Passed; home + 4 static playbook pages + 3 static setup guides and 4 local assets; CSP includes each chain's primary and fallback |
 | `npm run typecheck` | Passed; strict TypeScript checking of the JavaScript and data types |
-| `npm test` | 21 passed, 0 failed, including independent fixtures for the exact template and provider prompt values |
-| `npm run validate` | 16 Chromium flow groups passed; 71 reflow measurements; no captured console errors, failed assets or external requests |
-| Automated accessibility | 16 axe scans, 0 reported violations |
+| `npm test` | 55 passed, 0 failed, including malformed RPC/ABI replies, full fallback retries, catalog validation, program balances and unchanged prompt fixtures |
+| `npm run validate` | 18 Chromium flow groups passed; 86 reflow measurements; no captured errors, failed static assets or unexpected requests; RPC scenarios intercepted |
+| `node scripts/validate-revision.mjs` | 8 Chromium flow groups passed; 7 reflow measurements; malformed-field fallback/error matrix, pending/completed result invalidation, Robinhood fallback, program profile/save/reload, privacy and branding |
+| Automated accessibility | 23 axe scans across both browser scripts, 0 reported violations |
 | Responsive reflow | 320, 390, 768, 1024, 1440 widths; 200% text sizing on home, every form/output and both modes of every setup guide |
 | `node scripts/review.mjs` | Guide copy actions fit the 390 × 844 first screen; measured guide contrast and roadmap reflow pass |
 | Pinned `taste@1` | 16/16 passed, including the 390-wide first screen |
@@ -144,6 +159,6 @@ IMD_PLAYWRIGHT=/tmp/nuntio-tools/node_modules/playwright/index.mjs \
   node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
 ```
 
-The `.imd/reads/` inputs are removed before delivery; the recorded probe results remain in [`docs/taste-checks.json`](docs/taste-checks.json). Source-based tests and `npm run validate` remain reproducible without those inputs. After removing temporary tool output, `node scripts/check-export.mjs` checks the complete deliverable against the **8 MiB** budget and rejects dependency/cache directories and archives at every nesting level.
+The `.imd/reads/` inputs are removed before delivery; the recorded probe results remain in [`docs/taste-checks.json`](docs/taste-checks.json). Before the fixes the probe reported 15/16 checks, including four two-beat slogan lines; after replacing the perps description it reports 16/16 with three. Source-based tests and both browser-validation scripts remain reproducible without those inputs. After removing temporary tool output, `node scripts/check-export.mjs` checks the complete deliverable against the **8 MiB** budget and rejects dependency/cache directories and archives at every nesting level.
 
 See [`docs/validation.md`](docs/validation.md) for the six-domain review, fixes, evidence, and unperformed checks, and [`DESIGN.md`](DESIGN.md) for the implemented design system. These are worker-run checks, not independent certification. No screen-reader session, physical-device test, native browser zoom, live assistant execution, or live X crawler test was performed.

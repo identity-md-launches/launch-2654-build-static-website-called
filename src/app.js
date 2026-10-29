@@ -63,11 +63,11 @@ function guideHref(guide) { return `${root}guides/${guide.id}/index.html`; }
 function shell() {
   const header = /** @type {HTMLElement} */ (document.querySelector('#site-header'));
   header.innerHTML = `<div class="header-inner wrap">
-    <a class="brand" href="${homeHref()}" aria-label="Nuntio home"><svg width="31" height="31" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 26V6h4l14 20h4V6h-5v13L13 6H5" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg><span>Nuntio<span class="brand-dot">.</span></span></a>
+    <a class="brand" href="${homeHref()}" aria-label="nuntio home"><svg width="31" height="31" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 26V6h4l14 20h4V6h-5v13L13 6H5" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg><span>nuntio</span></a>
     <nav aria-label="Main navigation"><a class="nav-link" href="${homeHref('/guide')}">How it works</a><a class="nav-link docs-link" href="${esc(defaultAgent.docsUrl)}" target="_blank" rel="noopener noreferrer">${esc(defaultAgent.name)} docs ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></nav>
-  </div><nav class="site-tabs wrap" aria-label="Nuntio sections"><a href="${homeHref()}" data-section="playbooks">Playbooks</a><a href="${homeHref('/scan')}" data-section="scan">Scan</a><a href="${homeHref('/guides')}" data-section="guides">Setup guides</a><a href="${homeHref('/roadmap')}" data-section="roadmap">Roadmap</a></nav>`;
+  </div><nav class="site-tabs wrap" aria-label="nuntio sections"><a href="${homeHref()}" data-section="playbooks">Playbooks</a><a href="${homeHref('/scan')}" data-section="scan">Scan</a><a href="${homeHref('/guides')}" data-section="guides">Setup guides</a><a href="${homeHref('/roadmap')}" data-section="roadmap">Roadmap</a></nav>`;
   const footer = /** @type {HTMLElement} */ (document.querySelector('#site-footer'));
-  footer.innerHTML = `<div class="footer-inner wrap"><p>Research and instructions only. Nuntio never trades, connects a wallet or signs anything. Not financial advice.</p><div><span>Independent of xAI</span><a href="${homeHref('/guide')}">About & privacy</a></div></div>`;
+  footer.innerHTML = `<div class="footer-inner wrap"><p>Research and instructions only. nuntio never trades, connects a wallet or signs anything. Not financial advice.</p><div><span>Independent of xAI</span><a href="${homeHref('/guide')}">About & privacy</a></div></div>`;
 }
 
 function safetyBanner() {
@@ -80,16 +80,16 @@ function sourceLinks(guide) {
 }
 
 function renderGuides() {
-  document.title = 'Wallet setup guides | Nuntio';
+  document.title = 'Wallet setup guides | nuntio';
   app.innerHTML = `<div class="wrap setup-library"><div class="setup-library-heading"><h1 id="page-title" tabindex="-1">Connect your agent.</h1><p>Wallet setup guides to follow with your agent, one approved step at a time.</p></div>
     ${safetyBanner()}
     <div class="setup-grid">${guideCatalog.guides.map((guide) => `<article class="setup-card"><a class="guide-card-link" href="${guideHref(guide)}" aria-labelledby="setup-title-${esc(guide.id)}"><div class="setup-card-top">${icon('shield')}${guide.risk ? `<span class="risk-label">Risk: ${esc(guide.risk)}</span>` : '<span>App approval</span>'}</div><h2 id="setup-title-${esc(guide.id)}">${esc(guide.title)}</h2><p>${esc(guide.description)}</p><p class="guide-card-note">${esc(guide.note)}</p><span class="card-cta">Open guide ${icon('arrow')}</span></a><div class="guide-card-meta"><p>Last verified <time datetime="${esc(guide.verifiedAt)}">${esc(guideDate(guide.verifiedAt))}</time></p>${sourceLinks(guide)}</div></article>`).join('')}</div>
-    <p class="setup-footnote">Nuntio provides instructions only. Setup happens with your own agent and the provider. No wallet connects to this site.</p></div>`;
+    <p class="setup-footnote">nuntio provides instructions only. Setup happens with your own agent and the provider. No wallet connects to this site.</p></div>`;
 }
 
 /** @param {import('./types').SetupGuide} guide */
 function renderSetupGuide(guide) {
-  document.title = `${guide.title} setup | Nuntio`;
+  document.title = `${guide.title} setup | nuntio`;
   const prompt = createGuidePrompt(guideCatalog.promptTemplate, guide.prompt);
   app.innerHTML = `<div class="wrap setup-detail"><a class="back-link" href="${homeHref('/guides')}">${icon('back')} All setup guides</a>
     <div class="setup-page-heading"><h1 id="page-title" tabindex="-1">${esc(guide.title)}</h1><div class="guide-meta"><span>Last verified <time datetime="${esc(guide.verifiedAt)}">${esc(guideDate(guide.verifiedAt))}</time></span>${guide.risk ? `<span class="risk-label">Risk: ${esc(guide.risk)}</span>` : ''}</div><p class="setup-note">${esc(guide.note)}</p></div>
@@ -122,12 +122,12 @@ function roadmapItem(title, text, href = '', linkText = '', mark = 'check') {
 }
 
 function renderRoadmap() {
-  document.title = 'Roadmap | Nuntio';
+  document.title = 'Roadmap | nuntio';
   const perps = catalog.playbooks.find(({ id }) => id === 'perps-funding-digest');
-  app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What is live in Nuntio, what comes next, and what we are still exploring.</p>
+  app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What is live in nuntio, what comes next, and what we are still exploring.</p>
     <section aria-labelledby="live-heading"><h2 id="live-heading">Live</h2><ul class="roadmap-list">${roadmapItem('Scan tab', 'Read a token or wallet on Ethereum, Base, BNB Chain, Robinhood Chain or Solana, then copy a research prompt.', homeHref('/scan'), 'Scan an address')}${roadmapItem('Perps funding digest', 'A daily morning digest of funding, open interest and liquidations for your markets.', perps ? playbookHref(perps) : homeHref(), 'Build the digest')}${roadmapItem('Coinbase and OKX guides', 'Set up an agentic wallet with your agent, one approved step at a time. The Binance guide is here too.', homeHref('/guides'), 'Browse setup guides')}</ul></section>
     <section aria-labelledby="next-heading"><h2 id="next-heading">Next</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('More playbooks', 'New goals to hand to your bot.', '', '', 'clock')}${roadmapItem('Creator made playbooks', 'Playbooks written by creators, with tip links.', '', '', 'clock')}</ul></section>
-    <section aria-labelledby="exploring-heading"><h2 id="exploring-heading">Exploring</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('Nuntio token and paid playbooks', 'An idea under consideration. Nothing is launched or for sale.', '', '', 'radar')}</ul></section>
+    <section aria-labelledby="exploring-heading"><h2 id="exploring-heading">Exploring</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('nuntio token and paid playbooks', 'An idea under consideration. Nothing is launched or for sale.', '', '', 'radar')}</ul></section>
     <a class="back-link" href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></div>`;
 }
 
@@ -142,11 +142,11 @@ function card(playbook, index, matched) {
 }
 
 function renderHome() {
-  document.title = 'Nuntio — Tell your bot what to do.';
+  document.title = 'nuntio — Tell your bot what to do.';
   app.innerHTML = `<div class="wrap home">
     <section class="hero" aria-labelledby="page-title">
       <div><h1 id="page-title" tabindex="-1">Tell your bot<br> <span>what to do.</span></h1><p class="hero-description">A starting point for ${esc(defaultAgent.name)}.<br> Choose a goal. Get a playbook.</p></div>
-      <ol class="hero-steps" aria-label="How Nuntio works"><li><span>01</span><div>Pick a direction<small>Research, create, or find work</small></div></li><li><span>02</span><div>Make it yours<small>A few questions, in plain language</small></div></li><li><span>03</span><div>Give your bot a job<small>Copy your prompt and get started</small></div></li></ol>
+      <ol class="hero-steps" aria-label="How nuntio works"><li><span>01</span><div>Pick a direction<small>Research, create, or find work</small></div></li><li><span>02</span><div>Make it yours<small>A few questions, in plain language</small></div></li><li><span>03</span><div>Give your bot a job<small>Copy your prompt and get started</small></div></li></ol>
     </section>
     <section class="goal-section" aria-label="Find a playbook">
       <form id="goal-form" role="search"><label for="goal">What do you want Grok Bot to do for you?</label><div class="goal-controls"><div class="goal-input">${icon('search')}<input id="goal" name="goal" type="search" placeholder="e.g. Find remote design jobs" maxlength="240" autocomplete="off" value="${esc(searchQuery)}" aria-describedby="search-hint"></div><button class="button primary" type="submit">Find a playbook ${icon('arrow')}</button></div></form>
@@ -197,7 +197,7 @@ function selectField(key, label, choices, selected, hint = '') {
 function renderConfigure(playbook, answers, repaired) {
   const agent = agentFor(playbook, catalog);
   const channel = agent.channels.find(({ value }) => value === answers.channel) || agent.channels[0];
-  document.title = `${playbook.title} | Nuntio`;
+  document.title = `${playbook.title} | nuntio`;
   app.innerHTML = `<div class="wrap detail">${pageHeading(playbook, 1)}${repaired ? '<p class="state-notice" role="alert">Some saved answers could not be read. Review your answers before generating.</p>' : ''}<div class="builder-layout"><form id="playbook-form" novalidate>
     <fieldset><legend>The basics</legend><fieldset class="experience-field"><legend>Your experience level</legend><div class="segmented">${catalog.experiences.map(({ value, label }) => `<label><input type="radio" name="experience" value="${esc(value)}" ${answers.experience === value ? 'checked' : ''}><span>${esc(label)}</span></label>`).join('')}</div></fieldset><div class="field-row">${selectField('frequency', 'How often should it update you?', catalog.frequencies, answers.frequency)}${selectField('channel', 'Where should it send updates?', agent.channels, answers.channel)}</div><p class="field-hint channel-hint" id="channel-hint">${esc(channel.hint || '')} <a href="${esc(agent.appsUrl)}" target="_blank" rel="noopener noreferrer">Check delivery requirements<span class="sr-only"> (opens in new tab)</span></a></p></fieldset>
     <fieldset><legend>Make it yours</legend>${playbook.questions.map((question) => `<div class="field"><label for="${question.key}">${esc(question.label)}</label><input type="text" id="${question.key}" name="${question.key}" value="${esc(answers[question.key])}" placeholder="${esc(question.placeholder)}" required maxlength="${question.maxLength}" aria-describedby="${question.key}-hint ${question.key}-error" autocomplete="off"><p class="field-hint" id="${question.key}-hint">${esc(question.hint)}</p><p class="field-error" id="${question.key}-error" hidden></p></div>`).join('')}</fieldset>
@@ -291,14 +291,14 @@ function renderOutput(playbook, answers) {
   const channel = agent.channels.find(({ value }) => value === answers.channel) || agent.channels[0];
   const checklist = playbook.checklistSeparator ? playbook.guardrails.split(playbook.checklistSeparator) : [playbook.guardrails];
   const risk = playbook.riskWarning ? `<p class="risk-note output-risk">${icon('warning')}<span>${esc(playbook.riskWarning)}</span></p>` : '';
-  document.title = `${playbook.title} | Nuntio`;
+  document.title = `${playbook.title} | nuntio`;
   app.innerHTML = `<div class="wrap detail output-page">${pageHeading(playbook, 2)}<div class="output-actions"><a class="button secondary" href="${answerHash('/configure', answers)}">${icon('back')} Edit answers</a><button class="button secondary" id="share-link" type="button">${icon('link')} Copy share link</button><p class="small muted">The link includes your answers.</p></div>
     <div class="output-layout"><div class="output-blocks">
       <section class="output-block" aria-labelledby="prompt-heading"><div class="block-heading"><h2 id="prompt-heading"><span class="block-number">01</span> Setup prompt</h2><button class="button copy-button" type="button" data-copy="prompt" aria-label="Copy setup prompt">${icon('copy')} Copy</button></div><p class="block-instruction">Paste this into your ${esc(agent.name)} conversation.</p><div class="prompt-text" id="prompt-text">${esc(fillTemplate(playbook.prompt, answers))}</div>${risk}</section>
       <section class="output-block" aria-labelledby="schedule-heading"><div class="block-heading"><h2 id="schedule-heading"><span class="block-number">02</span> Recommended schedule</h2><button class="button copy-button" type="button" data-copy="schedule" aria-label="Copy recommended schedule">${icon('copy')} Copy</button></div><p class="schedule-text" id="schedule-text">${esc(playbook.schedule)}</p>${risk}<p class="block-instruction schedule-context">Your prompt requests updates every ${esc(answers.frequency)}. ${answers.frequency !== playbook.defaultFrequency ? 'This differs from the recommendation above. ' : ''}Confirm the final cadence, exact time, and time zone in ${esc(agent.name)}.</p></section>
       <section class="output-block" aria-labelledby="guardrails-heading"><div class="block-heading"><h2 id="guardrails-heading"><span class="block-number">03</span> Guardrails checklist</h2><button class="button copy-button" type="button" data-copy="guardrails" aria-label="Copy guardrails checklist">${icon('copy')} Copy</button></div><ul class="guardrails">${checklist.map((item, index) => `<li><label><input type="checkbox" name="review-${index}"><span>${esc(item)}</span></label></li>`).join('')}</ul>${risk}<p class="block-instruction">Check these as you review. Your checks stay on this screen.</p></section>
       <div id="copy-fallback" class="manual-copy" hidden><label for="manual-copy">Copy manually</label><p>Automatic copying is unavailable in this browser. Select and copy the text below.</p><textarea id="manual-copy" rows="6" readonly></textarea></div>
-    </div><aside class="handoff"><h2>Next stop: ${esc(agent.name)}</h2><ol>${agent.setupSteps.map((step) => `<li>${esc(step)}</li>`).join('')}</ol><a class="button primary" href="${esc(agent.setupUrl)}" target="_blank" rel="noopener noreferrer">Open setup guide ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a><div class="delivery-note"><h3>Delivery: ${esc(channel.label)}</h3><p>${esc(channel.hint || '')}</p></div><p class="small muted">Nothing has been connected or scheduled by Nuntio.</p></aside></div></div>`;
+    </div><aside class="handoff"><h2>Next stop: ${esc(agent.name)}</h2><ol>${agent.setupSteps.map((step) => `<li>${esc(step)}</li>`).join('')}</ol><a class="button primary" href="${esc(agent.setupUrl)}" target="_blank" rel="noopener noreferrer">Open setup guide ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a><div class="delivery-note"><h3>Delivery: ${esc(channel.label)}</h3><p>${esc(channel.hint || '')}</p></div><p class="small muted">Nothing has been connected or scheduled by nuntio.</p></aside></div></div>`;
   document.querySelectorAll('[data-copy]').forEach((element) => element.addEventListener('click', () => {
     const button = /** @type {HTMLButtonElement} */ (element);
     const key = /** @type {keyof typeof output} */ (button.dataset.copy);
@@ -312,16 +312,16 @@ function renderOutput(playbook, answers) {
 }
 
 function renderGuide() {
-  document.title = 'How Nuntio works | Nuntio';
-  app.innerHTML = `<div class="wrap guide"><a class="back-link" href="${homeHref()}">${icon('back')} All playbooks</a><h1 id="page-title" tabindex="-1">A little setup.<br>A clearer starting point.</h1><p class="guide-intro">Nuntio turns your goal into a prompt, a recommended schedule, and a checklist. You take them to your assistant.</p>
+  document.title = 'How nuntio works | nuntio';
+  app.innerHTML = `<div class="wrap guide"><a class="back-link" href="${homeHref()}">${icon('back')} All playbooks</a><h1 id="page-title" tabindex="-1">A little setup.<br>A clearer starting point.</h1><p class="guide-intro">nuntio turns your goal into a prompt, a recommended schedule, and a checklist. You take them to your assistant.</p>
     <section aria-labelledby="how-heading"><h2 id="how-heading">From an idea to a playbook</h2><ol class="guide-steps"><li><h3>Choose a goal</h3><p>Browse the playbooks or describe what you want. Simple keyword matching finds relevant starting points; it does not generate new playbooks.</p></li><li><h3>Make it yours</h3><p>Choose your experience level, update frequency, and delivery channel. Answer the extra questions for your goal.</p></li><li><h3>Copy, review, then set up</h3><p>Copy the three blocks. Review the prompt, then paste it into your assistant. Confirm its access and schedule there.</p></li></ol></section>
     <section aria-labelledby="verified-heading"><h2 id="verified-heading">Before you use ${esc(defaultAgent.name)}</h2><p class="muted small">Checked against official xAI documentation on ${esc(defaultAgent.verifiedAt)}. Availability can change.</p><div class="capabilities">${defaultAgent.capabilities.map((item) => `<article><h3>${esc(item.title)}</h3><p>${esc(item.text)}</p><a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.linkLabel)} ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></article>`).join('')}</div></section>
-    <section aria-labelledby="privacy-heading"><h2 id="privacy-heading">Your answers, in your link</h2><p>Answers are stored in the part of the URL after the #. Nuntio uses no account, cookies, analytics, database, or API. It does not send your answers anywhere.</p><p>Anyone with a configured link can read the answers. The link may also remain in your browser history. Keep private details out. A social preview shows the playbook title, not your answers.</p></section>
-    <section aria-labelledby="limits-heading"><h2 id="limits-heading">A playbook is a starting point</h2><p>Nuntio does not run an assistant, search X, send updates, post content, apply for jobs, or create schedules. These prompts ask your assistant to prepare research and drafts for you to review. Instructions are not an enforcement mechanism; check the assistant’s permissions and results.</p><p>There are no wallet connections, trades, or custody features. Meme coin research is speculative and you can lose all your money. Not financial advice.</p><p>Nuntio is an independent project and is not affiliated with xAI.</p></section><a class="button primary" href="${homeHref()}">Choose a playbook ${icon('arrow')}</a></div>`;
+    <section aria-labelledby="privacy-heading"><h2 id="privacy-heading">Your answers, in your link</h2><p>Playbook answers stay in your URL after the #. Scanning sends the address you enter to the selected chain’s public RPC provider and, if needed, its fallback. nuntio uses no account, cookies, analytics or database.</p><p>Anyone with a configured link can read the answers. The link may also remain in your browser history. Keep private details out. A social preview shows the playbook title, not your answers.</p></section>
+    <section aria-labelledby="limits-heading"><h2 id="limits-heading">A playbook is a starting point</h2><p>nuntio does not run an assistant, search X, send updates, post content, apply for jobs, or create schedules. These prompts ask your assistant to prepare research and drafts for you to review. Instructions are not an enforcement mechanism; check the assistant’s permissions and results.</p><p>There are no wallet connections, trades, or custody features. Meme coin research is speculative and you can lose all your money. Not financial advice.</p><p>nuntio is an independent project and is not affiliated with xAI.</p></section><a class="button primary" href="${homeHref()}">Choose a playbook ${icon('arrow')}</a></div>`;
 }
 
 function renderNotFound() {
-  document.title = 'Playbook not found | Nuntio';
+  document.title = 'Playbook not found | nuntio';
   app.innerHTML = `<div class="wrap not-found"><h1 id="page-title" tabindex="-1">That page isn’t here.</h1><p>Choose a playbook to get started again.</p><a class="button primary" href="${homeHref()}">See all playbooks ${icon('arrow')}</a></div>`;
 }
 

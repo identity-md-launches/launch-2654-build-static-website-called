@@ -42,8 +42,8 @@
       "chainId": 4663,
       "nativeSymbol": "ETH",
       "nativeDecimals": 18,
-      "rpc": ["https://rpc.mainnet.chain.robinhood.com", "https://rpc.mainnet.chain.robinhood.com"],
-      "rpcSources": ["https://docs.robinhood.com/chain/connecting"],
+      "rpc": ["https://rpc.mainnet.chain.robinhood.com", "https://robinhood-rpc.publicnode.com"],
+      "rpcSources": ["https://docs.robinhood.com/chain/connecting", "https://robinhood.publicnode.com/"],
       "explorer": { "name": "Blockscout", "address": "https://robinhoodchain.blockscout.com/address/{address}", "token": "https://robinhoodchain.blockscout.com/token/{address}" }
     },
     {

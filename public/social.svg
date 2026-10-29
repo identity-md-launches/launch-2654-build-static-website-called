@@ -2,7 +2,7 @@
   <rect width="1200" height="630" fill="#111310"/>
   <g fill="none" stroke="#d4f77d" stroke-width="4" stroke-linejoin="round" transform="translate(64 55)"><path d="M4 31V5h6l18 26h5V5h-6v17L14 5H4"/></g>
   <g font-family="Arial, sans-serif" fill="#f1f3ec">
-    <text x="116" y="83" font-size="34" font-weight="600">Nuntio<tspan fill="#d4f77d">.</tspan></text>
+    <text x="116" y="83" font-size="34" font-weight="600">nuntio</text>
     <text x="64" y="249" font-size="86" font-weight="600" letter-spacing="-4">Tell your bot</text>
     <text x="64" y="345" font-size="86" font-weight="600" letter-spacing="-4" fill="#d4f77d">what to do.</text>
     <text x="68" y="411" font-size="26" fill="#a7afa0">Playbooks for a clearer starting point.</text>

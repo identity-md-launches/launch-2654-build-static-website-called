@@ -135,8 +135,8 @@ export function createScanView({ app, icon, copy, announce, esc }) {
       h('div', { class: 'output-actions' }, save, share, status));
   }
 
-  /** @param {ChainConfig} chain @param {string} address @param {string} balance @param {string} [note] */
-  function walletResult(chain, address, balance, note) {
+  /** @param {ChainConfig} chain @param {string} address @param {string} balance @param {string} [note] @param {string} [title] */
+  function walletResult(chain, address, balance, note, title = 'Wallet') {
     const holder = h('div', {});
     const build = /** @type {HTMLButtonElement} */ (h('button', { class: 'button primary', type: 'button', id: 'build-profile' }, 'Build a trader profile ', trusted(icon('arrow'))));
     build.addEventListener('click', () => {
@@ -145,7 +145,7 @@ export function createScanView({ app, icon, copy, announce, esc }) {
       /** @type {HTMLElement} */ (holder.querySelector('#profile-heading')).focus();
     });
     return h('div', { class: 'scan-result' },
-      h('h2', { id: 'result-heading', tabindex: '-1' }, 'Wallet'),
+      h('h2', { id: 'result-heading', tabindex: '-1' }, title),
       h('dl', { class: 'wallet-facts' }, h('div', {}, h('dt', {}, 'Balance'), h('dd', {}, balance))),
       note ? h('p', { class: 'small muted' }, note) : null,
       build, holder);
@@ -156,16 +156,15 @@ export function createScanView({ app, icon, copy, announce, esc }) {
     const where = h('p', { class: 'small muted read-from' }, `Read from ${hostOf(result.endpoint || '')} on ${chain.label}. `, h('a', { href: linkFor(chain.explorer.address, address), target: '_blank', rel: 'noopener noreferrer' }, `View on ${chain.explorer.name}`, h('span', { class: 'sr-only' }, ' (opens in new tab)')));
     const notSafe = h('p', { class: 'not-safe' }, trusted(icon('shield')), h('span', {}, scanCatalog.notSafe));
     if (result.type === 'token') return [notSafe, where, tokenResult(chain, address, result.facts)];
-    if (result.type === 'wallet') return [notSafe, where, walletResult(chain, address, result.balance, result.note)];
+    if (result.type === 'wallet' || result.type === 'program') return [notSafe, where, walletResult(chain, address, result.balance, result.note, result.type === 'program' ? 'Program' : 'Wallet')];
     const text = result.type === 'contract' ? 'This is a contract, but it did not answer the standard token reads. It may not be a token.'
-      : result.type === 'program' ? 'This is a Solana program, not a wallet or a token mint.'
-        : 'This is a token holding account, not a token mint. Scan the token’s mint address instead.';
-    return [notSafe, where, h('div', { class: 'scan-result' }, h('h2', { id: 'result-heading', tabindex: '-1' }, result.type === 'contract' ? 'Contract' : result.type === 'program' ? 'Program' : 'Token account'), h('p', {}, text))];
+      : 'This is a token holding account, not a token mint. Scan the token’s mint address instead.';
+    return [notSafe, where, h('div', { class: 'scan-result' }, h('h2', { id: 'result-heading', tabindex: '-1' }, result.type === 'contract' ? 'Contract' : 'Token account'), h('p', {}, text))];
   }
 
   /** @param {URLSearchParams} params */
   function renderScan(params) {
-    document.title = 'Scan an address | Nuntio';
+    document.title = 'Scan an address | nuntio';
     const initialChain = chainCatalog.chains.find(({ id }) => id === params.get('chain')) || chainCatalog.chains[0];
     const initialAddress = (params.get('address') || '').slice(0, 64);
     app.innerHTML = `<div class="wrap scan"><div class="scan-heading"><h1 id="page-title" tabindex="-1">Scan any address.</h1><p>Read a token or wallet straight from the chain, then copy a research prompt for your agent.</p></div>
@@ -189,14 +188,22 @@ export function createScanView({ app, icon, copy, announce, esc }) {
       input.placeholder = current.kind === 'evm' ? '0x…' : 'e.g. So11111111111111111111111111111111111111112';
     }
     function clearError() { error.hidden = true; error.textContent = ''; input.removeAttribute('aria-invalid'); }
-    select.addEventListener('change', () => { updateHint(); clearError(); });
-    input.addEventListener('input', clearError);
+    function invalidateScan() {
+      scanToken++;
+      clearError();
+      output.replaceChildren();
+      submit.disabled = false;
+      submit.replaceChildren(trusted(icon('search')), ' Scan address');
+    }
+    select.addEventListener('change', () => { updateHint(); invalidateScan(); });
+    input.addEventListener('input', invalidateScan);
     updateHint();
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const current = chain();
       const checked = validateAddress(current.kind, input.value);
       if (!checked.ok) {
+        invalidateScan();
         error.textContent = checked.error; error.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus();
         output.replaceChildren();
         announce(checked.error);
@@ -232,7 +239,7 @@ export function createScanView({ app, icon, copy, announce, esc }) {
     const checked = validateAddress(chain.kind, params.get('address') || '');
     const balance = (params.get('balance') || '').replace(/[\u0000-\u001F\u007F]/g, '').slice(0, 60);
     if (!checked.ok || !/^(less than )?[\d,.]+ [A-Z]{2,5}$/.test(balance)) return false;
-    document.title = 'Trader profile playbook | Nuntio';
+    document.title = 'Trader profile playbook | nuntio';
     app.innerHTML = `<div class="wrap scan saved-playbook"><a class="back-link" href="${esc(scanHash('/scan', { chain: chain.id, address: checked.address }))}">${icon('back')} Scan again</a><div class="scan-heading"><h1 id="page-title" tabindex="-1">Trader profile playbook</h1><p>Saved in this link. Copy the prompt into your own agent.</p></div><div id="saved-facts"></div><div id="saved-profile"></div><div class="manual-copy" id="copy-fallback" hidden><p>Automatic copying is unavailable. Select the text below and copy it manually.</p><label for="manual-copy">Text to copy</label><textarea id="manual-copy" rows="8" readonly></textarea></div></div>`;
     /** @type {HTMLElement} */ (document.querySelector('#saved-facts')).replaceChildren(
       h('dl', { class: 'wallet-facts' }, h('div', {}, h('dt', {}, 'Chain'), h('dd', {}, chain.label)), h('div', {}, h('dt', {}, 'Address'), h('dd', { class: 'address-value' }, checked.address)), h('div', {}, h('dt', {}, 'Balance when saved'), h('dd', {}, balance))),

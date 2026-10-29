@@ -10,7 +10,8 @@ export function validateScanData(chains, scan) {
     ids.add(chain.id);
     assert.ok(['evm', 'solana'].includes(chain.kind), `Unknown chain kind: ${chain.id}`);
     assert.ok(chain.label && chain.nativeSymbol && Number.isInteger(chain.nativeDecimals));
-    assert.ok(chain.rpc.length >= 1 && chain.rpc.length <= 2, `${chain.id}: give a main RPC and at most one fallback`);
+    assert.equal(chain.rpc.length, 2, `${chain.id}: give a main RPC and one fallback`);
+    assert.equal(new Set(chain.rpc.map((url) => new URL(url).href)).size, 2, `${chain.id}: main and fallback RPCs must be distinct`);
     for (const url of [...chain.rpc, ...chain.rpcSources]) assert.equal(new URL(url).protocol, 'https:', `${chain.id}: RPCs and sources must use HTTPS`);
     assert.ok(chain.rpcSources.length, `${chain.id}: record where the RPC is documented`);
     for (const key of ['address', 'token']) {

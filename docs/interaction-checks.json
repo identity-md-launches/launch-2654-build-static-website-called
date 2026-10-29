@@ -6,11 +6,13 @@
     "chromium: meme-coin-research-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
     "chromium: content-and-reply-drafts validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
     "chromium: job-hunt-radar validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+    "chromium: perps-funding-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
     "chromium: setup cards, dates, official sources, reports, and subpath navigation",
     "chromium: Binance Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
     "chromium: Coinbase Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
     "chromium: OKX Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
-    "chromium: guide hash routes, missing guide recovery, roadmap and section tabs",
+    "chromium: guide hash routes, missing guide recovery, roadmap (live, next, exploring), disclaimer footer and section tabs",
+    "chromium: scan validation, Base token facts as text, five check panels with links and exact prompts, wallet trader profile, save as playbook in hash and reload, Solana mint authorities, fallback then \"Could not read the chain right now\"",
     "chromium: invalid links recover and untrusted answers remain literal text",
     "chromium: clipboard denial reveals focused, selectable manual copy",
     "chromium: form and output work offline after page load",
@@ -18,7 +20,7 @@
     "chromium: static per-playbook social metadata and 1200×630 PNG at an IPFS-like subpath"
   ],
   "limitations": [
-    "WebKit could not start: browserType.launch reported “Host system is missing dependencies to run browsers.” Its flow was not performed.",
+    "WebKit could not launch: required host libraries are unavailable.",
     "No physical iOS device, screen reader session, native browser zoom, live Grok Bot execution, or live X card crawler was tested. Chromium used the native clipboard. Text resizing is separate from native zoom."
   ],
   "browsers": [
@@ -205,6 +207,56 @@
       "scroll": 1440
     },
     {
+      "label": "chromium perps-funding-digest configure 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium perps-funding-digest configure 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium perps-funding-digest configure 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium perps-funding-digest configure 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium perps-funding-digest configure 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium perps-funding-digest output 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium perps-funding-digest output 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium perps-funding-digest output 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium perps-funding-digest output 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium perps-funding-digest output 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
       "label": "chromium setup library 320",
       "width": 320,
       "scroll": 320
@@ -380,6 +432,31 @@
       "scroll": 390
     },
     {
+      "label": "chromium scan token 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium saved trader playbook 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium scan error 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium scan error 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium scan error 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
       "label": "chromium home 200% text size",
       "width": 390,
       "scroll": 390
@@ -427,6 +504,16 @@
       "incomplete": []
     },
     {
+      "label": "perps-funding-digest configure",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "perps-funding-digest output",
+      "violations": [],
+      "incomplete": []
+    },
+    {
       "label": "setup library",
       "violations": [],
       "incomplete": []
@@ -458,6 +545,16 @@
     },
     {
       "label": "okx-agentic-wallet checklist",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "scan token result 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "saved trader playbook 390",
       "violations": [],
       "incomplete": []
     },

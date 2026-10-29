@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { webcrypto } from 'node:crypto';
 import { base58Decode, base58Encode, decodeString, findProgramAddress, formatUnits, isOnCurve, METADATA_PROGRAM, parseMetadata, validateAddress } from '../src/scan-model.js';
-import { scanAddress } from '../src/scan-rpc.js';
+import { ReadError, scanAddress } from '../src/scan-rpc.js';
 import { validateScanData } from '../scripts/scan-data.mjs';
 import { createOutputs, defaultsFor, fillTemplate } from '../src/model.js';
 
@@ -16,6 +16,14 @@ const word = (value) => pad(BigInt(value).toString(16));
 const abiString = (text) => { const hex = Buffer.from(text).toString('hex'); return `0x${word(32)}${word(hex.length / 2)}${hex.padEnd(Math.ceil(hex.length / 64) * 64 || 64, '0')}`; };
 
 test('chain and scan catalogs are complete', () => validateScanData(chains, scan));
+
+test('catalog rejects missing and duplicate fallback endpoints, including URL-normalized duplicates', () => {
+  for (const rpc of [['https://rpc.example.com'], ['https://rpc.example.com', 'https://rpc.example.com'], ['https://rpc.example.com', 'https://rpc.example.com/']]) {
+    const invalid = structuredClone(chains);
+    invalid.chains[0].rpc = rpc;
+    assert.throws(() => validateScanData(invalid, scan), /fallback/);
+  }
+});
 
 test('the requested prompt templates stay verbatim', () => {
   assert.ok(scan.tokenPromptTemplate.startsWith('You are my token research assistant. Check {item} for {address} on {chain}. Known facts: {facts}. Method: {method}.'));
@@ -97,6 +105,69 @@ test('EVM token: facts, renounced and set owner, reverted owner', async () => {
   assert.equal(reverted.facts[4].value, 'No owner() answer from the contract');
 });
 
+const malformedFields = [
+  ['owner object', '0x8da5cb5b', { invalid: true }],
+  ['name null', '0x06fdde03', null],
+  ['symbol boolean', '0x95d89b41', false],
+  ['supply number', '0x18160ddd', 123],
+  ['decimals array', '0x313ce567', []],
+  ['non-hex name', '0x06fdde03', 'not ABI'],
+  ['odd hex name', '0x06fdde03', '0x123'],
+  ['truncated name', '0x06fdde03', '0x1234'],
+  ['invalid string offset', '0x06fdde03', `0x${word(0)}${word(0)}`],
+  ['string length beyond payload', '0x95d89b41', `0x${word(32)}${word(64)}`],
+  ['invalid UTF-8 name', '0x06fdde03', `0x${'ff'.repeat(32)}`],
+  ['invalid string padding', '0x06fdde03', `0x${word(32)}${word(1)}${'41'.repeat(32)}`],
+  ['truncated decimals', '0x313ce567', '0x12'],
+  ['decimals outside uint8', '0x313ce567', `0x${word(256)}`],
+  ['supply trailing bytes', '0x18160ddd', `0x${word(1000)}ab`],
+  ['owner high bits set', '0x8da5cb5b', `0x${'1'.repeat(64)}`],
+  ['truncated owner', '0x8da5cb5b', '0x1234'],
+];
+for (const [label, selector, result] of malformedFields) {
+  test(`malformed ${label}: retry every read on fallback; reject if fallback is also malformed`, async () => {
+    const eth = chain('ethereum');
+    const good = tokenHandler('0x0');
+    const bad = (method, params) => method === 'eth_call' && params[0].data === selector ? { result } : good(method, params);
+    const retry = fakeFetch({ [eth.rpc[0]]: bad, [eth.rpc[1]]: good });
+    const answer = await scanAddress(eth, '0x1111111111111111111111111111111111111111', retry.fetcher);
+    assert.equal(answer.endpoint, eth.rpc[1]);
+    assert.equal(answer.type, 'token');
+    assert.equal(retry.calls.filter(({ url }) => url === eth.rpc[1]).length, 6);
+    const failure = fakeFetch({ [eth.rpc[0]]: bad, [eth.rpc[1]]: bad });
+    await assert.rejects(scanAddress(eth, '0x1111111111111111111111111111111111111111', failure.fetcher), ReadError);
+    assert.equal(new Set(failure.calls.map(({ url }) => url)).size, 2);
+  });
+}
+
+test('only genuine reverts and valid empty returns leave optional token fields unavailable', async () => {
+  const eth = chain('ethereum');
+  for (const absent of [{ result: '0x' }, { error: { code: 3, message: 'execution reverted' } }]) {
+    const rpc = fakeFetch({ [eth.rpc[0]]: (method, params) => method === 'eth_call' && ['0x06fdde03', '0x95d89b41', '0x8da5cb5b'].includes(params[0].data) ? absent : tokenHandler('0x0')(method, params) });
+    const answer = await scanAddress(eth, '0x1111111111111111111111111111111111111111', rpc.fetcher);
+    assert.equal(answer.type, 'token');
+    assert.deepEqual(answer.facts.map(({ value }) => value), ['Not provided by the contract', 'Not provided by the contract', '18', '1,000,000', 'No owner() answer from the contract']);
+    assert.equal(new Set(rpc.calls.map(({ url }) => url)).size, 1);
+  }
+});
+
+test('a valid ABI empty string stays valid', async () => {
+  const eth = chain('ethereum');
+  const rpc = fakeFetch({ [eth.rpc[0]]: (method, params) => method === 'eth_call' && params[0].data === '0x06fdde03' ? { result: `0x${word(32)}${word(0)}` } : tokenHandler('0x0')(method, params) });
+  const answer = await scanAddress(eth, '0x1111111111111111111111111111111111111111', rpc.fetcher);
+  assert.equal(answer.facts[0].value, 'Not provided by the contract');
+  assert.equal(answer.endpoint, eth.rpc[0]);
+});
+
+test('malformed JSON-RPC envelopes are read failures, not absent fields', async () => {
+  const eth = chain('ethereum');
+  for (const body of [null, [], {}, { jsonrpc: '2.0', id: 1, result: '0x', error: { code: 3, message: 'execution reverted' } }, { jsonrpc: '2.0', id: 2, result: '0x' }, { jsonrpc: '2.0', id: 1, error: { code: 3 } }]) {
+    const rpc = fakeFetch(Object.fromEntries(eth.rpc.map((url) => [url, () => new Response(JSON.stringify(body))])));
+    await assert.rejects(scanAddress(eth, '0x1111111111111111111111111111111111111111', rpc.fetcher), ReadError);
+    assert.equal(rpc.calls.length, 2);
+  }
+});
+
 test('EVM wallet: empty code means wallet with balance', async () => {
   const bnb = chain('bnb');
   const result = await scanAddress(bnb, '0x00000000000000000000000000000000000000aa', fakeFetch({ [bnb.rpc[0]]: (method) => method === 'eth_getCode' ? { result: '0x' } : { result: '0xde0b6b3a7640000' } }).fetcher);
@@ -114,6 +185,18 @@ test('failure on the main RPC retries the whole scan once on the fallback', asyn
   assert.equal(result.endpoint, eth.rpc[1]);
   assert.equal(mainCalls, 2);
   assert.equal(calls.filter(({ url }) => url === eth.rpc[1]).length, 2);
+});
+
+test('Robinhood retries a distinct documented fallback after primary HTTP failure', async () => {
+  const rh = chain('robinhood');
+  const rpc = fakeFetch({
+    [rh.rpc[0]]: () => new Response('down', { status: 503 }),
+    [rh.rpc[1]]: (method) => ({ result: method === 'eth_getCode' ? '0x' : '0x0' }),
+  });
+  const answer = await scanAddress(rh, '0x1111111111111111111111111111111111111111', rpc.fetcher);
+  assert.equal(answer.type, 'wallet');
+  assert.equal(answer.endpoint, rh.rpc[1]);
+  assert.deepEqual(rpc.calls.map(({ url }) => url), [rh.rpc[0], rh.rpc[1], rh.rpc[1]]);
 });
 
 test('both endpoints failing throws, so no partial result is shown', async () => {
@@ -139,6 +222,14 @@ test('Solana: token mint with authorities, wallet, token account and missing acc
   assert.equal(holding.type, 'token-account');
   const empty = await scanAddress(sol, 'vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg', fakeFetch({ [sol.rpc[0]]: () => ({ result: { value: null } }) }).fetcher);
   assert.equal(empty.type, 'wallet');
+});
+
+test('Solana executable non-token accounts keep their Program label and native balance', async () => {
+  const sol = chain('solana');
+  const answer = await scanAddress(sol, '11111111111111111111111111111111', fakeFetch({ [sol.rpc[0]]: () => ({ result: { value: { owner: 'NativeLoader1111111111111111111111111111111', executable: true, lamports: 1000000000, data: ['', 'base64'] } } }) }).fetcher);
+  assert.equal(answer.type, 'program');
+  assert.equal(answer.balance, '1 SOL');
+  assert.match(answer.note, /executable Solana program/);
 });
 
 test('perps funding digest keeps the supplied prompt and fills every placeholder', () => {

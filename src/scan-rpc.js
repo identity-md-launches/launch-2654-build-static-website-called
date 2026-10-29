@@ -15,12 +15,13 @@ async function call(url, method, params, fetcher) {
     const response = await fetcher(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }), signal: controller.signal, credentials: 'omit', referrerPolicy: 'no-referrer' });
     if (!response.ok) throw new ReadError(`HTTP ${response.status}`);
     const body = await response.json();
-    if (body && body.error) {
-      const message = String(body.error.message || '');
+    if (!body || typeof body !== 'object' || Array.isArray(body) || body.jsonrpc !== '2.0' || body.id !== 1 || Object.hasOwn(body, 'result') === Object.hasOwn(body, 'error')) throw new ReadError('Malformed RPC answer');
+    if (Object.hasOwn(body, 'error')) {
+      if (!body.error || typeof body.error.code !== 'number' || typeof body.error.message !== 'string') throw new ReadError('Malformed RPC error');
+      const message = body.error.message;
       if (method === 'eth_call' && (body.error.code === 3 || /revert/i.test(message))) return REVERTED;
       throw new ReadError(message || 'RPC error');
     }
-    if (!body || !('result' in body)) throw new ReadError('Malformed RPC answer');
     return body.result;
   } catch (error) {
     if (error instanceof ReadError) throw error;
@@ -31,27 +32,41 @@ async function call(url, method, params, fetcher) {
 /** @param {string} url @param {string} to @param {string} data @param {typeof fetch} fetcher */
 async function ethCall(url, to, data, fetcher) {
   const result = await call(url, 'eth_call', [{ to, data }, 'latest'], fetcher);
-  return result === REVERTED || typeof result !== 'string' || result === '0x' ? null : result;
+  if (result === REVERTED || result === '0x') return null;
+  if (typeof result !== 'string' || !/^0x(?:[0-9a-fA-F]{2})+$/.test(result)) throw new ReadError('Malformed eth_call answer');
+  return result;
+}
+
+/** Only an empty return or revert means unavailable; a failed decoder means the read failed.
+ * @template T @param {string | null} payload @param {(hex: string) => T | null} decode @returns {T | null} */
+function decodeField(payload, decode) {
+  if (payload === null) return null;
+  const value = decode(payload);
+  if (value === null) throw new ReadError('Invalid ABI answer');
+  return value;
 }
 
 /** @param {ChainConfig} chain @param {string} url @param {string} address @param {typeof fetch} fetcher @returns {Promise<ScanResult>} */
 async function scanEvm(chain, url, address, fetcher) {
   const code = await call(url, 'eth_getCode', [address, 'latest'], fetcher);
-  if (typeof code !== 'string') throw new ReadError('Bad getCode answer');
+  if (typeof code !== 'string' || (code !== '0x0' && !/^0x(?:[0-9a-fA-F]{2})*$/.test(code))) throw new ReadError('Bad getCode answer');
   if (code === '0x' || code === '0x0') {
     const balance = await call(url, 'eth_getBalance', [address, 'latest'], fetcher);
     if (typeof balance !== 'string' || !/^0x[0-9a-f]+$/i.test(balance)) throw new ReadError('Bad balance answer');
     return { type: 'wallet', balance: `${formatUnits(BigInt(balance), chain.nativeDecimals)} ${chain.nativeSymbol}` };
   }
   const [name, symbol, decimals, supply, owner] = await Promise.all(['name', 'symbol', 'decimals', 'totalSupply', 'owner'].map((key) => ethCall(url, address, SELECTORS[/** @type {keyof typeof SELECTORS} */ (key)], fetcher)));
-  const decimalValue = decimals ? decodeUint(decimals) : null;
-  const supplyValue = supply ? decodeUint(supply) : null;
-  if (supplyValue === null || decimalValue === null || decimalValue > 255n) return { type: 'contract' };
-  const ownerAddress = owner ? decodeAddress(owner) : null;
+  const nameValue = decodeField(name, decodeString);
+  const symbolValue = decodeField(symbol, decodeString);
+  const decimalValue = decodeField(decimals, decodeUint);
+  const supplyValue = decodeField(supply, decodeUint);
+  const ownerAddress = decodeField(owner, decodeAddress);
+  if (decimalValue !== null && decimalValue > 255n) throw new ReadError('Invalid decimals answer');
+  if (supplyValue === null || decimalValue === null) return { type: 'contract' };
   /** @type {import('./types').ScanFact[]} */
   const facts = [
-    { label: 'Name', value: (name && decodeString(name)) || 'Not provided by the contract' },
-    { label: 'Symbol', value: (symbol && decodeString(symbol)) || 'Not provided by the contract' },
+    { label: 'Name', value: nameValue || 'Not provided by the contract' },
+    { label: 'Symbol', value: symbolValue || 'Not provided by the contract' },
     { label: 'Decimals', value: decimalValue.toString() },
     { label: 'Supply', value: formatUnits(supplyValue, Number(decimalValue), 4) },
   ];
@@ -111,7 +126,7 @@ async function scanSolana(chain, url, address, fetcher) {
     ];
     return { type: 'token', facts, flags };
   }
-  if (account.executable) return { type: 'program' };
+  if (account.executable) return { type: 'program', balance: `${formatUnits(lamports, chain.nativeDecimals)} ${chain.nativeSymbol}`, note: 'This is an executable Solana program. The balance belongs to the program address.' };
   return { type: 'wallet', balance: `${formatUnits(lamports, chain.nativeDecimals)} ${chain.nativeSymbol}` };
 }
 

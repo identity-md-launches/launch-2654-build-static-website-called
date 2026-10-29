@@ -26,12 +26,12 @@ await build({ entryPoints: [resolve(project, 'src/app.js')], outfile: resolve(di
 await build({ entryPoints: [resolve(project, 'src/styles.css')], outfile: resolve(dist, 'assets/styles.css'), minify: true, target: ['safari16.4', 'chrome110'], legalComments: 'none' });
 
 const escape = (text) => text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-const homeTitle = 'Nuntio — Tell your bot what to do.';
+const homeTitle = 'nuntio — Tell your bot what to do.';
 const homeDescription = 'Playbooks for Grok Bot, a read-only address scanner for Ethereum, Base, BNB Chain, Robinhood Chain and Solana, and wallet setup guides. Choose a goal, copy a prompt, and work with your agent step by step.';
 function page(playbook, guide) {
   const base = playbook || guide ? '../../' : './';
-  const title = guide ? `${guide.title} setup | Nuntio` : playbook ? `${playbook.title} | Nuntio` : homeTitle;
-  const description = guide ? guide.description : playbook ? `${playbook.description} Build a ${playbook.title.toLowerCase()} playbook for ${catalog.agents.find((agent) => agent.id === playbook.agentId).name} with Nuntio.` : homeDescription;
+  const title = guide ? `${guide.title} setup | nuntio` : playbook ? `${playbook.title} | nuntio` : homeTitle;
+  const description = guide ? guide.description : playbook ? `${playbook.description} Build a ${playbook.title.toLowerCase()} playbook for ${catalog.agents.find((agent) => agent.id === playbook.agentId).name} with nuntio.` : homeDescription;
   const fallback = guide ? `<h2>Before you start</h2><ul>${guide.beforeYouStart.map((item) => `<li>${escape(item)}</li>`).join('')}</ul><h2>Agent prompt</h2><p>${escape(createGuidePrompt(guideCatalog.promptTemplate, guide.prompt))}</p><h2>Stay safe</h2><ul>${[...guide.staySafe, ...guideCatalog.safetyRules].map((rule) => `<li>${escape(rule)}</li>`).join('')}</ul><a href="${escape(guide.sourceUrl)}">Official source</a> <a href="${escape(guideCatalog.reportUrl)}">Report a broken step</a>` : playbook ? `<h2>Prompt template</h2><p>${escape(playbook.prompt)}</p><h2>Recommended schedule</h2><p>${escape(playbook.schedule)}</p><h2>Guardrails</h2><p>${escape(playbook.guardrails)}</p>${playbook.riskWarning ? `<p>${escape(playbook.riskWarning)}</p>` : ''}` : `<ul>${catalog.playbooks.map((item) => `<li><a href="./playbooks/${item.id}/index.html">${escape(item.title)}</a></li>`).join('')}${guideCatalog.guides.map((item) => `<li><a href="./guides/${item.id}/index.html">${escape(item.title)}</a></li>`).join('')}</ul>`;
   return `<!doctype html>
 <html lang="en">
@@ -45,25 +45,25 @@ function page(playbook, guide) {
   <meta name="description" content="${escape(description)}">
   <link rel="icon" type="image/svg+xml" href="${base}assets/favicon.svg">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Nuntio">
+  <meta property="og:site_name" content="nuntio">
   <meta property="og:title" content="${escape(title)}">
   <meta property="og:description" content="${escape(description)}">
   <meta property="og:image" content="${base}assets/social.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Nuntio. Tell your bot what to do. Playbooks for a clearer starting point.">
+  <meta property="og:image:alt" content="nuntio. Tell your bot what to do. Playbooks for a clearer starting point.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escape(title)}">
   <meta name="twitter:description" content="${escape(description)}">
   <meta name="twitter:image" content="${base}assets/social.png">
-  <meta name="twitter:image:alt" content="Nuntio. Tell your bot what to do.">
+  <meta name="twitter:image:alt" content="nuntio. Tell your bot what to do.">
   <link rel="stylesheet" href="${base}assets/styles.css">
   <script type="module" src="${base}assets/app.js"></script>
 </head>
 <body data-root="${base}" data-playbook="${playbook ? escape(playbook.id) : ''}" data-guide="${guide ? escape(guide.id) : ''}">
   <a class="skip-link" id="skip-link" href="#app">Skip to content</a>
   <header class="site-header" id="site-header"></header>
-  <main id="app" tabindex="-1"><noscript><div class="noscript"><h1>${escape(guide ? guide.title : playbook ? playbook.title : 'Nuntio')}</h1><p>Tell your bot what to do. Enable JavaScript to use the guide modes, scan an address and personalize a playbook in your browser. No account or API key is needed here.</p>${fallback}</div></noscript></main>
+  <main id="app" tabindex="-1"><noscript><div class="noscript"><h1>${escape(guide ? guide.title : playbook ? playbook.title : 'nuntio')}</h1><p>Tell your bot what to do. Enable JavaScript to use the guide modes, scan an address and personalize a playbook in your browser. No account or API key is needed here.</p>${fallback}</div></noscript></main>
   <footer class="site-footer" id="site-footer"></footer>
   <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>

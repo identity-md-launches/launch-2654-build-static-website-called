@@ -279,7 +279,7 @@ try {
       assert.ok(await page.getByRole('link', { name: 'See all playbooks' }).isVisible());
       await page.goto(`${base}#/roadmap`);
       for (const heading of ['Live', 'Next', 'Exploring']) assert.ok(await page.getByRole('heading', { name: heading, exact: true }).isVisible());
-      for (const item of ['Scan tab', 'Perps funding digest', 'Coinbase and OKX guides', 'More playbooks', 'Creator made playbooks', 'Nuntio token and paid playbooks']) assert.ok(await page.getByRole('heading', { name: item, exact: true }).isVisible());
+      for (const item of ['Scan tab', 'Perps funding digest', 'Coinbase and OKX guides', 'More playbooks', 'Creator made playbooks', 'nuntio token and paid playbooks']) assert.ok(await page.getByRole('heading', { name: item, exact: true }).isVisible());
       assert.ok((await page.locator('#site-footer').textContent()).includes('Not financial advice.'));
       await page.getByRole('link', { name: 'Browse setup guides' }).click();
       await page.locator('.setup-card').first().waitFor();

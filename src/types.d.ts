@@ -90,6 +90,6 @@ export interface ScanCatalog {
 export interface ScanFact { label: string; value: string; flag?: boolean }
 export interface ScanFlag { label: string; text: string }
 export type ScanResult =
-  | { type: 'wallet'; balance: string; note?: string; endpoint?: string }
+  | { type: 'wallet' | 'program'; balance: string; note?: string; endpoint?: string }
   | { type: 'token'; facts: ScanFact[]; flags: ScanFlag[]; endpoint?: string }
-  | { type: 'contract' | 'program' | 'token-account'; endpoint?: string };
+  | { type: 'contract' | 'token-account'; endpoint?: string };

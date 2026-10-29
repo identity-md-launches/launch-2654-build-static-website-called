@@ -33,7 +33,7 @@
       ],
       "capabilities": [
         { "title": "Start with a conversation", "text": "Create a Bot and describe its job in chat. Grok Bot is a separate app from Grok chat; access depends on your account and plan.", "url": "https://docs.x.ai/grok-bot/get-started", "linkLabel": "Read the setup guide" },
-        { "title": "Confirm a routine", "text": "Routines can run on a schedule in the cloud. Test the task first, then check the saved schedule and time zone in Grok Bot. Nuntio does not activate a routine.", "url": "https://docs.x.ai/grok-bot/skills-routines-and-automations", "linkLabel": "Read about routines" },
+        { "title": "Confirm a routine", "text": "Routines can run on a schedule in the cloud. Test the task first, then check the saved schedule and time zone in Grok Bot. nuntio does not activate a routine.", "url": "https://docs.x.ai/grok-bot/skills-routines-and-automations", "linkLabel": "Read about routines" },
         { "title": "Check access and delivery", "text": "Grok Bot documents read-only search of public X posts. Slack and email depend on setup and permissions. Routine emails from the Bot’s own address wait as drafts for you to send.", "url": "https://docs.x.ai/grok-bot/computer-and-apps", "linkLabel": "Read about apps and delivery" }
       ]
     }
@@ -101,7 +101,7 @@
     {
       "id": "perps-funding-digest",
       "title": "Perps funding digest",
-      "description": "Read the funding. Spot crowded leverage.",
+      "description": "A morning summary of funding rates, open interest and liquidations.",
       "category": "Research",
       "icon": "clock",
       "agentId": "grok-bot",

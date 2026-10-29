@@ -62,29 +62,33 @@ export function cleanText(text) {
 /** Decode an ABI string return value, with the legacy bytes32 form as a fallback.
  * @param {string} hex @returns {string | null} */
 export function decodeString(hex) {
-  if (!/^0x[0-9a-fA-F]*$/.test(hex) || hex.length < 66 || (hex.length - 2) % 2) return null;
+  if (!/^0x[0-9a-fA-F]+$/.test(hex) || hex.length < 66 || (hex.length - 2) % 64) return null;
   const bytes = hexBytes(hex);
-  const decoder = new TextDecoder('utf-8', { fatal: false });
-  if (bytes.length >= 64) {
-    const offset = Number(BigInt(`0x${hex.slice(2, 66)}`));
-    if (offset + 32 <= bytes.length) {
-      const length = Number(BigInt(`0x${hex.slice(2 + offset * 2, 2 + offset * 2 + 64)}`));
-      if (offset + 32 + length <= bytes.length) return cleanText(decoder.decode(bytes.slice(offset + 32, offset + 32 + length)));
+  const decoder = new TextDecoder('utf-8', { fatal: true });
+  try {
+    if (bytes.length === 32) {
+      const zero = bytes.indexOf(0);
+      if (zero !== -1 && bytes.slice(zero).some((byte) => byte !== 0)) return null;
+      return cleanText(decoder.decode(zero === -1 ? bytes : bytes.slice(0, zero)));
     }
-  }
-  if (bytes.length === 32) return cleanText(decoder.decode(bytes.filter((byte) => byte !== 0)));
-  return null;
+    const offset = BigInt(`0x${hex.slice(2, 66)}`);
+    const length = BigInt(`0x${hex.slice(66, 130)}`);
+    if (offset !== 32n || length > BigInt(bytes.length - 64)) return null;
+    const end = 64 + Number(length);
+    if (bytes.length !== 64 + Math.ceil(Number(length) / 32) * 32 || bytes.slice(end).some((byte) => byte !== 0)) return null;
+    return cleanText(decoder.decode(bytes.slice(64, end)));
+  } catch { return null; }
 }
 
 /** @param {string} hex @returns {bigint | null} */
 export function decodeUint(hex) {
-  if (!/^0x[0-9a-fA-F]{64}/.test(hex)) return null;
-  return BigInt(hex.slice(0, 66));
+  if (!/^0x[0-9a-fA-F]{64}$/.test(hex)) return null;
+  return BigInt(hex);
 }
 
 /** @param {string} hex @returns {string | null} */
 export function decodeAddress(hex) {
-  if (!/^0x[0-9a-fA-F]{64}/.test(hex)) return null;
+  if (!/^0x0{24}[0-9a-fA-F]{40}$/.test(hex)) return null;
   return `0x${hex.slice(26, 66)}`;
 }
 
