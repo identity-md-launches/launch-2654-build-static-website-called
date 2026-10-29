@@ -106,6 +106,8 @@ Focus uses a 2px outline offset 4px. Native radios show the ring on their visibl
 
 Only background, border, and text colors transition, over 130ms, and only when `prefers-reduced-motion: no-preference` applies. Hover styles are gated by hover capability. Pressed buttons darken slightly. There are no indefinite animations. Playbook generation is synchronous and local; Scan has a real pending state with a static clock icon and “Reading the chain” label, a whole-read fallback, and an error/retry state.
 
+Solana mint and freeze authority facts show “None” only for an explicit RPC `null`. A valid 32-byte base58 address is shown in full with “Flag: set.” Missing or malformed authorities fail the read and trigger the existing whole-read fallback; if both endpoints fail, only the persistent error and retry action appear. The authority revision changes data validation in `src/scan-rpc.js`, preserving the tokens, typography, components and responsive behavior above. Its rendered review is recorded in [`docs/solana-authority-validation.md`](docs/solana-authority-validation.md).
+
 ## Do’s and don’ts
 
 - Start new pages with `.wrap`, a single h1, the existing button variants, and the existing scale. Keep the useful action near the top.

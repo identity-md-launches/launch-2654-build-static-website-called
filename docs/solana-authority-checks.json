@@ -1,0 +1,311 @@
+{
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "141.0.7390.37"
+    }
+  ],
+  "passed": [
+    "chromium: Scan action is visible at 390 and keyboard submission works",
+    "chromium: 24 malformed-authority scenarios reject unsupported facts, retry the whole read, and hide all prompts when both endpoints fail",
+    "chromium: Try again recovers from the error by keyboard",
+    "chromium: pending scan exposes no facts; fallback result and error reflow at 320, 390, 768, 1440; 200% text reflows",
+    "chromium: explicit null authorities remain None without flags or a fallback"
+  ],
+  "scenarios": [
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "object",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "object",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "missing",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "missing",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "boolean",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "boolean",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "invalid base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "invalid base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "31-byte base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "31-byte base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "33-byte base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "mintAuthority",
+      "malformed": "33-byte base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "object",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "object",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "missing",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "missing",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "boolean",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "boolean",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "invalid base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "invalid base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "31-byte base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "31-byte base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "33-byte base58",
+      "fallback": "valid",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "fallback facts and authority flags; correct prompt"
+    },
+    {
+      "browser": "chromium",
+      "field": "freezeAuthority",
+      "malformed": "33-byte base58",
+      "fallback": "malformed",
+      "primaryRequests": 2,
+      "fallbackRequests": 2,
+      "outcome": "error; no facts or prompts"
+    }
+  ],
+  "accessibility": [
+    {
+      "label": "Solana form and keyboard focus at 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "Solana malformed authority error at 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "Solana fallback facts, flags and research prompt at 390",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "reflow": [
+    {
+      "browser": "chromium",
+      "label": "error 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "browser": "chromium",
+      "label": "error 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "browser": "chromium",
+      "label": "error 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "browser": "chromium",
+      "label": "error 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "browser": "chromium",
+      "label": "fallback facts and prompt 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "browser": "chromium",
+      "label": "fallback facts and prompt 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "browser": "chromium",
+      "label": "fallback facts and prompt 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "browser": "chromium",
+      "label": "fallback facts and prompt 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "browser": "chromium",
+      "label": "fallback facts and prompt at 200% text size",
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "webkit: browser could not launch (missing host libraries); no checks performed in this engine."
+  ],
+  "mockedRPC": true
+}

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { webcrypto } from 'node:crypto';
-import { base58Decode, base58Encode, decodeString, findProgramAddress, formatUnits, isOnCurve, METADATA_PROGRAM, parseMetadata, validateAddress } from '../src/scan-model.js';
+import { base58Decode, base58Encode, decodeString, findProgramAddress, formatUnits, isOnCurve, METADATA_PROGRAM, parseMetadata, TOKEN_PROGRAMS, validateAddress } from '../src/scan-model.js';
 import { ReadError, scanAddress } from '../src/scan-rpc.js';
 import { validateScanData } from '../scripts/scan-data.mjs';
 import { createOutputs, defaultsFor, fillTemplate } from '../src/model.js';
@@ -222,6 +222,67 @@ test('Solana: token mint with authorities, wallet, token account and missing acc
   assert.equal(holding.type, 'token-account');
   const empty = await scanAddress(sol, 'vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg', fakeFetch({ [sol.rpc[0]]: () => ({ result: { value: null } }) }).fetcher);
   assert.equal(empty.type, 'wallet');
+});
+
+const mintAddress = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const mintAuthority = 'BJE5MMbqXjVwjAF7oxwPYXnTXDyspzZyt4vwenNw5ruG';
+const mintHandler = (info, owner) => (method, params) => {
+  assert.equal(method, 'getAccountInfo');
+  return { result: { value: params[1].encoding === 'base64' ? null : { owner, lamports: 1, executable: false, data: { parsed: { type: 'mint', info } } } } };
+};
+const malformedAuthorities = [
+  ['missing', undefined], ['object', { invalid: true }], ['false', false], ['true', true],
+  ['number', 1], ['array', [mintAuthority]], ['empty string', ''],
+  ['invalid base58', mintAuthority.replace('B', '0')],
+  ['31-byte address', base58Encode(new Uint8Array(31).fill(2))],
+  ['33-byte address', base58Encode(new Uint8Array(33).fill(2))],
+  ['whitespace', ` ${mintAuthority}`],
+];
+for (const field of ['mintAuthority', 'freezeAuthority']) {
+  for (const [label, value] of malformedAuthorities) {
+    test(`Solana ${field} ${label}: full fallback read or ReadError, never None`, async () => {
+      const sol = chain('solana');
+      for (const owner of TOKEN_PROGRAMS) {
+        const goodInfo = { decimals: 6, supply: '1000000000', mintAuthority, freezeAuthority: mintAuthority };
+        const badInfo = { ...goodInfo, supply: '9000000000', [field]: value };
+        if (value === undefined) delete badInfo[field];
+        const good = mintHandler(goodInfo, owner);
+        const bad = mintHandler(badInfo, owner);
+        const retry = fakeFetch({ [sol.rpc[0]]: bad, [sol.rpc[1]]: good });
+        const answer = await scanAddress(sol, mintAddress, retry.fetcher);
+        assert.equal(answer.type, 'token');
+        assert.equal(answer.endpoint, sol.rpc[1]);
+        assert.equal(answer.facts.find(({ label }) => label === 'Supply').value, '1,000');
+        assert.deepEqual(answer.facts.slice(-2), [
+          { label: 'Mint authority', value: mintAuthority, flag: true },
+          { label: 'Freeze authority', value: mintAuthority, flag: true },
+        ]);
+        assert.equal(answer.flags.length, 2);
+        assert.deepEqual(retry.calls.filter(({ url }) => url === sol.rpc[1]).map(({ params }) => params[1].encoding), ['jsonParsed', 'base64']);
+        assert.equal(new Set(retry.calls.map(({ url }) => url)).size, 2);
+        const failure = fakeFetch({ [sol.rpc[0]]: bad, [sol.rpc[1]]: bad });
+        await assert.rejects(scanAddress(sol, mintAddress, failure.fetcher), ReadError);
+        assert.deepEqual(failure.calls.filter(({ params }) => params[1].encoding === 'jsonParsed').map(({ url }) => url), sol.rpc);
+      }
+    });
+  }
+}
+
+test('Solana authorities: only explicit null renders None; valid addresses stay flagged without fallback', async () => {
+  const sol = chain('solana');
+  for (const owner of TOKEN_PROGRAMS) {
+    for (const authorities of [[null, null], [mintAuthority, null], [null, mintAuthority], [mintAuthority, mintAuthority]]) {
+      const info = { decimals: 6, supply: '1000000000', mintAuthority: authorities[0], freezeAuthority: authorities[1] };
+      const rpc = fakeFetch({ [sol.rpc[0]]: mintHandler(info, owner) });
+      const answer = await scanAddress(sol, mintAddress, rpc.fetcher);
+      assert.equal(answer.type, 'token');
+      assert.equal(answer.endpoint, sol.rpc[0]);
+      assert.deepEqual(answer.facts.slice(-2).map(({ value }) => value), authorities.map(value => value ?? 'None'));
+      assert.deepEqual(answer.facts.slice(-2).map(({ flag }) => Boolean(flag)), authorities.map(value => value !== null));
+      assert.equal(answer.flags.length, authorities.filter(value => value !== null).length);
+      assert.deepEqual(rpc.calls.map(({ url }) => url), [sol.rpc[0], sol.rpc[0]]);
+    }
+  }
 });
 
 test('Solana executable non-token accounts keep their Program label and native balance', async () => {

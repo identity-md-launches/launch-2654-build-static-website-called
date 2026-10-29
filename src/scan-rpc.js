@@ -113,8 +113,10 @@ async function scanSolana(chain, url, address, fetcher) {
     const flags = [];
     /** @param {string} label @param {unknown} value */
     const authority = (label, value) => {
-      if (typeof value === 'string' && value) { flags.push({ label, text: `${label} is set. That address can still use this power.` }); return { label, value, flag: true }; }
-      return { label, value: 'None' };
+      if (value === null) return { label, value: 'None' };
+      if (typeof value !== 'string' || !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value) || base58Decode(value)?.length !== 32) throw new ReadError(`Bad ${label} answer`);
+      flags.push({ label, text: `${label} is set. That address can still use this power.` });
+      return { label, value, flag: true };
     };
     const facts = [
       { label: 'Name', value: name.trim() || 'Not found on-chain' },

@@ -132,12 +132,15 @@ export PLAYWRIGHT_BROWSERS_PATH=/tmp/nuntio-browsers
 playwright install chromium webkit
 npm run validate
 node scripts/validate-revision.mjs
+node scripts/validate-solana-authorities.mjs
 node scripts/review.mjs
 ```
 
 The validation command manages its own temporary static server under an IPFS-like subpath, runs the real production export, and writes disposable evidence to `test/scratch/validation/`. It closes the server and browser when finished. WebKit launch failures are reported as limitations, not passing tests. To regenerate the social image after editing its SVG, run `node scripts/social.mjs`, then rebuild.
 
-Actual results from this run:
+Current authority revision (30 Oct 2026): malformed Solana mint/freeze fields now fail the read instead of becoming “None.” Only explicit `null` or a valid 32-byte base58 address is accepted. One distinct fallback retries the complete read; if it also fails, no facts or research prompts are shown. Build and strict typecheck passed; all **78 unit tests**, **24 focused browser scenarios**, **3 focused axe scans** and **16/16 pinned design-probe checks** passed. The focused script also checks keyboard submit/retry, pending results, explicit nulls, responsive reflow and 200% text sizing. The existing interaction and prior revision suites passed all 18 and 8 flow groups, respectively, on their completed final runs. See [`docs/solana-authority-validation.md`](docs/solana-authority-validation.md) for full results (including earlier failed/interrupted attempts), reproduction, six-domain review and limits. No requested fix was left out; WebKit could not launch because host libraries are missing, and RPC replies were intercepted fixtures.
+
+Results retained from the previous revision (29 Oct 2026):
 
 | Check | Result |
 | --- | --- |

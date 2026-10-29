@@ -1,0 +1,70 @@
+{
+  "browser": "Chromium 141.0.7390.37",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "mockedRPC": true,
+  "scenarios": [
+    {
+      "label": "object mint authority, valid fallback",
+      "primaryRequests": 2,
+      "fallbackRequests": 0,
+      "facts": [
+        "NameNot found on-chain",
+        "SymbolNot found on-chain",
+        "Decimals6",
+        "Supply1,000",
+        "Mint authorityNone",
+        "Freeze authorityNone"
+      ],
+      "enabledChecks": 5,
+      "unsupportedNoneInPrompt": true
+    },
+    {
+      "label": "object mint authority, malformed fallback",
+      "primaryRequests": 2,
+      "fallbackRequests": 0,
+      "facts": [
+        "NameNot found on-chain",
+        "SymbolNot found on-chain",
+        "Decimals6",
+        "Supply1,000",
+        "Mint authorityNone",
+        "Freeze authorityNone"
+      ],
+      "enabledChecks": 5,
+      "unsupportedNoneInPrompt": true
+    },
+    {
+      "label": "omitted mint authority",
+      "primaryRequests": 2,
+      "fallbackRequests": 0,
+      "facts": [
+        "NameNot found on-chain",
+        "SymbolNot found on-chain",
+        "Decimals6",
+        "Supply1,000",
+        "Mint authorityNone",
+        "Freeze authorityNone"
+      ],
+      "enabledChecks": 5,
+      "unsupportedNoneInPrompt": true
+    },
+    {
+      "label": "boolean freeze authority",
+      "primaryRequests": 2,
+      "fallbackRequests": 0,
+      "facts": [
+        "NameNot found on-chain",
+        "SymbolNot found on-chain",
+        "Decimals6",
+        "Supply1,000",
+        "Mint authorityBJE5MMbqXjVwjAF7oxwPYXnTXDyspzZyt4vwenNw5ruG Flag: set",
+        "Freeze authorityNone"
+      ],
+      "enabledChecks": 5,
+      "unsupportedNoneInPrompt": true
+    }
+  ]
+}

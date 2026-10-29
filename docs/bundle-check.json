@@ -1,13 +1,13 @@
 {
-  "files": 73,
-  "totalBytes": 2730421,
+  "files": 79,
+  "totalBytes": 3051499,
   "budgetBytes": 8388608,
   "exportFiles": 12,
-  "exportBytes": 173668,
+  "exportBytes": 173785,
   "exported": [
     {
       "path": "dist/assets/app.js",
-      "bytes": 71905
+      "bytes": 72022
     },
     {
       "path": "dist/assets/favicon.svg",
