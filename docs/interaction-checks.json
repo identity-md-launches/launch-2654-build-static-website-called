@@ -1,0 +1,256 @@
+{
+  "checkedOn": "2026-10-29",
+  "passed": [
+    "chromium: product and primary action visible on first screen at 390",
+    "chromium: primary search-to-output flow completed with only the keyboard",
+    "chromium: keyword ranking, goal examples, empty state, reset, and search focus",
+    "chromium: meme-coin-research-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+    "chromium: content-and-reply-drafts validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+    "chromium: job-hunt-radar validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+    "chromium: invalid links recover and untrusted answers remain literal text",
+    "chromium: clipboard denial reveals focused, selectable manual copy",
+    "chromium: form and output work offline after page load",
+    "chromium: guide, missing route recovery, reduced motion, 200% text resizing, no external requests or failed assets",
+    "chromium: static per-playbook social metadata and 1200×630 PNG at an IPFS-like subpath"
+  ],
+  "limitations": [
+    "WebKit could not start: host libraries required by the browser are missing (including GTK and GStreamer). No WebKit interaction checks ran.",
+    "No physical iOS device, screen reader session, native browser zoom, live Grok Bot execution, or live X card crawler was tested. Chromium used the native clipboard. Text resizing is separate from native zoom."
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "141.0.7390.37"
+    }
+  ],
+  "errors": [],
+  "views": [
+    {
+      "label": "chromium home 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium home 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium home 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium home 1024",
+      "width": 1024,
+      "scroll": 1024
+    },
+    {
+      "label": "chromium home 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium meme-coin-research-digest configure 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium meme-coin-research-digest configure 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium meme-coin-research-digest configure 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium meme-coin-research-digest configure 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium meme-coin-research-digest configure 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium meme-coin-research-digest output 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium meme-coin-research-digest output 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium meme-coin-research-digest output 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium meme-coin-research-digest output 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium meme-coin-research-digest output 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium content-and-reply-drafts configure 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium content-and-reply-drafts configure 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium content-and-reply-drafts configure 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium content-and-reply-drafts configure 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium content-and-reply-drafts configure 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium content-and-reply-drafts output 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium content-and-reply-drafts output 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium content-and-reply-drafts output 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium content-and-reply-drafts output 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium content-and-reply-drafts output 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium job-hunt-radar configure 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium job-hunt-radar configure 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium job-hunt-radar configure 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium job-hunt-radar configure 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium job-hunt-radar configure 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium job-hunt-radar output 200% text size",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium job-hunt-radar output 320",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "label": "chromium job-hunt-radar output 390",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "label": "chromium job-hunt-radar output 768",
+      "width": 768,
+      "scroll": 768
+    },
+    {
+      "label": "chromium job-hunt-radar output 1440",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "label": "chromium home 200% text size",
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "accessibility": [
+    {
+      "label": "home 1440",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "home 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "meme-coin-research-digest configure",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "meme-coin-research-digest output",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "content-and-reply-drafts configure",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "content-and-reply-drafts output",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "job-hunt-radar configure",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "job-hunt-radar output",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "guide",
+      "violations": [],
+      "incomplete": []
+    }
+  ]
+}

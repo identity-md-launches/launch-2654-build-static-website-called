@@ -1,0 +1,21 @@
+{
+  "name": "nuntio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A static, browser-only playbook generator. Tell your bot what to do.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "engines": { "node": ">=22" },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.0",
+    "esbuild": "0.25.12",
+    "playwright": "1.56.1",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#111310"/>
+  <g fill="none" stroke="#d4f77d" stroke-width="4" stroke-linejoin="round" transform="translate(64 55)"><path d="M4 31V5h6l18 26h5V5h-6v17L14 5H4"/></g>
+  <g font-family="Arial, sans-serif" fill="#f1f3ec">
+    <text x="116" y="83" font-size="34" font-weight="600">Nuntio<tspan fill="#d4f77d">.</tspan></text>
+    <text x="64" y="249" font-size="86" font-weight="600" letter-spacing="-4">Tell your bot</text>
+    <text x="64" y="345" font-size="86" font-weight="600" letter-spacing="-4" fill="#d4f77d">what to do.</text>
+    <text x="68" y="411" font-size="26" fill="#a7afa0">Playbooks for a clearer starting point.</text>
+    <path d="M64 484h1072" stroke="#2c3128"/>
+    <text x="68" y="550" font-size="22" fill="#a7afa0">Choose a goal</text>
+    <text x="394" y="550" font-size="22" fill="#a7afa0">Make it yours</text>
+    <text x="722" y="550" font-size="22" fill="#a7afa0">Copy to Grok Bot</text>
+  </g>
+  <g fill="none" stroke="#a7afa0" stroke-width="2"><path d="M290 541h35m-9-9 9 9-9 9M620 541h35m-9-9 9 9-9 9"/></g>
+  <g fill="none" stroke="#2c3128" stroke-width="2"><rect x="878" y="164" width="224" height="240" rx="16"/><path d="M918 220h143m-143 30h107m-107 30h131m-131 30h85"/></g>
+  <path d="m1000 365 16 16 35-39" fill="none" stroke="#d4f77d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
