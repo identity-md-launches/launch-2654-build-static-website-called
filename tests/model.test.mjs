@@ -16,8 +16,8 @@ const exactContent = [
 ];
 
 test('the three supplied prompt templates, schedules, and guardrails stay verbatim', () => {
-  assert.equal(catalog.playbooks.length, 3);
-  catalog.playbooks.forEach((playbook, index) => {
+  assert.equal(catalog.playbooks.length, 4);
+  catalog.playbooks.slice(0, 3).forEach((playbook, index) => {
     assert.equal(createHash('sha256').update(playbook.prompt).digest('hex'), exactContent[index][0]);
     assert.equal(playbook.schedule, exactContent[index][1]);
     assert.equal(playbook.guardrails, exactContent[index][2]);
@@ -40,7 +40,7 @@ test('matching returns relevant ranked alternatives, not an arbitrary fallback',
   assert.ok(matches.every((item, index) => !index || item.score <= matches[index - 1].score));
   assert.equal(matchPlaybooks('baking sourdough bread', catalog.playbooks).length, 0);
   assert.equal(matchPlaybooks('coinage postcard worker', catalog.playbooks).length, 0);
-  assert.equal(matchPlaybooks('  ', catalog.playbooks).length, 3);
+  assert.equal(matchPlaybooks('  ', catalog.playbooks).length, 4);
 });
 
 test('hash serialization round-trips Unicode, spaces, punctuation and literal braces', () => {

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-10-29",
+  "chains": [
+    {
+      "id": "ethereum",
+      "label": "Ethereum",
+      "kind": "evm",
+      "chainId": 1,
+      "nativeSymbol": "ETH",
+      "nativeDecimals": 18,
+      "rpc": ["https://ethereum-rpc.publicnode.com", "https://rpc.flashbots.net"],
+      "rpcSources": ["https://www.publicnode.com/", "https://docs.flashbots.net/flashbots-protect/quick-start"],
+      "explorer": { "name": "Etherscan", "address": "https://etherscan.io/address/{address}", "token": "https://etherscan.io/token/{address}" }
+    },
+    {
+      "id": "base",
+      "label": "Base",
+      "kind": "evm",
+      "chainId": 8453,
+      "nativeSymbol": "ETH",
+      "nativeDecimals": 18,
+      "rpc": ["https://mainnet.base.org", "https://base-rpc.publicnode.com"],
+      "rpcSources": ["https://docs.base.org/base-chain/quickstart/connecting-to-base", "https://www.publicnode.com/"],
+      "explorer": { "name": "Basescan", "address": "https://basescan.org/address/{address}", "token": "https://basescan.org/token/{address}" }
+    },
+    {
+      "id": "bnb",
+      "label": "BNB Chain",
+      "kind": "evm",
+      "chainId": 56,
+      "nativeSymbol": "BNB",
+      "nativeDecimals": 18,
+      "rpc": ["https://bsc-dataseed.bnbchain.org", "https://bsc-dataseed-public.bnbchain.org"],
+      "rpcSources": ["https://docs.bnbchain.org/bnb-smart-chain/developers/json_rpc/json-rpc-endpoint/"],
+      "explorer": { "name": "BscScan", "address": "https://bscscan.com/address/{address}", "token": "https://bscscan.com/token/{address}" }
+    },
+    {
+      "id": "robinhood",
+      "label": "Robinhood Chain",
+      "kind": "evm",
+      "chainId": 4663,
+      "nativeSymbol": "ETH",
+      "nativeDecimals": 18,
+      "rpc": ["https://rpc.mainnet.chain.robinhood.com", "https://rpc.mainnet.chain.robinhood.com"],
+      "rpcSources": ["https://docs.robinhood.com/chain/connecting"],
+      "explorer": { "name": "Blockscout", "address": "https://robinhoodchain.blockscout.com/address/{address}", "token": "https://robinhoodchain.blockscout.com/token/{address}" }
+    },
+    {
+      "id": "solana",
+      "label": "Solana",
+      "kind": "solana",
+      "chainId": null,
+      "nativeSymbol": "SOL",
+      "nativeDecimals": 9,
+      "rpc": ["https://api.mainnet-beta.solana.com", "https://solana-rpc.publicnode.com"],
+      "rpcSources": ["https://solana.com/docs/references/clusters", "https://www.publicnode.com/"],
+      "explorer": { "name": "Solana Explorer", "address": "https://explorer.solana.com/address/{address}", "token": "https://explorer.solana.com/address/{address}" }
+    }
+  ],
+  "tools": {
+    "bubblemaps": { "name": "Bubblemaps", "url": "https://bubblemaps.io/" },
+    "dexscreener": { "name": "DEX Screener", "url": "https://dexscreener.com/" }
+  }
+}

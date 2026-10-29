@@ -60,3 +60,36 @@ export interface GuideCatalog {
   promptTemplate: string;
   guides: SetupGuide[];
 }
+export interface ChainConfig {
+  id: string;
+  label: string;
+  kind: 'evm' | 'solana';
+  chainId: number | null;
+  nativeSymbol: string;
+  nativeDecimals: number;
+  rpc: string[];
+  rpcSources: string[];
+  explorer: { name: string; address: string; token: string };
+}
+export interface ChainCatalog {
+  version: number;
+  verifiedAt: string;
+  chains: ChainConfig[];
+  tools: Record<string, { name: string; url: string }>;
+}
+export interface ScanItem { id: string; title: string; item: string; tool: string | null; method: string }
+export interface ScanCatalog {
+  version: number;
+  notSafe: string;
+  readError: string;
+  menuHeading: string;
+  tokenPromptTemplate: string;
+  walletPromptTemplate: string;
+  items: ScanItem[];
+}
+export interface ScanFact { label: string; value: string; flag?: boolean }
+export interface ScanFlag { label: string; text: string }
+export type ScanResult =
+  | { type: 'wallet'; balance: string; note?: string; endpoint?: string }
+  | { type: 'token'; facts: ScanFact[]; flags: ScanFlag[]; endpoint?: string }
+  | { type: 'contract' | 'program' | 'token-account'; endpoint?: string };

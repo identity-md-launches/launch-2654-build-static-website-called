@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { validateCatalog } from './catalog.mjs';
 import { validateGuides } from './guides.mjs';
+import { rpcOrigins, validateScanData } from './scan-data.mjs';
 import { createGuidePrompt } from '../src/guide-model.js';
 
 const require = createRequire(import.meta.url);
@@ -13,6 +14,10 @@ const catalog = JSON.parse(await readFile(resolve(project, 'src/data/playbooks.j
 validateCatalog(catalog);
 const guideCatalog = JSON.parse(await readFile(resolve(project, 'src/data/guides.json'), 'utf8'));
 validateGuides(guideCatalog);
+const chainCatalog = JSON.parse(await readFile(resolve(project, 'src/data/chains.json'), 'utf8'));
+const scanCatalog = JSON.parse(await readFile(resolve(project, 'src/data/scan.json'), 'utf8'));
+validateScanData(chainCatalog, scanCatalog);
+const connect = rpcOrigins(chainCatalog).join(' ');
 const dist = resolve(project, 'dist');
 await rm(dist, { recursive: true, force: true });
 await mkdir(resolve(dist, 'assets'), { recursive: true });
@@ -22,7 +27,7 @@ await build({ entryPoints: [resolve(project, 'src/styles.css')], outfile: resolv
 
 const escape = (text) => text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const homeTitle = 'Nuntio — Tell your bot what to do.';
-const homeDescription = 'Playbooks for Grok Bot and wallet setup guides for Binance, Coinbase and OKX. Choose a goal, copy a prompt, and work with your agent step by step.';
+const homeDescription = 'Playbooks for Grok Bot, a read-only address scanner for Ethereum, Base, BNB Chain, Robinhood Chain and Solana, and wallet setup guides. Choose a goal, copy a prompt, and work with your agent step by step.';
 function page(playbook, guide) {
   const base = playbook || guide ? '../../' : './';
   const title = guide ? `${guide.title} setup | Nuntio` : playbook ? `${playbook.title} | Nuntio` : homeTitle;
@@ -35,7 +40,7 @@ function page(playbook, guide) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111310">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src ${connect}; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>${escape(title)}</title>
   <meta name="description" content="${escape(description)}">
   <link rel="icon" type="image/svg+xml" href="${base}assets/favicon.svg">
@@ -58,7 +63,7 @@ function page(playbook, guide) {
 <body data-root="${base}" data-playbook="${playbook ? escape(playbook.id) : ''}" data-guide="${guide ? escape(guide.id) : ''}">
   <a class="skip-link" id="skip-link" href="#app">Skip to content</a>
   <header class="site-header" id="site-header"></header>
-  <main id="app" tabindex="-1"><noscript><div class="noscript"><h1>${escape(guide ? guide.title : playbook ? playbook.title : 'Nuntio')}</h1><p>Tell your bot what to do. Enable JavaScript to use the guide modes and personalize a playbook in your browser. No account or API key is needed here.</p>${fallback}</div></noscript></main>
+  <main id="app" tabindex="-1"><noscript><div class="noscript"><h1>${escape(guide ? guide.title : playbook ? playbook.title : 'Nuntio')}</h1><p>Tell your bot what to do. Enable JavaScript to use the guide modes, scan an address and personalize a playbook in your browser. No account or API key is needed here.</p>${fallback}</div></noscript></main>
   <footer class="site-footer" id="site-footer"></footer>
   <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
@@ -76,4 +81,5 @@ for (const guide of guideCatalog.guides) {
   await mkdir(folder, { recursive: true });
   await writeFile(resolve(folder, 'index.html'), page(undefined, guide));
 }
+console.log(`CSP connect-src: ${connect}`);
 console.log(`Built dist/index.html, ${catalog.playbooks.length} static playbook pages, ${guideCatalog.guides.length} static setup guides, and local assets.`);

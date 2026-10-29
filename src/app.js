@@ -1,6 +1,7 @@
 import rawCatalog from './data/playbooks.json';
 import rawGuides from './data/guides.json';
 import { createGuidePrompt, guideDate } from './guide-model.js';
+import { createScanView } from './scan-view.js';
 import { agentFor, answerHash, createOutputs, defaultsFor, escapeHTML as esc, fillTemplate, matchPlaybooks, parseRoute, readAnswers, validateAnswers } from './model.js';
 
 /** @typedef {import('./types').Playbook} Playbook */
@@ -64,9 +65,9 @@ function shell() {
   header.innerHTML = `<div class="header-inner wrap">
     <a class="brand" href="${homeHref()}" aria-label="Nuntio home"><svg width="31" height="31" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 26V6h4l14 20h4V6h-5v13L13 6H5" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg><span>Nuntio<span class="brand-dot">.</span></span></a>
     <nav aria-label="Main navigation"><a class="nav-link" href="${homeHref('/guide')}">How it works</a><a class="nav-link docs-link" href="${esc(defaultAgent.docsUrl)}" target="_blank" rel="noopener noreferrer">${esc(defaultAgent.name)} docs ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></nav>
-  </div><nav class="site-tabs wrap" aria-label="Nuntio sections"><a href="${homeHref()}" data-section="playbooks">Playbooks</a><a href="${homeHref('/guides')}" data-section="guides">Setup guides</a><a href="${homeHref('/roadmap')}" data-section="roadmap">Roadmap</a></nav>`;
+  </div><nav class="site-tabs wrap" aria-label="Nuntio sections"><a href="${homeHref()}" data-section="playbooks">Playbooks</a><a href="${homeHref('/scan')}" data-section="scan">Scan</a><a href="${homeHref('/guides')}" data-section="guides">Setup guides</a><a href="${homeHref('/roadmap')}" data-section="roadmap">Roadmap</a></nav>`;
   const footer = /** @type {HTMLElement} */ (document.querySelector('#site-footer'));
-  footer.innerHTML = `<div class="footer-inner wrap"><p>Made for a clear first instruction.</p><div><span>Independent of xAI</span><a href="${homeHref('/guide')}">About & privacy</a></div></div>`;
+  footer.innerHTML = `<div class="footer-inner wrap"><p>Research and instructions only. Nuntio never trades, connects a wallet or signs anything. Not financial advice.</p><div><span>Independent of xAI</span><a href="${homeHref('/guide')}">About & privacy</a></div></div>`;
 }
 
 function safetyBanner() {
@@ -115,9 +116,19 @@ function renderSetupGuide(guide) {
   }));
 }
 
+/** @param {string} title @param {string} text @param {string} [href] @param {string} [linkText] @param {string} [mark] */
+function roadmapItem(title, text, href = '', linkText = '', mark = 'check') {
+  return `<li>${icon(mark)}<div><h3>${esc(title)}</h3><p>${esc(text)}</p>${href ? `<a href="${href}">${esc(linkText)} ${icon('arrow')}</a>` : ''}</div></li>`;
+}
+
 function renderRoadmap() {
   document.title = 'Roadmap | Nuntio';
-  app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What you can use in Nuntio today.</p><section aria-labelledby="available-heading"><h2 id="available-heading">Available now</h2><ul class="roadmap-list"><li>${icon('check')}<div><h3>Playbooks for your goals</h3><p>Research, content drafts and job hunting. Answer a few questions and copy your instructions.</p><a href="${homeHref()}">Choose a playbook ${icon('arrow')}</a></div></li><li>${icon('check')}<div><h3>Wallet setup with your agent</h3><p>Binance, Coinbase and OKX guides. Use one prompt or follow the numbered checklist.</p><a href="${homeHref('/guides')}">Browse setup guides ${icon('arrow')}</a></div></li></ul></section><section aria-labelledby="next-heading"><h2 id="next-heading">What comes next</h2><p class="muted">No further guides or release dates are announced here.</p><a class="back-link" href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></section></div>`;
+  const perps = catalog.playbooks.find(({ id }) => id === 'perps-funding-digest');
+  app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What is live in Nuntio, what comes next, and what we are still exploring.</p>
+    <section aria-labelledby="live-heading"><h2 id="live-heading">Live</h2><ul class="roadmap-list">${roadmapItem('Scan tab', 'Read a token or wallet on Ethereum, Base, BNB Chain, Robinhood Chain or Solana, then copy a research prompt.', homeHref('/scan'), 'Scan an address')}${roadmapItem('Perps funding digest', 'A daily morning digest of funding, open interest and liquidations for your markets.', perps ? playbookHref(perps) : homeHref(), 'Build the digest')}${roadmapItem('Coinbase and OKX guides', 'Set up an agentic wallet with your agent, one approved step at a time. The Binance guide is here too.', homeHref('/guides'), 'Browse setup guides')}</ul></section>
+    <section aria-labelledby="next-heading"><h2 id="next-heading">Next</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('More playbooks', 'New goals to hand to your bot.', '', '', 'clock')}${roadmapItem('Creator made playbooks', 'Playbooks written by creators, with tip links.', '', '', 'clock')}</ul></section>
+    <section aria-labelledby="exploring-heading"><h2 id="exploring-heading">Exploring</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('Nuntio token and paid playbooks', 'An idea under consideration. Nothing is launched or for sale.', '', '', 'radar')}</ul></section>
+    <a class="back-link" href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></div>`;
 }
 
 /** @param {Playbook} playbook @param {number} index @param {boolean} matched */
@@ -318,7 +329,7 @@ function render() {
   const route = parseRoute(location.hash);
   const playbook = catalog.playbooks.find(({ id }) => id === pageId);
   const setupGuide = guideCatalog.guides.find(({ id }) => id === (guideId || route.view.replace(/^\/guides\//, '')));
-  const section = guideId || route.view === '/guides' || route.view.startsWith('/guides/') ? 'guides' : route.view === '/roadmap' ? 'roadmap' : 'playbooks';
+  const section = guideId || route.view === '/guides' || route.view.startsWith('/guides/') ? 'guides' : route.view === '/roadmap' ? 'roadmap' : route.view.startsWith('/scan') ? 'scan' : 'playbooks';
   document.querySelectorAll('[data-section]').forEach((link) => {
     if (/** @type {HTMLElement} */ (link).dataset.section === section) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
@@ -336,6 +347,8 @@ function render() {
   else if (route.view === '/guide') renderGuide();
   else if (route.view === '/guides') renderGuides();
   else if (route.view === '/roadmap') renderRoadmap();
+  else if (route.view === '/scan') scanView.renderScan(route.params);
+  else if (route.view === '/scan/output') { if (!scanView.renderSaved(route.params)) renderNotFound(); }
   else if (route.view.startsWith('/guides/') && setupGuide) renderSetupGuide(setupGuide);
   else renderNotFound();
   if (!firstRender) {
@@ -346,6 +359,7 @@ function render() {
   firstRender = false;
 }
 
+const scanView = createScanView({ app, icon, copy, announce, esc });
 shell();
 window.addEventListener('hashchange', render);
 document.querySelector('#skip-link')?.addEventListener('click', (event) => { event.preventDefault(); app.focus(); app.scrollIntoView(); });
