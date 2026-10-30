@@ -40,5 +40,11 @@ export function validateCatalog(catalog) {
     assert.deepEqual(new Set(placeholders), fields, `Questions and template placeholders differ: ${playbook.id}`);
     assert.ok(playbook.checklistSeparator === null || typeof playbook.checklistSeparator === 'string');
     if (playbook.riskWarning) assert.ok(playbook.riskWarning.includes('Not financial advice.'));
+    for (const field of ['author', 'tipAddress']) {
+      if (playbook[field] === undefined) continue;
+      assert.equal(typeof playbook[field], 'string', `${field} must be a string: ${playbook.id}`);
+      assert.ok(playbook[field].trim() && playbook[field] === playbook[field].trim(), `${field} must be nonempty without surrounding whitespace: ${playbook.id}`);
+      assert.ok(!/[\u0000-\u001F\u007F-\u009F\u202A-\u202E\u2066-\u2069]/.test(playbook[field]), `${field} must be plain, single-line text: ${playbook.id}`);
+    }
   }
 }

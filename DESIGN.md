@@ -8,6 +8,8 @@ The home page presents the goal control and playbook library; detail pages prior
 
 Source of truth: [`src/styles.css`](src/styles.css), rendering patterns in [`src/app.js`](src/app.js) and [`src/scan-view.js`](src/scan-view.js), content in [`src/data/playbooks.json`](src/data/playbooks.json), [`src/data/guides.json`](src/data/guides.json), [`src/data/chains.json`](src/data/chains.json) and [`src/data/scan.json`](src/data/scan.json), and static metadata in [`scripts/build.mjs`](scripts/build.mjs). This revision reuses the existing palette, scale, brand mark and layouts.
 
+The catalog now contains nine playbooks. The five additions use the same card, standard questions, extra fields and three output blocks. Creator metadata is optional and absent from the production catalog: when supplied, a quiet attribution/address area follows the card's main link. The wallet research flow now asks for observations from ten swaps and saves a profile prompt.
+
 ## Colors
 
 Hex primitives and semantic aliases are declared in `:root` in `src/styles.css`. Components use the semantic aliases. The site is deliberately dark-only.
@@ -32,9 +34,11 @@ The accent is also a deliberate brand detail in the logo and tagline, not an ind
 
 Computed text/background pairs were measured on the final setup guide: title and prompt on page **16.69:1**, muted note on page **8.26:1**, amber banner text on its surface **10.44:1**, primary copy button **15.47:1**, selected mode text **14.11:1**, and risk text on page **11.32:1**. These are measurements of those solid pairs, not a claim of complete accessibility conformance. Exact computed colors are in [`docs/design-metrics.json`](docs/design-metrics.json). The pinned probe and automated accessibility checks also passed their measured checks; counts and coverage are in the validation record.
 
+This update remeasured the guide pairs and measured the creator fixture on the hovered card surface `#20241c`: primary author/address/button text `#f1f3ec` is **14.11:1**, and the notice `#a7afa0` is **6.98:1**. The focused address button has the existing 2px lime outline. Values and scope are recorded in [`docs/update-interaction-checks.json`](docs/update-interaction-checks.json); manual forced-colors verification was not performed.
+
 ## Typography
 
-The prose system stack is `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`. Checklist commands use `ui-monospace, SFMono-Regular, Consolas, monospace` at the existing small size; the scan address input uses that stack at 16px. No font files or remote font requests are required. Font substitution is expected across operating systems; the physical font used on every platform has not been certified.
+The prose system stack is `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`. Checklist commands and optional tip addresses use `ui-monospace, SFMono-Regular, Consolas, monospace` at the existing small size; the scan address input uses that stack at 16px. No font files or remote font requests are required. Font substitution is expected across operating systems; the physical font used on every platform has not been certified.
 
 | Token | Default size | Role |
 | --- | --- | --- |
@@ -66,6 +70,8 @@ Scan caps its workspace at 860px with 28px top and 64px bottom padding. Its form
 
 The production home and guide library were checked at 320, 390, 768, 1024, and 1440px. Forms, outputs and both guide modes were checked at 320, 390, 768, and 1440px, and at 200% root text size at 390px. Roadmap reflow was measured at 320, 390, 768 and 1440px. The opening 390 × 844 home screen includes the product, goal box, main action, and first playbook card. All three setup copy buttons also fit on the first 390 × 844 screen (bottom edges approximately 830, 833 and 788px). Text resizing was tested separately from native browser zoom, which was not performed.
 
+The nine-card home was also checked at the exact 576/880/1120px layout breakpoints. The first action ends at 500.56px at 390 × 844. Optional creator text uses the existing 14px size, a 16px top inset and 24px side/bottom insets on cards, with one structural separator. Long addresses are selectable, left-to-right code that wraps with `overflow-wrap: anywhere`; author names use `<bdi>`. Copy is a separate 44px-minimum button. The same information follows the configuration summary and precedes generated output when present. It was checked with isolated long-value fixtures at 320, 390, 768 and 1440px and 200% root text size at 390px.
+
 ## Elevation & depth
 
 The interface is flat: no shadows, gradients, floating panels, or cards inside cards. Surface color and a 1px border distinguish cards and output blocks. Inputs have a stronger border than decorative surfaces. The setup banner has a 2px amber start border; command text has a 2px neutral start border. The desktop summary and Stay safe section use one vertical separator; it becomes a top separator when stacked. The only fixed element is the keyboard-only skip link while focused.
@@ -83,7 +89,8 @@ These are application rendering patterns, not an exported component library:
 | Header/footer | `shell()` in `src/app.js` | Real links, left brand, right utilities, useful footer links; route-safe paths |
 | Section tabs | `shell()`, `.site-tabs` | Native navigation links to Playbooks, Scan, Setup guides and Roadmap; `aria-current="page"`, 2px active underline, 48px minimum height, wrapping at enlarged text sizes |
 | Goal search | `renderHome()` | Labeled native search field, keyword suggestions, live result count, submit-to-results focus, resettable empty state |
-| Playbook card | `card()` | One full-surface native link, title-derived accessible name, hover border/surface, keyboard outline |
+| Playbook card | `card()`, `.playbook-card`, `.playbook-card-link` | Article surface containing a main native link with title-derived accessible name, hover border/surface and keyboard outline; optional creator controls are siblings of the link |
+| Creator information | `creatorInfo()`, `bindCreatorCopy()`, `.creator-info` | Optional `By {author}` and full `tipAddress` with independent copy button and exact chain/payment notice; plaintext rendering, no payment link, native clipboard plus focused manual fallback |
 | Buttons | `.button` in CSS | Lime `.primary`, outlined `.secondary`, neutral `.text-button`, outlined `.copy-button`; minimum 48px, or 44px for copy |
 | Configuration form | `renderConfigure()`, `selectField()` | Native radio group, selects and text fields; required extra answers; inline errors, first-invalid focus, hash persistence, reset |
 | Radio choices | `.segmented` | Equal columns, native radio keyboard behavior, selected border/surface, visible focus around the label |
@@ -95,10 +102,10 @@ These are application rendering patterns, not an exported component library:
 | Guide modes | `renderSetupGuide()`, `.guide-mode` | Native radio group, 52px minimum labels, arrow-key switching; agent prompt is the default, inactive panel is `hidden` |
 | Setup checklist | `.setup-steps` | Numbered items, full checkbox labels, explicit human/agent actor, selectable wrapping commands, checked cue and live count; temporary state survives mode switches |
 | Guide prompt | `createGuidePrompt()`, `#agent-panel` | One literal prompt using all six data fields; one primary copy action and the existing manual fallback; no command execution or account entry |
-| Roadmap | `renderRoadmap()`, `.roadmap-list` | Flat Live, Next and Exploring lists with working section links and no future dates |
+| Roadmap | `renderRoadmap()`, `.roadmap-list` | Flat Live, Next and Exploring lists with working section links and no future dates; five new playbooks join the existing Live features, with data engine/creator submissions in Next |
 | Scan form | `renderScan()` in `src/scan-view.js` | Labeled native chain picker/address input; submit validation; disabled action while reading; editing either field clears the result and invalidates pending responses |
 | Token facts and checks | `tokenResult()`, `.facts-table`, `.check-menu` | Plain-text values, caption and row headers, set-authority labels; five buttons with expanded state, tool link when available, selectable prompt and copy action |
-| Wallet and program results | `walletResult()`, `walletProfile()` | Native balance, truthful Wallet/Program heading, analyst prompt with focus handoff, save and share via the URL hash; reload labels the captured balance as saved |
+| Wallet and program results | `walletResult()`, `walletProfile()` | Native balance, truthful Wallet/Program heading, exact ten-swap analyst prompt with focus handoff, Save profile and share via the URL hash; saved page is titled Trader profile and labels the captured balance as saved |
 | Scan failure | `resultView()` / scan error handler | No completed facts or research controls if both reads fail; persistent error and retry action. Empty return/revert fields remain explicitly unavailable rather than fabricated |
 | Guide/empty/not-found | `renderGuide()`, `renderNotFound()` | Plain explanation, official links, and a direct recovery action |
 
@@ -115,8 +122,9 @@ Solana mint and freeze authority facts show “None” only for an explicit RPC 
 - Use neutral peer actions and one lime primary action per task surface. Brand use of lime is intentional.
 - Reuse solid surfaces and subtle separators. Do not add shadow layers, remote fonts, animated backgrounds, nested cards, or alternate color encodings without a product need.
 - Keep user text literal, selectable, and fully visible. A template is text, never HTML.
+- Keep creator copy controls outside the card link. Populate attribution or recipient metadata only when supplied; omit missing fields and retain the chain/payment notice wherever an address appears.
 - A new playbook needs only a valid JSON entry and a rebuild. A genuinely new view should reuse the header/footer, `.detail` or `.guide`, existing fields, and the hash router; check its mobile and keyboard behavior.
 
 ## Guidance attribution
 
-The six-domain design review uses Jakub Krehel’s [Better Interface](https://github.com/jakubkrehel/skills/tree/267330e1adfc66a718fb65fa6918c1f06d0a689e/skills/better-interface), pinned at `267330e1adfc66a718fb65fa6918c1f06d0a689e` (MIT, copyright 2026 Jakub Krehel). This implementation-specific document adapts the documentation method from Paul Bakaus’s [Impeccable](https://github.com/pbakaus/impeccable/blob/9d715cc4f5564a990ca8345abfdd5df6dc9b41c8/skill/reference/document.md), pinned at `9d715cc4f5564a990ca8345abfdd5df6dc9b41c8` (Apache-2.0, copyright 2025 Paul Bakaus). Both license texts are retained in [`docs/third-party/design-guidance-LICENSE.txt`](docs/third-party/design-guidance-LICENSE.txt). The review coverage and limits are in [`docs/validation.md`](docs/validation.md).
+The six-domain design review uses Jakub Krehel’s [Better Interface](https://github.com/jakubkrehel/skills/tree/267330e1adfc66a718fb65fa6918c1f06d0a689e/skills/better-interface), pinned at `267330e1adfc66a718fb65fa6918c1f06d0a689e` (MIT, copyright 2026 Jakub Krehel). This implementation-specific document adapts the documentation method from Paul Bakaus’s [Impeccable](https://github.com/pbakaus/impeccable/blob/9d715cc4f5564a990ca8345abfdd5df6dc9b41c8/skill/reference/document.md), pinned at `9d715cc4f5564a990ca8345abfdd5df6dc9b41c8` (Apache-2.0, copyright 2025 Paul Bakaus). Both license texts are retained in [`docs/third-party/design-guidance-LICENSE.txt`](docs/third-party/design-guidance-LICENSE.txt). Current review coverage and limits are in [`docs/update-validation.md`](docs/update-validation.md); [`docs/validation.md`](docs/validation.md) preserves earlier reviews.

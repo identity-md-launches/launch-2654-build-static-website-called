@@ -1,0 +1,958 @@
+{
+  "main": {
+    "passed": [
+      "chromium: product and primary action visible on first screen at 390",
+      "chromium: primary search-to-output flow completed with only the keyboard",
+      "chromium: keyword ranking, goal examples, empty state, reset, and search focus",
+      "chromium: meme-coin-research-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: content-and-reply-drafts validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: job-hunt-radar validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: perps-funding-digest validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: new-launch-radar validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: tokenized-stock-watch validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: unlock-and-airdrop-tracker validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: project-research-brief validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: crypto-creator-thread-writer validation, selections, hash reload, exact output, three copy actions, checklist, sharing, edit, back, reset",
+      "chromium: setup cards, dates, official sources, reports, and subpath navigation",
+      "chromium: Binance Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+      "chromium: Coinbase Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+      "chromium: OKX Agentic Wallet exact copy, both modes, keyboard checklist, temporary checks, manual fallback, offline use and responsive reflow",
+      "chromium: guide hash routes, missing guide recovery, roadmap (live, next, exploring), disclaimer footer and section tabs",
+      "chromium: scan validation, Base token facts as text, five check panels with links and exact prompts, wallet trader profile, save profile in hash and reload, Solana mint authorities, fallback then \"Could not read the chain right now\"",
+      "chromium: invalid links recover and untrusted answers remain literal text",
+      "chromium: clipboard denial reveals focused, selectable manual copy",
+      "chromium: form and output work offline after page load",
+      "chromium: guide, missing route recovery, reduced motion, 200% text resizing, no external requests or failed assets",
+      "chromium: static per-playbook social metadata and 1200×630 PNG at an IPFS-like subpath"
+    ],
+    "limitations": [
+      "WebKit launch failed because host libraries, including GTK 4 and GStreamer, were unavailable. No WebKit behavior is claimed.",
+      "No physical iOS device, screen reader session, native browser zoom, live Grok Bot execution, or live X card crawler was tested. Chromium used the native clipboard. Text resizing is separate from native zoom."
+    ],
+    "browsers": [
+      {
+        "name": "chromium",
+        "version": "141.0.7390.37"
+      }
+    ],
+    "errors": [],
+    "views": [
+      {
+        "label": "chromium home 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium home 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium home 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium home 1024",
+        "width": 1024,
+        "scroll": 1024
+      },
+      {
+        "label": "chromium home 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium meme-coin-research-digest configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium meme-coin-research-digest configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium meme-coin-research-digest configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium meme-coin-research-digest configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium meme-coin-research-digest configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium meme-coin-research-digest output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium meme-coin-research-digest output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium meme-coin-research-digest output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium meme-coin-research-digest output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium meme-coin-research-digest output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium content-and-reply-drafts configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium content-and-reply-drafts configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium content-and-reply-drafts configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium content-and-reply-drafts configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium content-and-reply-drafts configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium content-and-reply-drafts output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium content-and-reply-drafts output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium content-and-reply-drafts output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium content-and-reply-drafts output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium content-and-reply-drafts output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium job-hunt-radar configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium job-hunt-radar configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium job-hunt-radar configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium job-hunt-radar configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium job-hunt-radar configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium job-hunt-radar output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium job-hunt-radar output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium job-hunt-radar output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium job-hunt-radar output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium job-hunt-radar output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium perps-funding-digest configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium perps-funding-digest configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium perps-funding-digest configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium perps-funding-digest configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium perps-funding-digest configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium perps-funding-digest output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium perps-funding-digest output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium perps-funding-digest output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium perps-funding-digest output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium perps-funding-digest output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium new-launch-radar configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium new-launch-radar configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium new-launch-radar configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium new-launch-radar configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium new-launch-radar configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium new-launch-radar output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium new-launch-radar output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium new-launch-radar output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium new-launch-radar output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium new-launch-radar output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium tokenized-stock-watch configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium tokenized-stock-watch configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium tokenized-stock-watch configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium tokenized-stock-watch configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium tokenized-stock-watch configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium tokenized-stock-watch output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium tokenized-stock-watch output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium tokenized-stock-watch output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium tokenized-stock-watch output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium tokenized-stock-watch output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium unlock-and-airdrop-tracker output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium project-research-brief configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium project-research-brief configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium project-research-brief configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium project-research-brief configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium project-research-brief configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium project-research-brief output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium project-research-brief output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium project-research-brief output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium project-research-brief output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium project-research-brief output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer configure 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer configure 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer configure 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer configure 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer configure 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer output 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer output 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer output 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer output 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium crypto-creator-thread-writer output 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium setup library 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium setup library 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium setup library 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium setup library 1024",
+        "width": 1024,
+        "scroll": 1024
+      },
+      {
+        "label": "chromium setup library 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium binance-agentic-wallet agent 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium binance-agentic-wallet agent 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium binance-agentic-wallet agent 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium binance-agentic-wallet agent 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium binance-agentic-wallet checklist 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium binance-agentic-wallet checklist 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium binance-agentic-wallet checklist 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium binance-agentic-wallet checklist 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium binance-agentic-wallet checklist 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium binance-agentic-wallet agent 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet agent 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet agent 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet agent 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet agent 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet checklist 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet checklist 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet checklist 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet checklist 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet checklist 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium coinbase-agentic-wallet agent 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium okx-agentic-wallet agent 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium okx-agentic-wallet agent 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium okx-agentic-wallet agent 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium okx-agentic-wallet agent 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium okx-agentic-wallet checklist 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium okx-agentic-wallet checklist 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium okx-agentic-wallet checklist 768",
+        "width": 768,
+        "scroll": 768
+      },
+      {
+        "label": "chromium okx-agentic-wallet checklist 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium okx-agentic-wallet checklist 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium okx-agentic-wallet agent 200% text size",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium scan token 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium saved trader playbook 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium scan error 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "label": "chromium scan error 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "label": "chromium scan error 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "label": "chromium home 200% text size",
+        "width": 390,
+        "scroll": 390
+      }
+    ],
+    "accessibility": [
+      {
+        "label": "home 1440",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "home 390",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "meme-coin-research-digest configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "meme-coin-research-digest output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "content-and-reply-drafts configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "content-and-reply-drafts output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "job-hunt-radar configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "job-hunt-radar output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "perps-funding-digest configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "perps-funding-digest output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "new-launch-radar configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "new-launch-radar output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "tokenized-stock-watch configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "tokenized-stock-watch output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "unlock-and-airdrop-tracker configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "unlock-and-airdrop-tracker output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "project-research-brief configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "project-research-brief output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "crypto-creator-thread-writer configure",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "crypto-creator-thread-writer output",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "setup library",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "binance-agentic-wallet agent",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "binance-agentic-wallet checklist",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "coinbase-agentic-wallet agent",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "coinbase-agentic-wallet checklist",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "okx-agentic-wallet agent",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "okx-agentic-wallet checklist",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "scan token result 390",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "saved trader playbook 390",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "guide",
+        "violations": [],
+        "incomplete": []
+      }
+    ]
+  },
+  "regression": {
+    "passed": [
+      "chromium: Scan input, chain and submit fit first screen at 390",
+      "chromium: 7 malformed field cases each retry the entire scan; two bad endpoints expose no facts or prompts",
+      "chromium: valid empty fields and genuine reverts still complete without a fallback",
+      "chromium: Robinhood uses one distinct fallback permitted by generated CSP; both-down state is incomplete",
+      "chromium: address/chain edits invalidate pending success/failure and completed profiles, restore submit, and allow a new scan",
+      "chromium: Solana Program balance, keyboard profile action, exact analyst prompt, URL save, reload and reflow",
+      "chromium: privacy explains address disclosure to primary and fallback RPC providers",
+      "chromium: lowercase brand across routes, metadata, descriptive perps card, retained library and responsive home"
+    ],
+    "browsers": [
+      {
+        "name": "chromium",
+        "version": "141.0.7390.37"
+      }
+    ],
+    "accessibility": [
+      {
+        "label": "scan form 390",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "malformed RPC error 390",
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "label": "Solana program with balance and profile action",
+        "violations": [],
+        "incomplete": []
+      }
+    ],
+    "reflow": [
+      {
+        "browser": "chromium",
+        "label": "saved program prompt 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "browser": "chromium",
+        "label": "saved program prompt 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "browser": "chromium",
+        "label": "saved program prompt 1440",
+        "width": 1440,
+        "scroll": 1440
+      },
+      {
+        "browser": "chromium",
+        "label": "saved program prompt 200% text",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "browser": "chromium",
+        "label": "home 320",
+        "width": 320,
+        "scroll": 320
+      },
+      {
+        "browser": "chromium",
+        "label": "home 390",
+        "width": 390,
+        "scroll": 390
+      },
+      {
+        "browser": "chromium",
+        "label": "home 1440",
+        "width": 1440,
+        "scroll": 1440
+      }
+    ],
+    "limitations": [
+      "WebKit launch failed because host libraries, including GTK 4 and GStreamer, were unavailable. No WebKit behavior is claimed.",
+      "All RPC scenarios were intercepted fixtures. This checks browser behavior, not live provider availability or CORS. No physical device, screen-reader session or native browser zoom was tested."
+    ],
+    "errors": []
+  }
+}

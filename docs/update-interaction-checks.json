@@ -1,0 +1,181 @@
+{
+  "passed": [
+    "Production catalog shows nine playbooks, no invented creator or recipient, and the home action fits the first 390px screen",
+    "Each new playbook is the top match for its title and opens all standard and extra questions; six-hour launch cadence generates correctly",
+    "Roadmap retains existing live features, links all five new playbooks in Live, lists the requested Next and Exploring items, and keeps the disclaimer",
+    "Optional author-only, address-only and combined metadata render as literal text; keyboard address copy succeeds without navigation or payment",
+    "Creator text contrast, visible focus styling, long-value reflow at four widths, 200% text and offline copy pass",
+    "Creator details persist through configuration and output; clipboard denial offers focused, complete manual copy on all three surfaces",
+    "Production export remains unchanged by metadata fixtures and no unexpected external request, script error or failed asset was observed"
+  ],
+  "errors": [],
+  "reflow": [
+    {
+      "label": "nine-playbook home 320",
+      "width": 320,
+      "scrollWidth": 320
+    },
+    {
+      "label": "nine-playbook home 390",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "nine-playbook home 576",
+      "width": 576,
+      "scrollWidth": 576
+    },
+    {
+      "label": "nine-playbook home 768",
+      "width": 768,
+      "scrollWidth": 768
+    },
+    {
+      "label": "nine-playbook home 880",
+      "width": 880,
+      "scrollWidth": 880
+    },
+    {
+      "label": "nine-playbook home 1120",
+      "width": 1120,
+      "scrollWidth": 1120
+    },
+    {
+      "label": "nine-playbook home 1440",
+      "width": 1440,
+      "scrollWidth": 1440
+    },
+    {
+      "label": "creator metadata fixture 320",
+      "width": 320,
+      "scrollWidth": 320
+    },
+    {
+      "label": "creator metadata fixture 390",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "creator metadata fixture 768",
+      "width": 768,
+      "scrollWidth": 768
+    },
+    {
+      "label": "creator metadata fixture 1440",
+      "width": 1440,
+      "scrollWidth": 1440
+    },
+    {
+      "label": "creator metadata fixture 200% text",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "home manual address copy",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "configure manual address copy",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "output manual address copy",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "ten-swap saved profile fixture 320",
+      "width": 320,
+      "scrollWidth": 320
+    },
+    {
+      "label": "ten-swap saved profile fixture 390",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "label": "ten-swap saved profile fixture 1440",
+      "width": 1440,
+      "scrollWidth": 1440
+    }
+  ],
+  "accessibility": [
+    {
+      "label": "Updated roadmap 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "Creator metadata fixture 390",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "label": "Creator output and clipboard-denied fixture 390",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "contrast": [
+    {
+      "selector": ".creator-author",
+      "foreground": "rgb(241, 243, 236)",
+      "background": "rgb(32, 36, 28)",
+      "outlineColor": "rgb(241, 243, 236)",
+      "outlineWidth": "0px",
+      "outlineStyle": "none",
+      "ratio": 14.11
+    },
+    {
+      "selector": ".tip-address",
+      "foreground": "rgb(241, 243, 236)",
+      "background": "rgb(32, 36, 28)",
+      "outlineColor": "rgb(241, 243, 236)",
+      "outlineWidth": "0px",
+      "outlineStyle": "none",
+      "ratio": 14.11
+    },
+    {
+      "selector": ".tip-note",
+      "foreground": "rgb(167, 175, 160)",
+      "background": "rgb(32, 36, 28)",
+      "outlineColor": "rgb(167, 175, 160)",
+      "outlineWidth": "0px",
+      "outlineStyle": "none",
+      "ratio": 6.98
+    },
+    {
+      "selector": "[data-copy-tip]",
+      "foreground": "rgb(241, 243, 236)",
+      "background": "rgb(32, 36, 28)",
+      "outlineColor": "rgb(212, 247, 125)",
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "ratio": 14.11
+    }
+  ],
+  "firstScreen": [
+    {
+      "page": "Home",
+      "width": 390,
+      "height": 844,
+      "actionBottom": 500.5625
+    }
+  ],
+  "limitations": [
+    "Creator checks use isolated non-recipient metadata fixtures, not a creator supplied by the requester. No payment, wallet connection or live agent execution is involved.",
+    "Chromium only in this focused script. Assigned browser tool could not launch because Chrome was unavailable; WebKit was attempted by the main suite and lacked host libraries. No screen reader, physical device, native zoom, RTL or forced-colors manual session was performed."
+  ],
+  "browser": {
+    "name": "Chromium",
+    "version": "141.0.7390.37"
+  },
+  "focus": {
+    "target": "new-launch-radar",
+    "top": 400.296875,
+    "bottom": 444.296875,
+    "skipLinkBottom": -70.40625
+  }
+}

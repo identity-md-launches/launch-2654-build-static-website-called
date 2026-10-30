@@ -6,6 +6,8 @@ A small, static playbook generator for beginners using Grok Bot, with a read-onl
 
 The complete production site is in [`dist/`](dist/). Source is in [`src/`](src/); playbooks and assistant configuration live in [`src/data/playbooks.json`](src/data/playbooks.json), setup guides in [`src/data/guides.json`](src/data/guides.json), chains in [`src/data/chains.json`](src/data/chains.json), and scan prompts in [`src/data/scan.json`](src/data/scan.json). Playbook generation stays in the browser. Scan makes read-only JSON-RPC API calls directly to the selected chain's public provider and, on failure, one distinct fallback. Those providers receive the address being scanned. There are no external runtime dependencies, keys, cookies, analytics, wallet connectors, database or backend. Publication is handled after submission under the name **nuntio**.
 
+This update adds **New launch radar**, **Tokenized stock watch**, **Unlock and airdrop tracker**, **Project research brief** and **Crypto creator thread writer**, bringing the catalog to nine playbooks. Their prompts keep the supplied wording and safety lines. Scan now produces the requested 10-swap **TRADER PROFILE** prompt with a **Save profile** action. Optional creator attribution and copyable tip addresses are supported; no author or recipient is populated. The roadmap puts all five playbooks in Live, the nuntio data engine and creator submissions in Next, and the nuntio token and paid playbooks in Exploring.
+
 ## Install, build, and preview
 
 Requires Node.js 22 or later and npm. Tooling is installed outside the repository so dependency and cache directories cannot enter the submission. No ignore file was added or changed.
@@ -27,7 +29,7 @@ Preview opens a local static server at `http://localhost:4173`; visit that addre
 
 For ordinary local development outside the submission environment, `npm ci` in the repository also works; never include the resulting `node_modules/` or caches in a commit or upload.
 
-`npm run build` validates the playbook, guide, chain and scan catalogs, bundles the vanilla JavaScript and CSS with esbuild, copies the favicon and social PNG, and generates the home page, four playbook pages and three setup guide pages. It also regenerates each page's Content Security Policy (CSP) from the chain catalog's RPC origins. The build does not fetch data or require a browser. It replaces `dist/`; rebuild after source or JSON edits. Keep the complete `dist/` directory in the submitted repository alongside the source, manifest, and lockfile. The existing package manifest, lockfile and dependencies are unchanged by this update.
+`npm run build` validates the playbook, guide, chain and scan catalogs, bundles the vanilla JavaScript and CSS with esbuild, copies the favicon and social PNG, and generates the home page, nine playbook pages and three setup guide pages. It also regenerates each page's Content Security Policy (CSP) from the chain catalog's RPC origins. The build does not fetch data or require a browser. It replaces `dist/`; rebuild after source or JSON edits. Keep the complete `dist/` directory in the submitted repository alongside the source, manifest, and lockfile. The existing package manifest, lockfile and dependencies are unchanged by this update.
 
 ## Static routes and sharing
 
@@ -35,7 +37,7 @@ For ordinary local development outside the submission environment, `npm ci` in t
 | --- | --- | --- |
 | Home | `dist/index.html` | `#/` |
 | Scan | `dist/index.html` | `#/scan` |
-| Saved trader profile playbook | `dist/index.html` | `#/scan/output?chain=…&address=…&balance=…` |
+| Saved trader profile | `dist/index.html` | `#/scan/output?chain=…&address=…&balance=…` |
 | How it works and privacy | `dist/index.html` | `#/guide` |
 | Setup guide library | `dist/index.html` | `#/guides` |
 | Roadmap | `dist/index.html` | `#/roadmap` |
@@ -46,6 +48,11 @@ For ordinary local development outside the submission environment, `npm ci` in t
 | Content and reply drafts | `dist/playbooks/content-and-reply-drafts/index.html` | `#/configure` or `#/output` |
 | Job hunt radar | `dist/playbooks/job-hunt-radar/index.html` | `#/configure` or `#/output` |
 | Perps funding digest | `dist/playbooks/perps-funding-digest/index.html` | `#/configure` or `#/output` |
+| New launch radar | `dist/playbooks/new-launch-radar/index.html` | `#/configure` or `#/output` |
+| Tokenized stock watch | `dist/playbooks/tokenized-stock-watch/index.html` | `#/configure` or `#/output` |
+| Unlock and airdrop tracker | `dist/playbooks/unlock-and-airdrop-tracker/index.html` | `#/configure` or `#/output` |
+| Project research brief | `dist/playbooks/project-research-brief/index.html` | `#/configure` or `#/output` |
+| Crypto creator thread writer | `dist/playbooks/crypto-creator-thread-writer/index.html` | `#/configure` or `#/output` |
 
 Forms serialize their answers after the hash, for example `#/configure?experience=beginner&frequency=weekday&channel=Grok+Bot+chat&role=Designer&location=Remote`. Generation changes the hash to `/output`; edit, reload, and browser back retain the answers. **Copy share link** includes the actual gateway prefix, the playbook’s static filename, and the configured hash. It never invents a hostname or content ID.
 
@@ -92,12 +99,28 @@ Provider text and commands follow the assignment. The current OKX page recommend
 5. Define additional text `questions`, each with a lowercase alphabetic `key`, visible `label`, example `placeholder`, `hint`, and integer `maxLength` from 1 to 500. The three standard keys are `experience`, `frequency`, and `channel`; do not duplicate them.
 6. Write a `prompt` with `{experience}`, `{frequency}`, `{channel}`, and the question keys as placeholders. Every question must have a matching placeholder, and every placeholder must have a question. Repeated placeholders are allowed. Substitution is literal and single-pass; answers cannot execute HTML or recursively expand other placeholders.
 7. Set `schedule` and `guardrails`. Use `checklistSeparator: ", "` only if commas separate distinct checklist items, otherwise `null` for a single item. Copying always preserves the original guardrails string, including punctuation.
-8. Set `riskWarning` to `null` for unrelated topics, or to an appropriate plain warning ending in `Not financial advice.` for financial research. Warnings are displayed and appended, after a blank line, to **each** copied research block. The supplied template and guardrails bodies remain unchanged.
-9. Run the typecheck, build, tests, and interaction validation. The new card, form, output, and static metadata page are generated automatically.
+8. Set `riskWarning` to an appropriate plain warning ending in `Not financial advice.` when an additional financial warning is needed. Warnings are displayed and appended, after a blank line, to **each** copied block. Use `null` for unrelated topics or an exact supplied prompt that already contains its required safety ending. The five playbooks in this update use `null` so their copied prompts stay exactly as requested; the first four include the full shared safety line, and the thread writer keeps its own ending.
+9. Optionally add `author` and/or `tipAddress` using the creator fields described below. Leave them out until the creator supplies the values; do not insert examples or recipient stand-ins.
+10. Run the typecheck, build, tests, and interaction validation. The new card, form, output, and static metadata page are generated automatically. If the playbook is listed on the roadmap, add its ID to `addedPlaybooks` in `renderRoadmap()` or its intended roadmap group.
 
 The original three prompt texts, schedules, and guardrails are preserved verbatim, alongside the requested perps funding digest. Unit fixtures lock their content. When adding another playbook, update the test’s catalog count and add appropriate tests without changing existing content fixtures. UI descriptions and help text are separate from those fixed templates.
 
 The chosen frequency fills `{frequency}`. The supplied recommended schedule stays verbatim. If they differ, the output explicitly asks the user to reconcile the cadence in Grok Bot; the recommendation is not silently rewritten.
+
+### Creator fields
+
+The playbook schema is defined by `Playbook` in [`src/types.d.ts`](src/types.d.ts) and enforced at build time by [`scripts/catalog.mjs`](scripts/catalog.mjs).
+
+| Optional field | Format | Display |
+| --- | --- | --- |
+| `author` | Nonempty plain-text string | `By {author}` on the card, configuration summary and generated output |
+| `tipAddress` | Nonempty plain-text recipient address supplied by the creator | Full selectable address, **Copy address** button and the exact notice below on those surfaces |
+
+Both fields are independent. Omit absent fields; empty strings, `null`, non-string values, surrounding whitespace, control characters and bidirectional override characters fail catalog validation. Values are escaped as text and long values wrap without truncation. The site copies the address as supplied; it does not infer or verify a chain, verify ownership, open a wallet or initiate a payment. Confirm the address and chain with the creator before sending anything yourself.
+
+> Tip the creator. Send only on the right chain. Nuntio does not hold or process payments.
+
+Creator copy buttons are siblings of the main card link, so copying does not navigate. Clipboard denial offers a focused manual-copy textarea. All production entries currently omit both fields. The focused validation compiles isolated test-only metadata without changing the production catalog or export.
 
 ## Add another assistant
 
@@ -133,12 +156,15 @@ playwright install chromium webkit
 npm run validate
 node scripts/validate-revision.mjs
 node scripts/validate-solana-authorities.mjs
+node scripts/validate-update.mjs
 node scripts/review.mjs
 ```
 
 The validation command manages its own temporary static server under an IPFS-like subpath, runs the real production export, and writes disposable evidence to `test/scratch/validation/`. It closes the server and browser when finished. WebKit launch failures are reported as limitations, not passing tests. To regenerate the social image after editing its SVG, run `node scripts/social.mjs`, then rebuild.
 
-Current authority revision (30 Oct 2026): malformed Solana mint/freeze fields now fail the read instead of becoming “None.” Only explicit `null` or a valid 32-byte base58 address is accepted. One distinct fallback retries the complete read; if it also fails, no facts or research prompts are shown. Build and strict typecheck passed; all **78 unit tests**, **24 focused browser scenarios**, **3 focused axe scans** and **16/16 pinned design-probe checks** passed. The focused script also checks keyboard submit/retry, pending results, explicit nulls, responsive reflow and 200% text sizing. The existing interaction and prior revision suites passed all 18 and 8 flow groups, respectively, on their completed final runs. See [`docs/solana-authority-validation.md`](docs/solana-authority-validation.md) for full results (including earlier failed/interrupted attempts), reproduction, six-domain review and limits. No requested fix was left out; WebKit could not launch because host libraries are missing, and RPC replies were intercepted fixtures.
+Current playbook/profile update (30 Oct 2026): production build and strict typecheck pass; **86 unit tests**, **23 main interaction groups**, **8 prior-revision groups**, **7 update-specific groups** and **16/16 pinned design-probe checks** pass. The main, prior-revision and update browser suites report **36 axe scans with zero violations**. The first home action ends at 500.56px on a 390 × 844 screen. See [`docs/update-validation.md`](docs/update-validation.md) for exact commands, six-domain coverage, fixes, screenshots and limitations. No requested feature is left out. The assigned browser tool could not launch because Chrome was unavailable; local Playwright Chromium completed the checks. WebKit could not launch because host libraries are missing. RPC replies in interaction validation are intercepted fixtures.
+
+Previous authority revision (30 Oct 2026): malformed Solana mint/freeze fields now fail the read instead of becoming “None.” Only explicit `null` or a valid 32-byte base58 address is accepted. One distinct fallback retries the complete read; if it also fails, no facts or research prompts are shown. That revision passed 78 unit tests and 24 focused browser scenarios; its historical evidence is in [`docs/solana-authority-validation.md`](docs/solana-authority-validation.md). These authority checks remain in the unit suite.
 
 Results retained from the previous revision (29 Oct 2026):
 
@@ -162,6 +188,6 @@ IMD_PLAYWRIGHT=/tmp/nuntio-tools/node_modules/playwright/index.mjs \
   node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
 ```
 
-The `.imd/reads/` inputs are removed before delivery; the recorded probe results remain in [`docs/taste-checks.json`](docs/taste-checks.json). Before the fixes the probe reported 15/16 checks, including four two-beat slogan lines; after replacing the perps description it reports 16/16 with three. Source-based tests and both browser-validation scripts remain reproducible without those inputs. After removing temporary tool output, `node scripts/check-export.mjs` checks the complete deliverable against the **8 MiB** budget and rejects dependency/cache directories and archives at every nesting level.
+The `.imd/reads/` inputs are removed before delivery; this update's recorded probe results remain in [`docs/update-taste-checks.json`](docs/update-taste-checks.json). The probe passes 16/16 checks. [`docs/taste-checks.json`](docs/taste-checks.json) retains the earlier revision's evidence. Source-based tests and browser-validation scripts remain reproducible without the pinned inputs. `node scripts/check-export.mjs` checks the complete deliverable against the **8 MiB** budget and rejects dependency/cache directories and archives at every nesting level; it excludes disposable `test/scratch/` output.
 
-See [`docs/validation.md`](docs/validation.md) for the six-domain review, fixes, evidence, and unperformed checks, and [`DESIGN.md`](DESIGN.md) for the implemented design system. These are worker-run checks, not independent certification. No screen-reader session, physical-device test, native browser zoom, live assistant execution, or live X crawler test was performed.
+See [`docs/update-validation.md`](docs/update-validation.md) for the current six-domain review and [`docs/validation.md`](docs/validation.md) for earlier revisions. [`DESIGN.md`](DESIGN.md) describes the implemented design system. These are worker-run checks, not independent certification. No screen-reader session, physical-device test, native browser zoom, live assistant execution, or live X crawler test was performed.

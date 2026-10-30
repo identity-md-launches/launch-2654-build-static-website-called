@@ -1,5 +1,7 @@
 # nuntio revision: implementation and validation
 
+The current playbook/profile update is documented in [Playbook/profile update validation](update-validation.md): five new playbooks, the ten-swap wallet profile, optional creator metadata and the updated roadmap. The records below remain history of earlier revisions.
+
 The latest revision, **30 Oct 2026**, fixes malformed Solana mint/freeze authorities being reported as “None.” See [Solana authority revision validation](solana-authority-validation.md) for reproduction, current checks, all six design-review domains, screenshots and limitations. The current `.imd-responses.json` answers that finding. The results below are preserved history from the earlier revision.
 
 Worker review on **29 Oct 2026**, against the rebuilt production export. These are worker-run results, not independent certification.

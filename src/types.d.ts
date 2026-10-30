@@ -28,6 +28,8 @@ export interface Playbook {
   guardrails: string;
   checklistSeparator: string | null;
   riskWarning: string | null;
+  author?: string;
+  tipAddress?: string;
 }
 export interface Catalog {
   version: number;

@@ -214,7 +214,7 @@ try {
       assert.equal(await page.locator('#profile-prompt').isVisible(), true);
       assert.match(await page.evaluate(() => location.hash), /^#\/scan\/output\?chain=solana&address=11111111111111111111111111111111&balance=1\+SOL$/);
       await page.reload();
-      await ready('Trader profile playbook');
+      await ready('Trader profile');
       assert.equal(await page.locator('#profile-prompt').innerText(), prompt);
       assert.ok((await page.locator('.wallet-facts').innerText()).includes('1 SOL'));
       for (const width of [320, 390, 1440]) {

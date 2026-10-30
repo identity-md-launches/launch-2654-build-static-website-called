@@ -124,21 +124,38 @@ function roadmapItem(title, text, href = '', linkText = '', mark = 'check') {
 function renderRoadmap() {
   document.title = 'Roadmap | nuntio';
   const perps = catalog.playbooks.find(({ id }) => id === 'perps-funding-digest');
+  const addedPlaybooks = ['new-launch-radar', 'tokenized-stock-watch', 'unlock-and-airdrop-tracker', 'project-research-brief', 'crypto-creator-thread-writer'];
+  const livePlaybooks = catalog.playbooks.filter(({ id }) => addedPlaybooks.includes(id));
   app.innerHTML = `<div class="wrap roadmap"><h1 id="page-title" tabindex="-1">A clearer next step.</h1><p class="guide-intro">What is live in nuntio, what comes next, and what we are still exploring.</p>
-    <section aria-labelledby="live-heading"><h2 id="live-heading">Live</h2><ul class="roadmap-list">${roadmapItem('Scan tab', 'Read a token or wallet on Ethereum, Base, BNB Chain, Robinhood Chain or Solana, then copy a research prompt.', homeHref('/scan'), 'Scan an address')}${roadmapItem('Perps funding digest', 'A daily morning digest of funding, open interest and liquidations for your markets.', perps ? playbookHref(perps) : homeHref(), 'Build the digest')}${roadmapItem('Coinbase and OKX guides', 'Set up an agentic wallet with your agent, one approved step at a time. The Binance guide is here too.', homeHref('/guides'), 'Browse setup guides')}</ul></section>
-    <section aria-labelledby="next-heading"><h2 id="next-heading">Next</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('More playbooks', 'New goals to hand to your bot.', '', '', 'clock')}${roadmapItem('Creator made playbooks', 'Playbooks written by creators, with tip links.', '', '', 'clock')}</ul></section>
+    <section aria-labelledby="live-heading"><h2 id="live-heading">Live</h2><ul class="roadmap-list">${roadmapItem('Scan tab', 'Read a token or wallet on Ethereum, Base, BNB Chain, Robinhood Chain or Solana, then copy a research prompt.', homeHref('/scan'), 'Scan an address')}${roadmapItem('Perps funding digest', 'A daily morning digest of funding, open interest and liquidations for your markets.', perps ? playbookHref(perps) : homeHref(), 'Build the digest')}${roadmapItem('Coinbase and OKX guides', 'Set up an agentic wallet with your agent, one approved step at a time. The Binance guide is here too.', homeHref('/guides'), 'Browse setup guides')}${livePlaybooks.map((playbook) => roadmapItem(playbook.title, playbook.description, playbookHref(playbook), `Build ${playbook.title.toLowerCase()}`)).join('')}</ul></section>
+    <section aria-labelledby="next-heading"><h2 id="next-heading">Next</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('nuntio data engine', 'Our own data engine for deeper token and wallet checks.', '', '', 'clock')}${roadmapItem('Creator submissions', 'Submit playbooks for the library.', '', '', 'clock')}</ul></section>
     <section aria-labelledby="exploring-heading"><h2 id="exploring-heading">Exploring</h2><ul class="roadmap-list roadmap-plain">${roadmapItem('nuntio token and paid playbooks', 'An idea under consideration. Nothing is launched or for sale.', '', '', 'radar')}</ul></section>
     <a class="back-link" href="${esc(guideCatalog.reportUrl)}" target="_blank" rel="noopener noreferrer">Report a broken step ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a></div>`;
 }
 
+/** Optional attribution is plain text; the address is copied, never used as a payment link.
+ * @param {Playbook} playbook */
+function creatorInfo(playbook) {
+  if (!playbook.author && !playbook.tipAddress) return '';
+  return `<div class="creator-info">${playbook.author ? `<p class="creator-author">By <bdi>${esc(playbook.author)}</bdi></p>` : ''}${playbook.tipAddress ? `<code class="tip-address" dir="ltr">${esc(playbook.tipAddress)}</code><button class="button secondary copy-button" type="button" data-copy-tip="${esc(playbook.id)}" aria-label="Copy tip address for ${esc(playbook.title)}" aria-describedby="tip-note-${esc(playbook.id)}">${icon('copy')} Copy address</button><p class="tip-note" id="tip-note-${esc(playbook.id)}">Tip the creator. Send only on the right chain. Nuntio does not hold or process payments.</p>` : ''}</div>`;
+}
+
+function bindCreatorCopy() {
+  document.querySelectorAll('[data-copy-tip]').forEach((element) => element.addEventListener('click', () => {
+    const button = /** @type {HTMLButtonElement} */ (element);
+    const playbook = catalog.playbooks.find(({ id }) => id === button.dataset.copyTip);
+    if (playbook?.tipAddress) void copy(playbook.tipAddress, button, 'Creator tip address copied. Send only on the right chain.');
+  }));
+}
+
 /** @param {Playbook} playbook @param {number} index @param {boolean} matched */
 function card(playbook, index, matched) {
-  return `<a class="playbook-card" href="${playbookHref(playbook)}" aria-labelledby="card-title-${esc(playbook.id)}">
+  return `<article class="playbook-card"><a class="playbook-card-link" href="${playbookHref(playbook)}" aria-labelledby="card-title-${esc(playbook.id)}">
     <div class="card-top">${icon(playbook.icon, 'card-icon')}<span>${esc(playbook.category)}</span></div>
     <h3 id="card-title-${esc(playbook.id)}">${esc(playbook.title)}</h3>
     <p>${esc(playbook.description)}</p>
     <div class="card-bottom"><span>${matched ? `Match ${index + 1}` : `${playbook.questions.length + 3} questions`}</span><span class="card-cta">Build playbook ${icon('arrow')}</span></div>
-  </a>`;
+  </a>${creatorInfo(playbook)}</article>`;
 }
 
 function renderHome() {
@@ -152,7 +169,7 @@ function renderHome() {
       <form id="goal-form" role="search"><label for="goal">What do you want Grok Bot to do for you?</label><div class="goal-controls"><div class="goal-input">${icon('search')}<input id="goal" name="goal" type="search" placeholder="e.g. Find remote design jobs" maxlength="240" autocomplete="off" value="${esc(searchQuery)}" aria-describedby="search-hint"></div><button class="button primary" type="submit">Find a playbook ${icon('arrow')}</button></div></form>
       <div class="search-examples"><span id="search-hint">Try a goal:</span><button type="button" data-example="Research meme coins">Research coins</button><button type="button" data-example="Write posts">Write posts</button><button type="button" data-example="Find a job">Find a job</button></div>
     </section>
-    <section class="library" aria-labelledby="results-heading"><div class="section-heading"><h2 id="results-heading" tabindex="-1">Choose a playbook</h2><span id="results-count" class="count">${catalog.playbooks.length} ways to start</span></div><div id="search-empty"></div><div id="playbook-grid" class="playbook-grid"></div><p class="library-note">${icon('shield')} You set the goal. You stay in control.</p></section>
+    <section class="library" aria-labelledby="results-heading"><div class="section-heading"><h2 id="results-heading" tabindex="-1">Choose a playbook</h2><span id="results-count" class="count">${catalog.playbooks.length} ways to start</span></div><div id="search-empty"></div><div id="playbook-grid" class="playbook-grid"></div><div id="copy-fallback" class="manual-copy" hidden><label for="manual-copy">Copy manually</label><p>Automatic copying is unavailable in this browser. Select and copy the text below.</p><textarea id="manual-copy" rows="6" readonly></textarea></div><p class="library-note">${icon('shield')} You set the goal. You stay in control.</p></section>
     <div class="home-note"><span>Built in your browser.</span><p>No account needed here. Take your playbook to ${esc(defaultAgent.name)} when you’re ready.</p><a href="${homeHref('/guide')}">See how it works ${icon('arrow')}</a></div>
   </div>`;
   const field = /** @type {HTMLInputElement} */ (document.querySelector('#goal'));
@@ -168,6 +185,7 @@ function renderHome() {
     count.textContent = searching ? `${matches.length} ${matches.length === 1 ? 'match' : 'matches'}` : `${catalog.playbooks.length} ways to start`;
     empty.innerHTML = searching && !matches.length ? `<div class="empty-state"><p>Try words like “jobs”, “posts”, or “coins”, or explore all playbooks.</p><button class="button secondary" type="button" id="clear-search">Show all playbooks</button></div>` : '';
     grid.innerHTML = matches.map(({ playbook }, index) => card(playbook, index, searching)).join('');
+    bindCreatorCopy();
     document.querySelector('#clear-search')?.addEventListener('click', () => { field.value = ''; updateResults(); field.focus(); });
     announce(searching ? `${count.textContent}. ${heading.textContent}.` : `${catalog.playbooks.length} playbooks available.`);
   }
@@ -185,7 +203,7 @@ function pageHeading(playbook, step) {
 
 /** @param {Playbook} playbook */
 function summary(playbook) {
-  return `<aside class="playbook-summary" aria-label="About this playbook"><h2>What you’ll get</h2><ul class="deliverables">${playbook.deliverables.map((item) => `<li>${icon('check')}<span>${esc(item)}</span></li>`).join('')}</ul><div class="summary-schedule">${icon('clock')}<div><h3>Suggested schedule</h3><p>${esc(playbook.schedule)}</p></div></div><p class="small muted">You’ll review the results before taking action.</p>${playbook.riskWarning ? `<p class="risk-note">${icon('warning')}<span>${esc(playbook.riskWarning)}</span></p>` : ''}</aside>`;
+  return `<aside class="playbook-summary" aria-label="About this playbook"><h2>What you’ll get</h2><ul class="deliverables">${playbook.deliverables.map((item) => `<li>${icon('check')}<span>${esc(item)}</span></li>`).join('')}</ul><div class="summary-schedule">${icon('clock')}<div><h3>Suggested schedule</h3><p>${esc(playbook.schedule)}</p></div></div><p class="small muted">You’ll review the results before taking action.</p>${playbook.riskWarning ? `<p class="risk-note">${icon('warning')}<span>${esc(playbook.riskWarning)}</span></p>` : ''}${creatorInfo(playbook)}</aside>`;
 }
 
 /** @param {string} key @param {string} label @param {Choice[]} choices @param {string} selected @param {string} [hint] */
@@ -202,7 +220,9 @@ function renderConfigure(playbook, answers, repaired) {
     <fieldset><legend>The basics</legend><fieldset class="experience-field"><legend>Your experience level</legend><div class="segmented">${catalog.experiences.map(({ value, label }) => `<label><input type="radio" name="experience" value="${esc(value)}" ${answers.experience === value ? 'checked' : ''}><span>${esc(label)}</span></label>`).join('')}</div></fieldset><div class="field-row">${selectField('frequency', 'How often should it update you?', catalog.frequencies, answers.frequency)}${selectField('channel', 'Where should it send updates?', agent.channels, answers.channel)}</div><p class="field-hint channel-hint" id="channel-hint">${esc(channel.hint || '')} <a href="${esc(agent.appsUrl)}" target="_blank" rel="noopener noreferrer">Check delivery requirements<span class="sr-only"> (opens in new tab)</span></a></p></fieldset>
     <fieldset><legend>Make it yours</legend>${playbook.questions.map((question) => `<div class="field"><label for="${question.key}">${esc(question.label)}</label><input type="text" id="${question.key}" name="${question.key}" value="${esc(answers[question.key])}" placeholder="${esc(question.placeholder)}" required maxlength="${question.maxLength}" aria-describedby="${question.key}-hint ${question.key}-error" autocomplete="off"><p class="field-hint" id="${question.key}-hint">${esc(question.hint)}</p><p class="field-error" id="${question.key}-error" hidden></p></div>`).join('')}</fieldset>
     <p class="privacy-note">Your answers stay in this link. Anyone you share it with can read them. Keep personal details and secrets out.</p><div class="form-actions"><button class="button primary" type="submit">Generate playbook ${icon('arrow')}</button><button class="button text-button" type="button" id="reset-answers">Reset answers</button></div>
+    <div id="copy-fallback" class="manual-copy" hidden><label for="manual-copy">Copy manually</label><p>Automatic copying is unavailable in this browser. Select and copy the text below.</p><textarea id="manual-copy" rows="6" readonly></textarea></div>
   </form>${summary(playbook)}</div></div>`;
+  bindCreatorCopy();
   const form = /** @type {HTMLFormElement} */ (document.querySelector('#playbook-form'));
   document.querySelector('#channel')?.setAttribute('aria-describedby', 'channel-hint');
   /** @returns {Answers} */
@@ -293,12 +313,13 @@ function renderOutput(playbook, answers) {
   const risk = playbook.riskWarning ? `<p class="risk-note output-risk">${icon('warning')}<span>${esc(playbook.riskWarning)}</span></p>` : '';
   document.title = `${playbook.title} | nuntio`;
   app.innerHTML = `<div class="wrap detail output-page">${pageHeading(playbook, 2)}<div class="output-actions"><a class="button secondary" href="${answerHash('/configure', answers)}">${icon('back')} Edit answers</a><button class="button secondary" id="share-link" type="button">${icon('link')} Copy share link</button><p class="small muted">The link includes your answers.</p></div>
-    <div class="output-layout"><div class="output-blocks">
+    ${creatorInfo(playbook)}<div class="output-layout"><div class="output-blocks">
       <section class="output-block" aria-labelledby="prompt-heading"><div class="block-heading"><h2 id="prompt-heading"><span class="block-number">01</span> Setup prompt</h2><button class="button copy-button" type="button" data-copy="prompt" aria-label="Copy setup prompt">${icon('copy')} Copy</button></div><p class="block-instruction">Paste this into your ${esc(agent.name)} conversation.</p><div class="prompt-text" id="prompt-text">${esc(fillTemplate(playbook.prompt, answers))}</div>${risk}</section>
       <section class="output-block" aria-labelledby="schedule-heading"><div class="block-heading"><h2 id="schedule-heading"><span class="block-number">02</span> Recommended schedule</h2><button class="button copy-button" type="button" data-copy="schedule" aria-label="Copy recommended schedule">${icon('copy')} Copy</button></div><p class="schedule-text" id="schedule-text">${esc(playbook.schedule)}</p>${risk}<p class="block-instruction schedule-context">Your prompt requests updates every ${esc(answers.frequency)}. ${answers.frequency !== playbook.defaultFrequency ? 'This differs from the recommendation above. ' : ''}Confirm the final cadence, exact time, and time zone in ${esc(agent.name)}.</p></section>
       <section class="output-block" aria-labelledby="guardrails-heading"><div class="block-heading"><h2 id="guardrails-heading"><span class="block-number">03</span> Guardrails checklist</h2><button class="button copy-button" type="button" data-copy="guardrails" aria-label="Copy guardrails checklist">${icon('copy')} Copy</button></div><ul class="guardrails">${checklist.map((item, index) => `<li><label><input type="checkbox" name="review-${index}"><span>${esc(item)}</span></label></li>`).join('')}</ul>${risk}<p class="block-instruction">Check these as you review. Your checks stay on this screen.</p></section>
       <div id="copy-fallback" class="manual-copy" hidden><label for="manual-copy">Copy manually</label><p>Automatic copying is unavailable in this browser. Select and copy the text below.</p><textarea id="manual-copy" rows="6" readonly></textarea></div>
     </div><aside class="handoff"><h2>Next stop: ${esc(agent.name)}</h2><ol>${agent.setupSteps.map((step) => `<li>${esc(step)}</li>`).join('')}</ol><a class="button primary" href="${esc(agent.setupUrl)}" target="_blank" rel="noopener noreferrer">Open setup guide ${icon('external')}<span class="sr-only"> (opens in new tab)</span></a><div class="delivery-note"><h3>Delivery: ${esc(channel.label)}</h3><p>${esc(channel.hint || '')}</p></div><p class="small muted">Nothing has been connected or scheduled by nuntio.</p></aside></div></div>`;
+  bindCreatorCopy();
   document.querySelectorAll('[data-copy]').forEach((element) => element.addEventListener('click', () => {
     const button = /** @type {HTMLButtonElement} */ (element);
     const key = /** @type {keyof typeof output} */ (button.dataset.copy);

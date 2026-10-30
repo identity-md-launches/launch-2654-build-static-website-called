@@ -1,0 +1,23 @@
+{
+  "algorithm": "sha256",
+  "identicalToTestedExport": true,
+  "files": {
+    "dist/assets/app.js": "b17855a1f47b5a8ce561aff210d34e1563c51851380c16ea182b6c0f8636ea48",
+    "dist/assets/favicon.svg": "743e5ba5f1ad3533903de86350a77abb7d354c3d1ea7c269edd9f595c8c5e919",
+    "dist/assets/social.png": "e692c1d1c44e7670238ab8c16a8c437aacf6af21a164d8b18f9048122b230f93",
+    "dist/assets/styles.css": "5ee2163d4b739c7c859d0ed16f98869bd04d0c95129f3321060db03eecfcc3d6",
+    "dist/guides/binance-agentic-wallet/index.html": "c955d255b0c9bdc55ff2b3b0d35996b5ea19b870d004b57603718ccca9a1e68d",
+    "dist/guides/coinbase-agentic-wallet/index.html": "bf74470d3885e0b6bd13673a83722eef12fb0fb6d20346ca9a947946cb5e0082",
+    "dist/guides/okx-agentic-wallet/index.html": "7983918661bcdd80305093a2bcbaefad1c44f81acd9fa206b16a105e3a3433b2",
+    "dist/index.html": "9497e9964bb349febbef57826c96e73aeb0e226c48139b1c46a39640b248c553",
+    "dist/playbooks/content-and-reply-drafts/index.html": "41867044d7b29244b21f0c458bf6f730839b02a44e95c40c39b672b2f591f809",
+    "dist/playbooks/crypto-creator-thread-writer/index.html": "62a8d7167a1fae79b493d370d8ae5d2922f991c243c63d88f56f39f1d1e13270",
+    "dist/playbooks/job-hunt-radar/index.html": "926e30c11c572cfb6b35f7b5740a2f2b87a824b368df409c2839988a60927463",
+    "dist/playbooks/meme-coin-research-digest/index.html": "4ad59054884c63763a2f7eb6b23ad6e7f100bf8c7f6358b61a1a42ac68e26358",
+    "dist/playbooks/new-launch-radar/index.html": "184f5aa48536f2326055cc347e8c5a96139d028fe254d023480bd74e76e973df",
+    "dist/playbooks/perps-funding-digest/index.html": "59ffa286fe4e19aaf5b4c089509ad9fd43dafde5df46acb3c57704cb32b95162",
+    "dist/playbooks/project-research-brief/index.html": "82b71e1a8e604f226e7e778f0cb964fc8ae072485ba0a628576961720334cf46",
+    "dist/playbooks/tokenized-stock-watch/index.html": "281aca9a114626ab644aa3ad4c40f69d2bbf7f7b9e90cda4b1f55abf3d9edfc5",
+    "dist/playbooks/unlock-and-airdrop-tracker/index.html": "cb98c3505f03c4094530b41067fea6fbe9d486d40847ef22da97ba421863fae8"
+  }
+}

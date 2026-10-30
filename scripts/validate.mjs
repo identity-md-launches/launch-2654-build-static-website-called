@@ -117,7 +117,8 @@ try {
       await page.getByRole('button', { name: 'Show all playbooks' }).click();
       assert.equal(await page.locator('.playbook-card').count(), catalog.playbooks.length);
       await page.getByRole('button', { name: 'Write posts', exact: true }).click();
-      assert.equal(await page.locator('.playbook-card').count(), 1);
+      assert.equal(await page.locator('.playbook-card').count(), 2);
+      assert.ok(await page.getByRole('link', { name: 'Crypto creator thread writer', exact: true }).isVisible());
       await search.fill('write content posts for crypto jobs');
       assert.equal(await page.locator('.playbook-card').count(), 3);
       assert.ok((await page.locator('.playbook-card').first().textContent()).includes('Content and reply drafts'));
@@ -134,7 +135,7 @@ try {
         await page.locator('#channel').selectOption('Slack');
         assert.ok((await page.locator('#channel-hint').textContent()).includes('Connect Slack'));
         for (const question of playbook.questions) {
-          answers[question.key] = ({ chains: 'Solana & Base', niche: 'Sustainable design', voice: 'Warm, clear & practical', role: 'Junior designer', location: 'Berlin / remote in Europe', markets: 'BTC and ETH perps' })[question.key];
+          answers[question.key] = ({ chains: 'Solana & Base', niche: 'Sustainable design', voice: 'Warm, clear & practical', role: 'Junior designer', location: 'Berlin / remote in Europe', markets: 'BTC and ETH perps', tickers: 'AAPL and MSFT', tokens: 'Tokens I follow', interests: 'Gaming and points programs', project: 'A project to research & review' })[question.key];
           await page.locator(`#${question.key}`).fill(answers[question.key]);
         }
         const configuredUrl = page.url();
@@ -151,7 +152,7 @@ try {
         await page.locator('#prompt-text').waitFor();
         assert.equal(await page.locator('#prompt-text').textContent(), fillTemplate(playbook.prompt, answers));
         assert.equal(await page.locator('#schedule-text').textContent(), playbook.schedule);
-        assert.ok((await page.locator('.schedule-context').textContent()).includes('differs from the recommendation'));
+        assert.equal((await page.locator('.schedule-context').textContent()).includes('differs from the recommendation'), answers.frequency !== playbook.defaultFrequency);
         const outputs = createOutputs(playbook, answers);
         for (const key of ['prompt', 'schedule', 'guardrails']) {
           await page.locator(`[data-copy="${key}"]`).click();
@@ -279,7 +280,7 @@ try {
       assert.ok(await page.getByRole('link', { name: 'See all playbooks' }).isVisible());
       await page.goto(`${base}#/roadmap`);
       for (const heading of ['Live', 'Next', 'Exploring']) assert.ok(await page.getByRole('heading', { name: heading, exact: true }).isVisible());
-      for (const item of ['Scan tab', 'Perps funding digest', 'Coinbase and OKX guides', 'More playbooks', 'Creator made playbooks', 'nuntio token and paid playbooks']) assert.ok(await page.getByRole('heading', { name: item, exact: true }).isVisible());
+      for (const item of ['Scan tab', 'Perps funding digest', 'Coinbase and OKX guides', 'nuntio data engine', 'Creator submissions', 'nuntio token and paid playbooks', ...catalog.playbooks.slice(4).map(({ title }) => title)]) assert.ok(await page.getByRole('heading', { name: item, exact: true }).isVisible());
       assert.ok((await page.locator('#site-footer').textContent()).includes('Not financial advice.'));
       await page.getByRole('link', { name: 'Browse setup guides' }).click();
       await page.locator('.setup-card').first().waitFor();
@@ -354,12 +355,12 @@ try {
       await page.getByRole('button', { name: 'Build a trader profile' }).click();
       const profile = await page.locator('#profile-prompt').textContent();
       assert.equal(profile, scanData.walletPromptTemplate.replace('{address}', '0x00000000000000000000000000000000000000aa').replace('{chain}', 'Ethereum'));
-      await page.getByRole('button', { name: 'Save as playbook' }).click();
+      await page.getByRole('button', { name: 'Save profile', exact: true }).click();
       const savedHash = await page.evaluate(() => location.hash);
       assert.equal(savedHash, '#/scan/output?chain=ethereum&address=0x00000000000000000000000000000000000000aa&balance=2+ETH');
       assert.ok(await page.locator('#profile-prompt').isVisible(), 'the result stays on the page');
       await page.reload();
-      await page.getByRole('heading', { name: 'Trader profile playbook' }).waitFor();
+      await page.getByRole('heading', { name: 'Trader profile', exact: true }).waitFor();
       assert.equal(await page.locator('#profile-prompt').textContent(), profile);
       assert.ok((await page.locator('.wallet-facts').textContent()).includes('Balance when saved2 ETH'));
       await assertNoOverflow(page, `${name} saved trader playbook 390`);
@@ -395,7 +396,7 @@ try {
       for (const list of [badResponses, report.errors]) for (let index = list.length - 1; index >= 0; index--) if (/503/.test(list[index]) && (/solana/.test(list[index]) || /console: Failed to load resource/.test(list[index]))) list.splice(index, 1);
       await page.unroute((url) => rpcHosts.has(url.origin));
       await page.setViewportSize({ width: 390, height: 844 });
-      pass(`${name}: scan validation, Base token facts as text, five check panels with links and exact prompts, wallet trader profile, save as playbook in hash and reload, Solana mint authorities, fallback then "Could not read the chain right now"`);
+      pass(`${name}: scan validation, Base token facts as text, five check panels with links and exact prompts, wallet trader profile, save profile in hash and reload, Solana mint authorities, fallback then "Could not read the chain right now"`);
 
       const jobUrl = `${base}playbooks/job-hunt-radar/index.html`;
       await page.goto(`${jobUrl}#/output?role=%zz`);

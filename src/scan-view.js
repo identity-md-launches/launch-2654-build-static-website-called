@@ -112,16 +112,16 @@ export function createScanView({ app, icon, copy, announce, esc }) {
   /** @param {ChainConfig} chain @param {string} address @param {string} balance @param {boolean} saved */
   function walletProfile(chain, address, balance, saved) {
     const prompt = walletPrompt(chain, address);
-    const status = h('p', { class: 'small muted save-status', role: 'status' }, saved ? 'Saved. This link holds the playbook.' : '');
-    const save = /** @type {HTMLButtonElement} */ (h('button', { class: 'button primary', type: 'button', id: 'save-playbook' }, trusted(icon('check')), saved ? ' Saved as playbook' : ' Save as playbook'));
+    const status = h('p', { class: 'small muted save-status', role: 'status' }, saved ? 'Saved. This link holds the profile prompt.' : '');
+    const save = /** @type {HTMLButtonElement} */ (h('button', { class: 'button primary', type: 'button', id: 'save-playbook' }, trusted(icon('check')), saved ? ' Profile saved' : ' Save profile'));
     const share = /** @type {HTMLButtonElement} */ (h('button', { class: 'button secondary', type: 'button', id: 'share-playbook', hidden: !saved }, trusted(icon('link')), ' Copy share link'));
     const hashValues = { chain: chain.id, address, balance };
     save.addEventListener('click', () => {
       history.replaceState(null, '', scanHash('/scan/output', hashValues));
-      save.replaceChildren(trusted(icon('check')), ' Saved as playbook');
+      save.replaceChildren(trusted(icon('check')), ' Profile saved');
       share.hidden = false;
-      status.textContent = 'Saved. This link holds the playbook.';
-      announce('Saved as playbook. The link now holds it.');
+      status.textContent = 'Saved. This link holds the profile prompt.';
+      announce('Profile saved. The link now holds the prompt.');
     });
     share.addEventListener('click', () => {
       const url = new URL(location.href);
@@ -239,8 +239,8 @@ export function createScanView({ app, icon, copy, announce, esc }) {
     const checked = validateAddress(chain.kind, params.get('address') || '');
     const balance = (params.get('balance') || '').replace(/[\u0000-\u001F\u007F]/g, '').slice(0, 60);
     if (!checked.ok || !/^(less than )?[\d,.]+ [A-Z]{2,5}$/.test(balance)) return false;
-    document.title = 'Trader profile playbook | nuntio';
-    app.innerHTML = `<div class="wrap scan saved-playbook"><a class="back-link" href="${esc(scanHash('/scan', { chain: chain.id, address: checked.address }))}">${icon('back')} Scan again</a><div class="scan-heading"><h1 id="page-title" tabindex="-1">Trader profile playbook</h1><p>Saved in this link. Copy the prompt into your own agent.</p></div><div id="saved-facts"></div><div id="saved-profile"></div><div class="manual-copy" id="copy-fallback" hidden><p>Automatic copying is unavailable. Select the text below and copy it manually.</p><label for="manual-copy">Text to copy</label><textarea id="manual-copy" rows="8" readonly></textarea></div></div>`;
+    document.title = 'Trader profile | nuntio';
+    app.innerHTML = `<div class="wrap scan saved-playbook"><a class="back-link" href="${esc(scanHash('/scan', { chain: chain.id, address: checked.address }))}">${icon('back')} Scan again</a><div class="scan-heading"><h1 id="page-title" tabindex="-1">Trader profile</h1><p>Saved in this link. Copy the prompt into your own agent.</p></div><div id="saved-facts"></div><div id="saved-profile"></div><div class="manual-copy" id="copy-fallback" hidden><p>Automatic copying is unavailable. Select the text below and copy it manually.</p><label for="manual-copy">Text to copy</label><textarea id="manual-copy" rows="8" readonly></textarea></div></div>`;
     /** @type {HTMLElement} */ (document.querySelector('#saved-facts')).replaceChildren(
       h('dl', { class: 'wallet-facts' }, h('div', {}, h('dt', {}, 'Chain'), h('dd', {}, chain.label)), h('div', {}, h('dt', {}, 'Address'), h('dd', { class: 'address-value' }, checked.address)), h('div', {}, h('dt', {}, 'Balance when saved'), h('dd', {}, balance))),
       h('p', { class: 'not-safe' }, trusted(icon('shield')), h('span', {}, scanCatalog.notSafe)));

@@ -1,0 +1,77 @@
+{
+  "files": 99,
+  "totalBytes": 4330044,
+  "budgetBytes": 8388608,
+  "exportFiles": 17,
+  "exportBytes": 205024,
+  "exported": [
+    {
+      "path": "dist/assets/app.js",
+      "bytes": 82478
+    },
+    {
+      "path": "dist/assets/favicon.svg",
+      "bytes": 239
+    },
+    {
+      "path": "dist/assets/social.png",
+      "bytes": 39502
+    },
+    {
+      "path": "dist/assets/styles.css",
+      "bytes": 26181
+    },
+    {
+      "path": "dist/guides/binance-agentic-wallet/index.html",
+      "bytes": 5756
+    },
+    {
+      "path": "dist/guides/coinbase-agentic-wallet/index.html",
+      "bytes": 5787
+    },
+    {
+      "path": "dist/guides/okx-agentic-wallet/index.html",
+      "bytes": 5601
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 4200
+    },
+    {
+      "path": "dist/playbooks/content-and-reply-drafts/index.html",
+      "bytes": 3777
+    },
+    {
+      "path": "dist/playbooks/crypto-creator-thread-writer/index.html",
+      "bytes": 3717
+    },
+    {
+      "path": "dist/playbooks/job-hunt-radar/index.html",
+      "bytes": 3859
+    },
+    {
+      "path": "dist/playbooks/meme-coin-research-digest/index.html",
+      "bytes": 4291
+    },
+    {
+      "path": "dist/playbooks/new-launch-radar/index.html",
+      "bytes": 3920
+    },
+    {
+      "path": "dist/playbooks/perps-funding-digest/index.html",
+      "bytes": 3820
+    },
+    {
+      "path": "dist/playbooks/project-research-brief/index.html",
+      "bytes": 3922
+    },
+    {
+      "path": "dist/playbooks/tokenized-stock-watch/index.html",
+      "bytes": 3911
+    },
+    {
+      "path": "dist/playbooks/unlock-and-airdrop-tracker/index.html",
+      "bytes": 4063
+    }
+  ]
+}

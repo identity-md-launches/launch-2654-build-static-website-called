@@ -105,7 +105,8 @@ input::placeholder, textarea::placeholder { color: var(--color-muted); opacity: 
 .section-heading h2 { font-size: var(--text-title); }
 .count { color: var(--color-muted); font-size: var(--text-small); font-variant-numeric: tabular-nums; flex-shrink: 0; }
 .playbook-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
-.playbook-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); text-decoration: none; min-width: 0; }
+.playbook-card { display: flex; flex-direction: column; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); min-width: 0; }
+.playbook-card-link { display: flex; flex-direction: column; flex: 1; min-width: 0; padding: 24px; border-radius: inherit; text-decoration: none; }
 .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; color: var(--color-muted); font-size: var(--text-small); }
 .card-top .card-icon { width: 28px; height: 28px; color: var(--color-text); }
 .playbook-card h3 { margin-bottom: 8px; max-width: 250px; text-wrap: pretty; }
@@ -113,6 +114,15 @@ input::placeholder, textarea::placeholder { color: var(--color-muted); opacity: 
 .card-bottom { margin-top: auto; padding-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--text-small); color: var(--color-muted); }
 .card-cta { color: var(--color-text); display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
 .card-cta > svg { color: var(--color-accent); }
+.creator-info { min-width: 0; font-size: var(--text-small); }
+.creator-author { color: var(--color-text); overflow-wrap: anywhere; }
+.tip-address { display: block; margin-block: 12px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: var(--text-small); overflow-wrap: anywhere; user-select: text; }
+.tip-note { color: var(--color-muted); margin-top: 12px; }
+.playbook-card > .creator-info { border-top: 1px solid var(--color-border); padding: 16px 24px 24px; }
+.playbook-card .creator-author { color: var(--color-text); }
+.playbook-summary > .creator-info { margin-top: 24px; }
+.output-page > .creator-info { max-width: 72ch; margin-bottom: 32px; }
+.library > .manual-copy, #playbook-form > .manual-copy { margin-top: 24px; }
 .library-note { display: flex; gap: 8px; align-items: center; justify-content: center; margin-block: 24px 40px; color: var(--color-muted); font-size: var(--text-small); }
 .home-note { border-top: 1px solid var(--color-border); padding-top: 28px; display: grid; gap: 8px; font-size: var(--text-small); }
 .home-note > span { font-weight: 500; }
@@ -355,7 +365,7 @@ input[aria-invalid="true"] { border-color: var(--color-error); }
   .hero-steps { display: block; justify-self: end; min-width: 290px; }
   .goal-section { margin-bottom: 40px; }
   .playbook-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .playbook-card { padding: 28px 24px 24px; }
+  .playbook-card-link { padding: 28px 24px 24px; }
   .card-top { margin-bottom: 28px; }
   .playbook-card h3 { min-height: 56px; }
   .home-note { grid-template-columns: 1fr 1.9fr auto; align-items: center; gap: 32px; }
